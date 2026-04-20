@@ -59,7 +59,19 @@ const topics: { value: string; label: string }[] = [
       grid.querySelectorAll('[data-filterable]').forEach((card) => {
         const statusOk = active.status.size === 0 || active.status.has(card.dataset.status);
         const topicOk  = active.topic.size  === 0 || active.topic.has(card.dataset.topic);
-        card.toggleAttribute('hidden', !(statusOk && topicOk));
+        const match = statusOk && topicOk;
+        const wrapper = card.closest('[data-filter-item]') || card;
+        if (match) {
+          wrapper.removeAttribute('data-filter-out');
+          wrapper.removeAttribute('hidden');
+          card.removeAttribute('hidden');
+        } else {
+          wrapper.setAttribute('data-filter-out', '');
+          // Let the CSS transition run, then collapse height so the grid reflows.
+          setTimeout(() => {
+            if (wrapper.hasAttribute('data-filter-out')) wrapper.setAttribute('hidden', '');
+          }, 220);
+        }
       });
     }
 

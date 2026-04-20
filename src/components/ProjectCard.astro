@@ -29,8 +29,12 @@ const topicLabel: Record<NonNullable<Props['topic']>, string> = {
 
 const href = external_url ?? `/projekty/${slug}/`;
 const isExternal = !!external_url;
-const tagLabel = topic ? topicLabel[topic] : undefined;
 const isPaused = status === 've-spanku' || relationship === 've-spanku';
+
+const tags: string[] = [];
+if (topic) tags.push(topicLabel[topic]);
+if (isPaused) tags.push('Ve spánku');
+if (relationship === 'pilotni' && !isPaused) tags.push('Pilotní');
 ---
 <a
   href={href}
@@ -41,8 +45,14 @@ const isPaused = status === 've-spanku' || relationship === 've-spanku';
   data-status={status}
   data-topic={topic}>
   <div class="project-card__head">
-    {tagLabel && <span class="project-card__tag osa-eyebrow">{tagLabel}</span>}
-    {isPaused && <span class="project-card__tag osa-eyebrow project-card__tag--paused">Ve spánku</span>}
+    <span class="project-card__tags osa-eyebrow">
+      {tags.map((t, i) => (
+        <>
+          {i > 0 && <span class="project-card__tagsep" aria-hidden="true"> · </span>}
+          <span class="project-card__tag">{t}</span>
+        </>
+      ))}
+    </span>
   </div>
   <div class="project-card__body">
     <h3 class="project-card__title">{name}</h3>
@@ -73,15 +83,6 @@ const isPaused = status === 've-spanku' || relationship === 've-spanku';
     background: var(--bg);
     color: var(--fg);
     text-decoration: none;
-    transition:
-      background var(--dur-base) var(--ease-standard),
-      color      var(--dur-base) var(--ease-standard);
-  }
-  .project-card:hover,
-  .project-card:focus-visible {
-    background: var(--fg);
-    color: var(--bg);
-    outline: none;
   }
   .project-card__head {
     display: flex;
@@ -89,14 +90,13 @@ const isPaused = status === 've-spanku' || relationship === 've-spanku';
     flex-wrap: wrap;
     align-items: flex-start;
   }
-  .project-card__tag {
+  .project-card__tags {
     font-size: var(--text-2xs);
     letter-spacing: var(--tracking-wider);
-    padding: 2px 8px;
-    border: 1px solid currentColor;
-    color: currentColor;
+    color: var(--fg-muted);
+    transition: color var(--dur-base) var(--ease-standard);
   }
-  .project-card__tag--paused { opacity: 0.6; }
+  .project-card__tagsep { opacity: 0.6; }
   .project-card__body { margin-top: auto; display: grid; gap: var(--space-2); }
   .project-card__title {
     font-family: var(--font-sans);
@@ -104,19 +104,30 @@ const isPaused = status === 've-spanku' || relationship === 've-spanku';
     font-size: var(--text-2xl);
     line-height: var(--lh-snug);
     letter-spacing: var(--tracking-tight);
-    color: inherit;
+    color: var(--fg-muted);
     margin: 0;
+    transition: color var(--dur-base) var(--ease-standard);
   }
   .project-card__desc {
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: var(--text-sm);
     line-height: var(--lh-normal);
-    color: inherit;
-    opacity: 0.8;
+    color: var(--fg-muted);
     margin: 0;
+    transition: color var(--dur-base) var(--ease-standard);
   }
-  .project-card__foot { display: flex; align-items: center; opacity: 0.82; }
+  .project-card__foot { display: flex; align-items: center; }
+  /* Hover: pull muted text up to full fg. No background change, no invert. */
+  .project-card:hover .project-card__title,
+  .project-card:focus-visible .project-card__title,
+  .project-card:hover .project-card__desc,
+  .project-card:focus-visible .project-card__desc,
+  .project-card:hover .project-card__tags,
+  .project-card:focus-visible .project-card__tags {
+    color: var(--fg);
+  }
+  .project-card:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
   .project-card__link {
     display: inline-flex;
     align-items: center;

@@ -23,7 +23,7 @@ const draftAttr = confirmed ? { class: '' } : { class: 'draft', 'data-review': '
       <span class="osa-eyebrow">Aktuálně · Záměr VPD1</span>
       <h2 id="ih-title" class="osa-h1 osa-ih__title">
         Hledáme strategického partnera pro revitalizaci
-        <span {...draftAttr}>83 327 m²</span>
+        <span {...draftAttr}>83&nbsp;327&nbsp;m²</span>
         na prahu metropole.
       </h2>
       <p class="osa-body osa-ih__lede">
@@ -32,19 +32,19 @@ const draftAttr = confirmed ? { class: '' } : { class: 'draft', 'data-review': '
       <dl class="osa-ih__metrics">
         <div>
           <dt class="osa-eyebrow">Lokalita</dt>
-          <dd><span {...draftAttr}>Horní kasárna Klecany, 12 km od centra Prahy</span></dd>
+          <dd><span {...draftAttr}>Horní kasárna Klecany, 12&nbsp;km od centra Prahy</span></dd>
         </div>
         <div>
           <dt class="osa-eyebrow">Potenciál</dt>
-          <dd><span {...draftAttr}>10+ mld. Kč hrubý zisk, 88 946 m² ČPP nových bytů, cca 1 572 bytů</span></dd>
+          <dd><span {...draftAttr}>10+&nbsp;mld.&nbsp;Kč hrubý zisk, 88&nbsp;946&nbsp;m² ČPP nových bytů, cca 1&nbsp;572&nbsp;bytů</span></dd>
         </div>
         <div>
           <dt class="osa-eyebrow">Práva</dt>
-          <dd><span {...draftAttr}>Smluvně do roku 2039 (právo odkupu, užívání, stavby); kupní cena na úrovni 82 % znalecké hodnoty</span></dd>
+          <dd><span {...draftAttr}>Smluvně do roku 2039 (právo odkupu, užívání, stavby); kupní cena na úrovni 82&nbsp;% znalecké hodnoty</span></dd>
         </div>
         <div>
           <dt class="osa-eyebrow">Krok 1 · Startovací hub</dt>
-          <dd><span {...draftAttr}>331 jednotek 1+kk, investice cca 285 mil. Kč, ROI 141 %, IRR 78 %</span></dd>
+          <dd><span {...draftAttr}>331&nbsp;jednotek 1+kk, investice cca 285&nbsp;mil.&nbsp;Kč, ROI 141&nbsp;%, IRR 78&nbsp;%</span></dd>
         </div>
       </dl>
       <div class="osa-ih__ctas">
@@ -71,7 +71,7 @@ const draftAttr = confirmed ? { class: '' } : { class: 'draft', 'data-review': '
         {Array.from({ length: 28 }).map(() => <span></span>)}
       </div>
       <p class="osa-mono osa-ih__chart-cap">
-        Schematický pohled na areál · <span {...draftAttr}>12 km od centra Prahy</span>
+        Schematický pohled na areál · <span {...draftAttr}>12&nbsp;km od centra Prahy</span>
       </p>
     </aside>
   </div>
@@ -125,11 +125,12 @@ const draftAttr = confirmed ? { class: '' } : { class: 'draft', 'data-review': '
     margin: 0;
   }
 
-  /* draft flag: visible outline so reviewers can spot values that need confirmation */
+  /* draft flag: mustard wash highlighting values awaiting confirmation. No underline. */
   .draft {
-    background: color-mix(in oklab, var(--c-mustard) 22%, transparent);
-    box-shadow: inset 0 -2px 0 var(--c-mustard);
-    padding: 0 2px;
+    background: color-mix(in oklab, var(--c-mustard) 28%, transparent);
+    padding: 0 4px;
+    border-radius: 0;
+    text-decoration: none;
   }
 
   .osa-ih__chart {

@@ -1,8 +1,10 @@
 ---
 /*
- * GraphicHeader - full-bleed strip using one of the OSA graphic assets.
- * Assets live in /public/graphics/graphic-asset-header_{1..6}.svg.
- * Supports light (black on white) and dark (white on black) inversion.
+ * GraphicHeader - thin tile-repeated band of one OSA graphic asset.
+ * Assets in /public/graphics/graphic-asset-header_{1..6}.svg.
+ * Tiles horizontally so the motif reads as a pattern rather than full-bleed
+ * decoration. Height presets stay under 40px so the asset never dominates
+ * the section it separates.
  */
 interface Props {
   /** Which asset 1..6 */
@@ -11,40 +13,41 @@ interface Props {
   variant?: 'light' | 'dark';
   /** Height preset */
   height?: 'xs' | 'sm' | 'md';
+  /** Horizontal flip - duplicates the motif mirrored for a symmetrical band */
+  mirror?: boolean;
   /** Extra class */
   class?: string;
 }
-const { n = 1, variant = 'light', height = 'md', class: className } = Astro.props;
+const { n = 1, variant = 'light', height = 'sm', mirror = false, class: className } = Astro.props;
 const src = `/graphics/graphic-asset-header_${n}.svg`;
 ---
-<div class:list={['osa-graphic-header', `osa-graphic-header--${variant}`, `osa-graphic-header--${height}`, className]} aria-hidden="true">
-  <img src={src} alt="" class="osa-graphic-header__img" loading="lazy" decoding="async" />
+<div
+  class:list={['osa-gh', `osa-gh--${variant}`, `osa-gh--${height}`, { 'osa-gh--mirror': mirror }, className]}
+  style={`--gh-bg: url(${src});`}
+  aria-hidden="true">
 </div>
 
 <style>
-  .osa-graphic-header {
+  .osa-gh {
     display: block;
     width: 100%;
-    overflow: hidden;
-    background: var(--bg);
-    color: var(--fg);
+    background-image: var(--gh-bg);
+    background-repeat: repeat-x;
+    background-position: left center;
+    /* Default asset is black-on-transparent; base surface decides the color. */
   }
-  .osa-graphic-header--dark  { background: var(--k-100); color: var(--k-0); }
-  .osa-graphic-header--light { background: var(--k-0);   color: var(--k-100); }
+  .osa-gh--light { background-color: var(--k-0);   }
+  .osa-gh--dark  { background-color: var(--k-100); filter: invert(1); }
 
-  .osa-graphic-header--xs { height: 48px; }
-  .osa-graphic-header--sm { height: 72px; }
-  .osa-graphic-header--md { height: 108px; }
+  .osa-gh--xs { height: 20px; background-size: auto 14px; }
+  .osa-gh--sm { height: 28px; background-size: auto 18px; }
+  .osa-gh--md { height: 40px; background-size: auto 24px; }
 
-  .osa-graphic-header__img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: left center;
-    /* Recolor black-on-white SVGs to match currentColor on dark variant */
-  }
-  .osa-graphic-header--dark .osa-graphic-header__img {
-    filter: invert(1);
+  .osa-gh--mirror {
+    /* Duplicate the motif mirrored by sitting two bands on top of each other */
+    background-image: var(--gh-bg), var(--gh-bg);
+    background-size: auto 14px, auto 14px;
+    background-position: left center, right center;
+    transform: scaleX(1);
   }
 </style>

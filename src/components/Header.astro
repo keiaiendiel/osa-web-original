@@ -40,7 +40,7 @@ const isActive = (href: string) =>
     align-items: center;
     justify-content: space-between;
     gap: var(--space-6);
-    padding: 18px var(--gutter);
+    padding: 12px var(--gutter);
   }
   .osa-header__brand {
     display: inline-flex;
@@ -50,8 +50,8 @@ const isActive = (href: string) =>
   }
   .osa-header__logo {
     display: block;
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
   }
   /* swap logo by theme: light header shows Black; dark parent surfaces show White */
   .osa-header__logo--dark  { display: none; }
@@ -79,6 +79,6 @@ const isActive = (href: string) =>
   }
   @media (max-width: 720px) {
     .osa-header__nav { display: none; }
-    .osa-header__logo { width: 32px; height: 32px; }
+    .osa-header__logo { width: 24px; height: 24px; }
   }
 </style>

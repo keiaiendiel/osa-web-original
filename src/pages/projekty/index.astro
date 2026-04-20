@@ -5,7 +5,6 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import FilterBar from '../../components/FilterBar.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
-import GraphicHeader from '../../components/GraphicHeader.astro';
 
 const all = await getCollection('subProjects', e => e.data.status !== 'draft');
 const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
@@ -27,7 +26,7 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
 
         <ul class="osa-projekty__grid" role="list" data-filter-target>
           {sorted.map(p => (
-            <li><ProjectCard
+            <li data-filter-item><ProjectCard
               slug={p.id}
               name={p.data.name}
               description={p.data.description}
@@ -42,7 +41,6 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
         </ul>
       </div>
     </section>
-    <GraphicHeader n={4} variant="dark" height="sm" />
   </main>
   <Footer />
 </Base>
@@ -59,12 +57,27 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
   .osa-projekty__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-auto-rows: 1fr;
     gap: 0;
     border-top: 1px solid var(--rule);
     border-left: 1px solid var(--rule);
   }
-  /* hide hidden cards (filter bar toggles [hidden] attribute) */
-  .osa-projekty__grid [hidden] { display: none !important; }
-
-  .osa-projekty__grid > li:has([hidden]) { display: none; }
+  .osa-projekty__grid > li {
+    display: flex;
+    transition:
+      opacity var(--dur-base) var(--ease-standard),
+      transform var(--dur-base) var(--ease-standard),
+      filter var(--dur-base) var(--ease-standard);
+  }
+  .osa-projekty__grid > li > * { flex: 1; }
+  .osa-projekty__grid > li[data-filter-out] {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+    pointer-events: none;
+  }
+  .osa-projekty__grid > li[hidden] { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .osa-projekty__grid > li { transition: none; }
+    .osa-projekty__grid > li[data-filter-out] { transform: none; }
+  }
 </style>

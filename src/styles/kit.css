@@ -5,9 +5,35 @@
 .container      { max-width: var(--container);       margin: 0 auto; padding: 0 var(--gutter); }
 .container-wide { max-width: var(--container-wide);  margin: 0 auto; padding: 0 var(--gutter); }
 
-.section        { padding: var(--space-9) 0; }
-.section--tight { padding: var(--space-8) 0; }
-.section--loose { padding: var(--space-10) 0; }
+/* Unified vertical rhythm. Use .section-head for page-top hero/intro spacing,
+   .section for mid-page blocks, .section--tight for dense rows. */
+.section        { padding: var(--space-8) 0; }
+.section--tight { padding: var(--space-7) 0; }
+.section--loose { padding: var(--space-9) 0; }
+
+@media (max-width: 720px) {
+  .section        { padding: var(--space-7) 0; }
+  .section--tight { padding: var(--space-6) 0; }
+  .section--loose { padding: var(--space-8) 0; }
+}
+
+/* ---------- page header (eyebrow + H1 + lede) ---------- */
+.osa-page-head {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 72ch;
+  margin: 0 0 var(--space-6);
+}
+.osa-page-head__title { margin: 0; }
+.osa-page-head__lede  { margin: 0; color: var(--fg-muted); }
+
+/* ---------- section-subhead (eyebrow + H2) ---------- */
+.osa-sub-head {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
+}
+.osa-sub-head h2 { margin: 0; }
 
 /* ---------- rules & hairlines ---------- */
 .rule          { height: 1px;  background: var(--rule); width: 100%; }
@@ -59,10 +85,16 @@
   flex-shrink: 0;
 }
 
-/* ---------- OSA ligature container ---------- */
+/* ---------- OSA ligature container ----------
+   Typing "-OSA-" inside this class auto-composes to the ligature glyph
+   if Atyp Special's OpenType features fire correctly. Honors all substitution
+   feature flags so Suitcase Type Foundry's custom ligatures resolve. */
 .brand-mark {
   font-family: var(--font-special);
-  font-feature-settings: "liga" 1, "dlig" 1, "clig" 1, "calt" 1;
+  font-feature-settings:
+    "liga" 1, "dlig" 1, "clig" 1, "calt" 1,
+    "ss01" 1, "ss02" 1, "ss03" 1, "ss04" 1, "ss05" 1, "ss06" 1, "ss07" 1, "ss08" 1;
+  font-variant-ligatures: common-ligatures discretionary-ligatures contextual;
   letter-spacing: 0;
   line-height: 1;
 }

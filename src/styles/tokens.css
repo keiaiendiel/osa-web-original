@@ -10,17 +10,12 @@
 /* ---------- Typefaces ----------------------------------------------------- */
 
 /*
- * ATYP TEXT - primary sans (Semibold headings, Medium body).
- * Licensed files not yet supplied by client; we substitute Space Grotesk,
- * self-hosted as WOFF2. Replace once Atyp Text is licensed.
- *
- * ATYP SPECIAL - brand glyph font (the -OSA- ligature).
- * Subsetted to Latin-Extended + Czech diacritics via pyftsubset.
- *
- * All fonts self-hosted in /public/fonts/. No external font CDN.
+ * ATYP SPECIAL - the primary brand sans across the site (per client brief).
+ * Source: /Users/kindl/Work/_2026/02 OSA/00 Branding/00 Font/AtypText-Special-*.otf
+ * Subsetted to Latin-Extended + Czech diacritics via pyftsubset, WOFF2.
+ * Carries the -OSA- ligature glyphs; used for headings, body, and buttons.
+ * All fonts self-hosted in /public/fonts/.
  */
-
-/* Atyp Special - used ONLY inside .brand-mark (the -OSA- ligature). */
 @font-face {
   font-family: 'Atyp Special';
   src: url('/fonts/AtypText-Special-Medium.woff2') format('woff2');
@@ -35,48 +30,21 @@
   font-style: normal;
   font-display: swap;
 }
-
-/* Space Grotesk - Atyp Text substitute (until licensed files arrive). */
 @font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/SpaceGrotesk-500-latin.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
+  font-family: 'Atyp Special';
+  src: url('/fonts/AtypText-Special-Italic.woff2') format('woff2');
+  font-weight: 400 500;
+  font-style: italic;
   font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/SpaceGrotesk-500-latin-ext.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/SpaceGrotesk-600-latin.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/SpaceGrotesk-600-latin-ext.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 :root {
   /* ---------- Font stacks ----------
-     OSA's brand is sans-only on web. Serif removed per client guidance:
-     Atyp / Space Grotesk handles headings, body, and longform. */
-  --font-sans:     'Space Grotesk', 'Atyp Text', system-ui, -apple-system, Segoe UI, sans-serif;
-  --font-serif:    'Space Grotesk', 'Atyp Text', system-ui, sans-serif;
-  --font-special:  'Atyp Special', 'Space Grotesk', system-ui, sans-serif;
+     Atyp Special (Medium 400-500 / Bold 600-700) is the single primary font.
+     Same family for headings, body, buttons, and the -OSA- ligature. */
+  --font-sans:     'Atyp Special', system-ui, -apple-system, Segoe UI, sans-serif;
+  --font-serif:    'Atyp Special', system-ui, sans-serif;
+  --font-special:  'Atyp Special', system-ui, sans-serif;
   --font-mono:     'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* ---------- Monochromatic palette (parent brand) ----------
