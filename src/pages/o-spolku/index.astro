@@ -1,0 +1,112 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import OrgChart from '../../components/OrgChart.astro';
+import ValuesMatrix from '../../components/ValuesMatrix.astro';
+import DocumentList from '../../components/DocumentList.astro';
+import InlineCTA from '../../components/InlineCTA.astro';
+---
+<Base title="O spolku — Občanské sdružení Alternativa II, z.s.">
+  <Header />
+  <main>
+    <section class="section">
+      <div class="container-wide osa-about__head-wrap">
+        <header class="osa-about__head">
+          <span class="osa-eyebrow">O spolku</span>
+          <h1 class="osa-h1 osa-about__title">Ideologický a právní kořen spolku.</h1>
+          <p class="osa-body osa-about__lede">
+            OSA II je zapsaný spolek založený v roce 2006 dvanácti studenty jako nezávislá, projektově orientovaná organizace. Od té doby kolem spolku vyrostlo téměř dvacet autonomních projektů, od komunitních zahrad přes kulturní památky až po LARP festivaly.
+          </p>
+        </header>
+      </div>
+    </section>
+
+    <section class="section section--tight osa-about__narrative">
+      <div class="container">
+        <div class="osa-about__kdojsme osa-longform">
+          <p>
+            Spolek funguje jako platforma. Sám přímo nic neprovozuje. Zajišťuje společný právní rámec, zázemí a konsensuální rozhodování; výkonnou činnost provádějí autonomní projekty, které si vedou vlastní členskou základnu, hospodaření i programovou linii.
+          </p>
+          <p>
+            Spolek odmítá státní granty a dotace. Provoz financuje ze tří pilířů: dobrovolnická práce členů, metoda DIY a vlastní hospodářská činnost (členské příspěvky a služby na živnostenské bázi).
+          </p>
+          <p>
+            Nejvyšším orgánem je Členský sněm. Statutárním orgánem je Představenstvo. Výkonnou úroveň tvoří autonomní projekty a kluby. O strategických rozhodnutích rozhoduje spolek konsensem.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container-wide">
+        <header class="osa-about__sub-head">
+          <span class="osa-eyebrow">Organizační struktura</span>
+          <h2 class="osa-h2">Tři úrovně, decentralizovaná výkonná část.</h2>
+        </header>
+        <OrgChart />
+      </div>
+    </section>
+
+    <ValuesMatrix expanded={true} />
+
+    <section class="section osa-about__metod">
+      <div class="container">
+        <header class="osa-about__sub-head">
+          <span class="osa-eyebrow">Metodologie a hospodaření</span>
+          <h2 class="osa-h2">Proč odmítáme státní dotace.</h2>
+        </header>
+        <div class="osa-longform osa-about__metod-body">
+          <p>
+            Hospodaření spolku stojí na třech pilířích: dobrovolnická práce, metoda DIY a vlastní hospodářská činnost.
+          </p>
+          <p>
+            Dobrovolnická práce dovoluje startovat projekty s minimálním počátečním kapitálem a přitahuje členy, které projekt vnitřně zajímá. Metoda DIY drží provozní náklady nízko a nutí spolek rozvíjet vlastní kompetence, místo aby je kupoval. Vlastní hospodářská činnost zahrnuje výběr členských příspěvků a poskytování služeb vybraných projektů veřejnosti i firmám na standardní živnostenské bázi.
+          </p>
+          <p>
+            Nezávislost na veřejných zdrojích považujeme za nezbytnou podmínku vlastní autonomie a rozhodovací pružnosti.
+          </p>
+        </div>
+        <div class="osa-about__metod-ctas">
+          <InlineCTA href="/o-spolku/metodologie/">Celý text o metodologii DIY</InlineCTA>
+          <InlineCTA href="/o-spolku/historie/">Historie spolku od roku 2006</InlineCTA>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <header class="osa-about__sub-head">
+          <span class="osa-eyebrow">Spolkové dokumenty</span>
+          <h2 class="osa-h2">Stanovy, výroční zprávy, šablony smluv.</h2>
+        </header>
+        <DocumentList />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .osa-about__head-wrap { padding-bottom: var(--space-4); }
+  .osa-about__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 72ch;
+  }
+  .osa-about__title { margin: 0; }
+  .osa-about__lede  { margin: 0; color: var(--fg-muted); font-size: var(--text-lg); }
+  .osa-about__sub-head {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-6);
+  }
+  .osa-about__kdojsme > * { margin: 0 0 var(--space-4); }
+  .osa-about__metod-body > * { margin: 0 0 var(--space-4); }
+  .osa-about__metod-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+  }
+</style>

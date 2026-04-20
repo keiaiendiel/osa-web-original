@@ -1,0 +1,66 @@
+---
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props { title: string; eyebrow?: string; }
+const { title, eyebrow } = Astro.props;
+---
+<Base title={`${title} — Občanské sdružení Alternativa II`}>
+  <Header />
+  <main class="osa-longform-page">
+    <section class="section">
+      <div class="container">
+        <header class="osa-longform-page__head">
+          {eyebrow && <span class="osa-eyebrow">{eyebrow}</span>}
+          <h1 class="osa-h1 osa-longform-page__title">{title}</h1>
+        </header>
+        <article class="osa-longform osa-longform-page__body">
+          <slot />
+        </article>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .osa-longform-page__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 62ch;
+    margin: 0 0 var(--space-7);
+  }
+  .osa-longform-page__title { margin: 0; }
+  .osa-longform-page__body {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    line-height: var(--lh-relaxed);
+    max-width: 62ch;
+  }
+  .osa-longform-page__body :global(h2) {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-2xl);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--tracking-tight);
+    margin: var(--space-6) 0 var(--space-3);
+  }
+  .osa-longform-page__body :global(h3) {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    margin: var(--space-5) 0 var(--space-2);
+  }
+  .osa-longform-page__body :global(p) { margin: 0 0 var(--space-4); }
+  .osa-longform-page__body :global(a) { text-decoration: underline; text-underline-offset: 3px; }
+  .osa-longform-page__body :global(aside) {
+    padding: var(--space-4);
+    border-left: 2px solid var(--rule);
+    background: var(--bg-muted);
+    margin: var(--space-5) 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+  }
+</style>

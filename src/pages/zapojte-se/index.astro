@@ -1,0 +1,101 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import SectionBlock from '../../components/SectionBlock.astro';
+---
+<Base title="Zapojte se — Občanské sdružení Alternativa II">
+  <Header />
+  <main>
+    <section class="section">
+      <div class="container">
+        <header class="osa-join__head">
+          <span class="osa-eyebrow">Zapojte se</span>
+          <h1 class="osa-h1 osa-join__title">Čtyři způsoby spolupráce se spolkem.</h1>
+          <p class="osa-body osa-join__lede">
+            Spolupracovat s OSA je možné čtyřmi způsoby: členství, dobrovolnictví, založení vlastního autonomního projektu pod hlavičkou spolku, nebo poskytnutí materiální či nemovitostní podpory. Žádná z cest nevyžaduje finanční příspěvek.
+          </p>
+        </header>
+
+        <div class="osa-join__sections">
+          <SectionBlock
+            eyebrow="01"
+            heading="Členství"
+            ctaHref="/o-spolku/dokumenty/"
+            ctaLabel="Zobrazit podmínky zapojení">
+            <p>
+              Členství ve spolku je dobrovolné, otevřené a neváže členy k žádnému povinnému plnění nad rámec stanov. Členové získávají právo zakládat vlastní autonomní projekty pod hlavičkou spolku, využívat jeho zázemí, hlasovat v orgánech, kterých jsou součástí, a čerpat výhody poskytované jednotlivými projekty.
+            </p>
+            <p>
+              Řadové členství vzniká ústní dohodou s Orgánem pro nábor a příspěvky, úhradou členského příspěvku, nebo podpisem členské smlouvy. Členství v nejvyšším orgánu vzniká jen na základě žádosti, která dokládá minimálně pětiletou aktivní spolupráci v pozici vedoucího spolkového projektu.
+            </p>
+          </SectionBlock>
+
+          <SectionBlock
+            eyebrow="02"
+            heading="Dobrovolnictví"
+            ctaHref="mailto:info@osa2.cz?subject=Dobrovolnictví"
+            ctaLabel="Napsat koordinátorovi">
+            <p>
+              Dobrovolnická práce je hybnou silou většiny projektů. Spolek dobrovolníky zapojuje podle jejich zájmu a dovedností do konkrétní činnosti: obnovy nemovitostí, provozu dílen, přípravy kulturních akcí, administrativy, programování, dokumentace.
+            </p>
+            <p>
+              Za odvedenou práci získávají dobrovolníci členské statusy (uživatel, podporovatel, dobrovolník), které jim otevírají rozšířená práva a výhody v jednotlivých projektech. Nárok na hmotnou odměnu z dobrovolnické práce nevzniká; odměny jsou nenárokové a přerozděluje je vedení konkrétního projektu.
+            </p>
+          </SectionBlock>
+
+          <SectionBlock
+            eyebrow="03"
+            heading="Projektová spolupráce"
+            ctaHref="mailto:marek.semerad@osa2.cz"
+            ctaLabel="Kontaktovat představenstvo">
+            <p>
+              Pokud máte vlastní projekt nebo nápad, který chcete realizovat pod hlavičkou spolku, poskytujeme právní záštitu, prostory, vybavení, administrativní podporu a organizační zázemí. Podmínka: projekt musí být v souladu s hodnotami spolku, jeho posláním a vymezeným účelem.
+            </p>
+            <p>
+              Vlastní autonomní projekt pod hlavičkou OSA lze založit schválením projektové dokumentace statutárním orgánem. Dokumentace popisuje účel projektu, vymezená práva a povinnosti projektu vůči spolku i opačně. Po schválení projekt funguje rozhodovacím způsobem nezávisle a ručí za něj konkrétní vedoucí nebo vedení.
+            </p>
+          </SectionBlock>
+
+          <SectionBlock
+            eyebrow="04"
+            heading="Dárcovství, nemovitosti, barter"
+            ctaHref="https://www.csas.cz/cs/transparentni-ucty"
+            ctaLabel="Transparentní účet">
+            <p>
+              Spolek přijímá materiální dary, finanční dary na transparentní účet a nevyužité nemovitosti do dlouhodobé výpůjčky. U nemovitostí není rozhodující stav; spolek převezme i objekty ve špatném stavebně-technickém stavu a zajišťuje jejich údržbu, ostrahu a postupnou obnovu z vlastních zdrojů.
+            </p>
+            <p>
+              Dárcovskou nebo sponzorskou smlouvu sepisujeme vždy písemně. Finanční dary směřují na transparentní bankovní účet 205&nbsp;152&nbsp;278&nbsp;/&nbsp;0300, kde je využití sledovatelné on-line.
+            </p>
+          </SectionBlock>
+        </div>
+
+        <aside class="osa-join__note">
+          <span class="osa-eyebrow">Kreditní systém OSA II</span>
+          <p class="osa-body">
+            Kreditní systém OSA II je spolkový nástroj pro evidenci a nenárokové odměňování dobrovolnické práce. Zajišťuje spravedlivé přerozdělování výnosů z hospodářské činnosti mezi členy, kteří se na nich prací podíleli. Systém je v přípravě.
+          </p>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .osa-join__head { display: grid; gap: var(--space-3); max-width: 64ch; margin: 0 0 var(--space-7); }
+  .osa-join__title { margin: 0; }
+  .osa-join__lede  { margin: 0; color: var(--fg-muted); }
+  .osa-join__sections { display: grid; }
+  .osa-join__note {
+    margin-top: var(--space-8);
+    padding: var(--space-5);
+    border: 1px solid var(--rule);
+    background: var(--bg-muted);
+    display: grid;
+    gap: var(--space-3);
+    max-width: 72ch;
+  }
+  .osa-join__note p { margin: 0; }
+</style>

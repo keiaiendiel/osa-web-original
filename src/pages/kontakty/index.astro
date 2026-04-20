@@ -1,0 +1,141 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const org = (await getEntry('org', 'identity')).data;
+
+const areas = [
+  { name: 'Spolkové sportovně společenské centrum Výletná', addr: 'Letenské sady ev. č. 32, 170 00 Praha 7 - Holešovice' },
+  { name: 'Sportovní areál kasárny Hájek',                    addr: 'Hájecká, 253 01 Hostivice' },
+  { name: 'Multifunkční areál raketová základna Bratronice',  addr: '273 63 Bratronice, Středočeský kraj' },
+  { name: 'Multifunkční areál kasárna Klecany',               addr: 'Dolní kasárna, 250 67 Klecany, Praha-východ' },
+  { name: 'Volnočasové centrum Holešovice',                   addr: 'Železničářů 204/6, 170 00 Praha 7' },
+];
+---
+<Base title="Kontakty — Občanské sdružení Alternativa II">
+  <Header />
+  <main>
+    <section class="section">
+      <div class="container">
+        <header class="osa-contact__head">
+          <span class="osa-eyebrow">Kontakty</span>
+          <h1 class="osa-h1 osa-contact__title">Informační oddělení, představenstvo a oficiální údaje spolku.</h1>
+        </header>
+
+        <div class="osa-contact__grid">
+          <section class="osa-contact__col">
+            <h2 class="osa-h3 osa-contact__colh">Informační oddělení</h2>
+            <address class="osa-contact__address osa-mono">
+              <a href={`tel:${org.phone.replace(/\s/g, '')}`}>{org.phone}</a><br />
+              <a href={`mailto:${org.email}`}>{org.email}</a>
+            </address>
+            <p class="osa-body-sm osa-contact__note">
+              V případě pomalé reakce informačního oddělení kontaktujte přímo představenstvo.
+            </p>
+          </section>
+
+          <section class="osa-contact__col">
+            <h2 class="osa-h3 osa-contact__colh">Představenstvo</h2>
+            <address class="osa-contact__address">
+              <p class="osa-body-sm"><strong>{org.predseda.name}</strong>, předseda</p>
+              <p class="osa-mono">
+                <a href={`tel:${org.predseda.phone.replace(/\s/g, '')}`}>{org.predseda.phone}</a><br />
+                <a href={`mailto:${org.predseda.email}`}>{org.predseda.email}</a>
+              </p>
+              <p class="osa-body-sm osa-contact__spacer"><strong>{org.mistopredseda.name}</strong>, místopředseda</p>
+              <p class="osa-mono">
+                <a href={`tel:${org.mistopredseda.phone.replace(/\s/g, '')}`}>{org.mistopredseda.phone}</a><br />
+                <a href={`mailto:${org.mistopredseda.email}`}>{org.mistopredseda.email}</a>
+              </p>
+            </address>
+          </section>
+
+          <section class="osa-contact__col">
+            <h2 class="osa-h3 osa-contact__colh">Adresy</h2>
+            <address class="osa-contact__address osa-mono">
+              <p class="osa-eyebrow osa-contact__addrlabel">Kancelář představenstva</p>
+              <p>{org.office_address}</p>
+              <p class="osa-eyebrow osa-contact__addrlabel osa-contact__spacer">Sídlo spolku</p>
+              <p>{org.seat_address}</p>
+            </address>
+          </section>
+        </div>
+
+        <section class="osa-contact__areas">
+          <h2 class="osa-h3 osa-contact__colh">Areály ve správě spolku</h2>
+          <p class="osa-body-sm osa-contact__note">Kontaktujte přes konkrétní projekty.</p>
+          <ul class="osa-contact__arealist" role="list">
+            {areas.map(a => (
+              <li>
+                <strong>{a.name}</strong>
+                <span class="osa-mono">{a.addr}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="osa-contact__legal">
+          <h2 class="osa-h3 osa-contact__colh">Oficiální údaje</h2>
+          <dl class="osa-contact__legalgrid osa-mono">
+            <div><dt class="osa-eyebrow">Název</dt><dd>{org.name}</dd></div>
+            <div><dt class="osa-eyebrow">Zkratky</dt><dd>{org.abbreviations.join(' · ')}</dd></div>
+            <div><dt class="osa-eyebrow">IČ</dt><dd>{org.ico}</dd></div>
+            <div><dt class="osa-eyebrow">DIČ</dt><dd>{org.dic}</dd></div>
+            <div><dt class="osa-eyebrow">Datová schránka</dt><dd>{org.datova_schranka}</dd></div>
+            <div><dt class="osa-eyebrow">Spisová značka</dt><dd>{org.spisova_znacka}</dd></div>
+            <div><dt class="osa-eyebrow">Účet transparentní (členské příspěvky)</dt><dd>{org.bank_transparent}</dd></div>
+            <div><dt class="osa-eyebrow">Účet ostatní platby</dt><dd>{org.bank_other}</dd></div>
+          </dl>
+        </section>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .osa-contact__head { display: grid; gap: var(--space-3); max-width: 72ch; margin: 0 0 var(--space-7); }
+  .osa-contact__title { margin: 0; }
+
+  .osa-contact__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (max-width: 720px) { .osa-contact__grid { grid-template-columns: 1fr; } }
+
+  .osa-contact__col      { display: grid; gap: var(--space-3); align-content: start; }
+  .osa-contact__colh     { margin: 0; }
+  .osa-contact__address  { font-style: normal; line-height: var(--lh-relaxed); }
+  .osa-contact__note     { color: var(--fg-muted); margin: 0; }
+  .osa-contact__spacer   { margin-top: var(--space-3); }
+  .osa-contact__addrlabel{ display: block; color: var(--fg-muted); margin-bottom: var(--space-1); }
+
+  .osa-contact__areas    { margin-top: var(--space-7); display: grid; gap: var(--space-3); }
+  .osa-contact__arealist { display: grid; gap: var(--space-2); margin: 0; }
+  .osa-contact__arealist li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-4);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border-muted);
+  }
+  .osa-contact__arealist .osa-mono { color: var(--fg-muted); }
+
+  .osa-contact__legal    { margin-top: var(--space-7); display: grid; gap: var(--space-4); }
+  .osa-contact__legalgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin: 0;
+  }
+  @media (max-width: 720px) { .osa-contact__legalgrid { grid-template-columns: 1fr; } }
+  .osa-contact__legalgrid > div { display: grid; gap: var(--space-1); }
+  .osa-contact__legalgrid dt { color: var(--fg-muted); }
+  .osa-contact__legalgrid dd { margin: 0; }
+</style>

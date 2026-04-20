@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+const docs = (await getCollection('dokumenty'))
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+---
+<ul class="osa-doclist" role="list">
+  {docs.map(d => (
+    <li class="osa-doclist__item">
+      <a class="osa-doclist__link" href={d.data.file_path}>
+        <span class="osa-doclist__chevron" aria-hidden="true"></span>
+        <span class="osa-doclist__title">{d.data.title}</span>
+      </a>
+      <span class="osa-doclist__meta osa-mono">
+        {d.data.year && <>{d.data.year}</>}
+        {d.data.size_kb && <>{' · '}{d.data.size_kb}&nbsp;KB</>}
+        {' · '}PDF
+      </span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .osa-doclist {
+    display: grid;
+    border-top: 1px solid var(--rule);
+  }
+  .osa-doclist__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .osa-doclist__link {
+    display: inline-flex;
+    gap: var(--space-3);
+    align-items: center;
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .osa-doclist__link:hover .osa-doclist__title { text-decoration: underline; text-underline-offset: 3px; }
+  .osa-doclist__chevron {
+    width: 12px; height: 12px;
+    background: currentColor;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  .osa-doclist__title {
+    font: 600 var(--text-md) / var(--lh-snug) var(--font-sans);
+  }
+  .osa-doclist__meta {
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+  @media (max-width: 560px) {
+    .osa-doclist__item { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+  }
+</style>

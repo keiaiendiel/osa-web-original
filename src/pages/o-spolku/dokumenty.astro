@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import DocumentList from '../../components/DocumentList.astro';
+---
+<Base title="Spolkové dokumenty — Občanské sdružení Alternativa II">
+  <Header />
+  <main>
+    <section class="section">
+      <div class="container">
+        <header class="osa-docs__head">
+          <span class="osa-eyebrow">O spolku · Dokumenty</span>
+          <h1 class="osa-h1 osa-docs__title">Stanovy, výroční zprávy, šablony smluv.</h1>
+          <p class="osa-body osa-docs__lede">
+            Všechny dokumenty jsou volně ke stažení. Tištěné verze jsou k dispozici na adrese kanceláře představenstva.
+          </p>
+        </header>
+        <DocumentList />
+        <details class="osa-docs__raw">
+          <summary class="osa-eyebrow osa-docs__summary">Stanovy v textové podobě</summary>
+          <article class="osa-longform osa-docs__longtext">
+            <h2>§ 1 Název a sídlo spolku</h2>
+            <p>Občanské sdružení Alternativa II, z.s. (dále jen „spolek") je nezávislý, otevřený, nepolitický spolek ve smyslu zákona č. 89/2012 Sb. Sídlo spolku je na adrese Terronská 894/56, 160 00 Praha 6.</p>
+            <h2>§ 2 Cíle a účel</h2>
+            <p>Účelem spolku je vytvářet podmínky pro svobodnou seberealizaci maximálního počtu lidí prostřednictvím autonomních projektů v oblastech kultury, sportu, vzdělávání, ochrany životního prostředí a ekonomické soběstačnosti.</p>
+            <p><em>Úplný text stanov je v PDF výše.</em></p>
+          </article>
+        </details>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .osa-docs__head { display: grid; gap: var(--space-3); max-width: 64ch; margin: 0 0 var(--space-7); }
+  .osa-docs__title { margin: 0; }
+  .osa-docs__lede  { margin: 0; color: var(--fg-muted); }
+  .osa-docs__raw   {
+    margin-top: var(--space-7);
+    padding: var(--space-5);
+    border: 1px solid var(--rule);
+    background: var(--bg-muted);
+  }
+  .osa-docs__summary {
+    cursor: pointer;
+    color: var(--fg);
+  }
+  .osa-docs__longtext {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--rule);
+  }
+</style>
