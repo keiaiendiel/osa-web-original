@@ -1,0 +1,18 @@
+[
+  { "id": "aktivita",          "name": "aktivita",         "gloss": "Vědomý, činorodý přístup k životu, projektům a rozhodování.", "order": 1 },
+  { "id": "autonomie",         "name": "autonomie",        "gloss": "Samostatné rozhodování jedinců a částí organizace před centralizací.", "order": 2 },
+  { "id": "akceschopnost",     "name": "akceschopnost",    "gloss": "Schopnost konat v reálném čase, bez čekání na souhlas shora.", "order": 3 },
+  { "id": "antifasismus",      "name": "antifašismus",     "gloss": "Odmítnutí autoritářských ideologií, xenofobie a rasismu.", "order": 4 },
+  { "id": "dobrovolnost",      "name": "dobrovolnost",     "gloss": "Všechna spolupráce je dobrovolná, žádné členství není vynuceno.", "order": 5 },
+  { "id": "zodpovednost",      "name": "zodpovědnost",     "gloss": "Každý odpovídá za důsledky svého jednání vůči spolku i jeho okolí.", "order": 6 },
+  { "id": "slusnost",          "name": "slušnost",         "gloss": "Vzájemná úcta, věcná komunikace, dodržování dohod.", "order": 7 },
+  { "id": "spoluprace",        "name": "spolupráce",       "gloss": "Kolektivní práce nad individuální soutěží.", "order": 8 },
+  { "id": "sobestacnost",      "name": "soběstačnost",     "gloss": "Opora o vlastní zdroje, dovednosti a infrastrukturu.", "order": 9 },
+  { "id": "konsensus",         "name": "konsensus",        "gloss": "Rozhodování dohodou všech zúčastněných, ne hlasováním většiny.", "order": 10 },
+  { "id": "otevrenost",        "name": "otevřenost",       "gloss": "Transparentní vnitřní fungování, přístupnost pro nové členy.", "order": 11 },
+  { "id": "odpusteni",         "name": "odpuštění",        "gloss": "Prostor pro chybu a nápravu, nikoli trvalé vyloučení.", "order": 12 },
+  { "id": "pacifikace",        "name": "pacifikace",       "gloss": "Snižování napětí, nenásilná řešení konfliktů.", "order": 13 },
+  { "id": "pozitivni-pristup", "name": "pozitivní přístup", "gloss": "Hledání východisek a řešení před pouhou kritikou.", "order": 14 },
+  { "id": "socialni-pristup",  "name": "sociálně šetrný přístup k lidem",          "gloss": "Ochrana jedinců před podmínkami, které brání jejich rozvoji.", "order": 15 },
+  { "id": "ekologicky-pristup","name": "ekologicky šetrný přístup k životnímu prostředí", "gloss": "Racionální ochrana ekosystémů a trvalá udržitelnost.", "order": 16 }
+]

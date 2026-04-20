@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FilterBar from '../../components/FilterBar.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const all = await getCollection('subProjects', e => e.data.status !== 'draft');
+const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+const featured = sorted.filter(p => p.data.featured);
+const rest     = sorted.filter(p => !p.data.featured);
+---
+<Base title="Projekty — Občanské sdružení Alternativa II">
+  <Header />
+  <main class="osa-projekty">
+    <section class="section">
+      <div class="container-wide">
+        <header class="osa-projekty__head">
+          <span class="osa-eyebrow">Autonomní projekty</span>
+          <h1 class="osa-h1 osa-projekty__title">Pod hlavičkou OSA působí desítky autonomních projektů.</h1>
+          <p class="osa-body osa-projekty__lede">
+            Každý si vede vlastní prostor, web, členskou základnu a hospodaření. Spolek poskytuje právní a organizační zázemí.
+          </p>
+        </header>
+
+        {featured.length > 0 && (
+          <section class="osa-projekty__featured" aria-labelledby="featured-heading">
+            <h2 id="featured-heading" class="osa-eyebrow osa-projekty__sub">Klíčové projekty spolku</h2>
+            <ul class="osa-projekty__featured-grid" role="list">
+              {featured.map(p => (
+                <li><ProjectCard
+                  slug={p.id}
+                  name={p.data.name}
+                  description={p.data.description}
+                  accent={p.data.accent}
+                  relationship={p.data.relationship}
+                  status={p.data.status}
+                  topic={p.data.topic}
+                  external_url={p.data.external_url}
+                  featured={true}
+                /></li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <FilterBar />
+
+        <ul class="osa-projekty__grid" role="list" data-filter-target>
+          {sorted.map(p => (
+            <li><ProjectCard
+              slug={p.id}
+              name={p.data.name}
+              description={p.data.description}
+              accent={p.data.accent}
+              relationship={p.data.relationship}
+              status={p.data.status}
+              topic={p.data.topic}
+              external_url={p.data.external_url}
+              filterable={true}
+            /></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .osa-projekty__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 72ch;
+    margin: 0 0 var(--space-7);
+  }
+  .osa-projekty__title { margin: 0; }
+  .osa-projekty__lede  { margin: 0; color: var(--fg-muted); }
+  .osa-projekty__sub   { color: var(--fg-muted); display: block; margin: 0 0 var(--space-4); }
+
+  .osa-projekty__featured {
+    margin-bottom: var(--space-8);
+  }
+  .osa-projekty__featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+
+  .osa-projekty__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  /* hide hidden cards (filter bar toggles [hidden] attribute) */
+  .osa-projekty__grid [hidden] { display: none !important; }
+
+  .osa-projekty__grid > li:has([hidden]) { display: none; }
+</style>

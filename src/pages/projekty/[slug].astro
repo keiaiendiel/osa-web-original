@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('subProjects');
+  // Placeholder pages only for projects without an external URL (no own domain yet).
+  return entries
+    .filter(e => !e.data.external_url && e.data.status !== 'draft')
+    .map(e => ({ params: { slug: e.id }, props: { entry: e } }));
+}
+
+const { entry } = Astro.props;
+const accentVar = `var(--c-${entry.data.accent})`;
+---
+<Base title={`${entry.data.name} — projekty OSA`}>
+  <Header />
+  <main class="osa-project">
+    <section class="section">
+      <div class="container-wide osa-project__grid">
+        <header class="osa-project__head" style={`--theme-accent:${accentVar}`}>
+          <span class="osa-eyebrow osa-project__tag">
+            {entry.data.relationship === 'autonomni'   && 'Autonomní projekt'}
+            {entry.data.relationship === 'pilotni'     && 'Pilotní projekt'}
+            {entry.data.relationship === 've-spanku'   && 'Ve spánku'}
+          </span>
+          <h1 class="osa-h1 osa-project__title" style={`color:${accentVar}`}>{entry.data.name}</h1>
+          <p class="osa-body osa-project__desc">{entry.data.description}</p>
+          <p class="osa-mono osa-project__note">Vlastní doména projektu je v přípravě.</p>
+        </header>
+        <aside class="osa-project__sidebar">
+          <dl class="osa-project__meta">
+            <div>
+              <dt class="osa-eyebrow">Stav</dt>
+              <dd>{
+                entry.data.status === 'realizovany'  ? 'realizovaný' :
+                entry.data.status === 'pripravovany' ? 'připravovaný' :
+                entry.data.status === 've-spanku'    ? 've spánku' :
+                entry.data.status
+              }</dd>
+            </div>
+            <div>
+              <dt class="osa-eyebrow">Téma</dt>
+              <dd>{entry.data.topic}</dd>
+            </div>
+            {entry.data.year_from && (
+              <div>
+                <dt class="osa-eyebrow">Od roku</dt>
+                <dd>{entry.data.year_from}</dd>
+              </div>
+            )}
+          </dl>
+          <a class="btn" href="mailto:info@osa2.cz?subject=Zájem o projekt {entry.data.name}">
+            Zeptat se na projekt
+          </a>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .osa-project__grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+  @media (max-width: 720px) {
+    .osa-project__grid { grid-template-columns: 1fr; }
+  }
+  .osa-project__head { display: grid; gap: var(--space-4); }
+  .osa-project__tag  { color: var(--fg-muted); }
+  .osa-project__title { margin: 0; }
+  .osa-project__desc  { margin: 0; max-width: 56ch; font-size: var(--text-lg); }
+  .osa-project__note  { margin: 0; color: var(--fg-muted); font-size: var(--text-xs); }
+
+  .osa-project__sidebar {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    border: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .osa-project__meta { margin: 0; display: grid; gap: var(--space-3); }
+  .osa-project__meta > div { display: grid; grid-template-columns: 100px 1fr; gap: var(--space-3); }
+  .osa-project__meta dt { color: var(--fg-muted); }
+  .osa-project__meta dd { margin: 0; font-family: var(--font-mono); font-size: var(--text-sm); }
+</style>

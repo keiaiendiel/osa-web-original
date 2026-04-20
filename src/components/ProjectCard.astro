@@ -5,10 +5,16 @@ interface Props {
   description: string;
   accent: 'red' | 'coral' | 'mustard' | 'olive' | 'forest' | 'teal' | 'blue' | 'plum';
   relationship: 'autonomni' | 'pilotni' | 've-spanku';
+  status?: 'realizovany' | 'pripravovany' | 've-spanku' | 'draft';
+  topic?: 'urbanismus' | 'kultura' | 'sport' | 'media' | 'vzdelavani' | 'tvorba' | 'komunita' | 'larp';
   external_url?: string;
   featured?: boolean;
+  filterable?: boolean;
 }
-const { name, description, accent, relationship, external_url, featured = false } = Astro.props;
+const {
+  slug, name, description, accent, relationship,
+  status, topic, external_url, featured = false, filterable = false,
+} = Astro.props;
 
 const relationshipLabel: Record<Props['relationship'], string> = {
   autonomni:   'Autonomní projekt',
@@ -16,7 +22,7 @@ const relationshipLabel: Record<Props['relationship'], string> = {
   've-spanku': 'Ve spánku',
 };
 const accentVar = `var(--c-${accent})`;
-const href = external_url ?? '#';
+const href = external_url ?? `/projekty/${slug}/`;
 const isExternal = !!external_url;
 ---
 <a
@@ -24,7 +30,10 @@ const isExternal = !!external_url;
   class:list={['project-card', { 'project-card--featured': featured }]}
   style={`--card-accent:${accentVar}`}
   rel={isExternal ? 'noopener' : undefined}
-  target={isExternal ? '_blank' : undefined}>
+  target={isExternal ? '_blank' : undefined}
+  data-filterable={filterable ? '' : undefined}
+  data-status={status}
+  data-topic={topic}>
   <div class="project-card__head">
     <span class="project-card__relationship osa-eyebrow">{relationshipLabel[relationship]}</span>
   </div>
@@ -33,12 +42,14 @@ const isExternal = !!external_url;
     <p class="project-card__desc">{description}</p>
   </div>
   <div class="project-card__foot">
-    {external_url && (
-      <span class="project-card__link">
-        <span class="project-card__chevron" aria-hidden="true"></span>
-        <span>{new URL(external_url).hostname.replace(/^www\./, '')}</span>
+    <span class="project-card__link">
+      <span class="project-card__chevron" aria-hidden="true"></span>
+      <span>
+        {external_url
+          ? new URL(external_url).hostname.replace(/^www\./, '')
+          : 'vlastní doména v přípravě'}
       </span>
-    )}
+    </span>
   </div>
 </a>
 

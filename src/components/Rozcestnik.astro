@@ -1,16 +1,13 @@
 ---
-// Phase 1: hardcoded 6 seed projects (ported from ui_kits/osa-web/Sections.jsx:68-75).
-// Phase 2 refactors this to pull from Content Collections.
+import { getCollection } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
 
-const projects = [
-  { slug: 'kreativni-prostory', name: 'Kreativní Prostory CZ', description: 'Síť hudebních zkušeben, dílen a ateliérů pro amatérské i profesionální tvůrce.', accent: 'forest',  relationship: 'autonomni', external_url: 'https://kreativniprostory.cz' },
-  { slug: 'vyletna',             name: 'Výletná',              description: 'Obnova dřevěné klubovny architekta Bohumíra Kozáka z roku 1926 v Letenských sadech.',    accent: 'coral',   relationship: 'autonomni', external_url: 'https://podporujvyletnou.cz' },
-  { slug: 'diy-dilny',           name: 'DIY dílny',            description: 'Řemeslné dílny a sdílené vybavení pro kutilskou, dřevařskou a kovovýrobní práci.',      accent: 'mustard', relationship: 'autonomni', external_url: 'https://diydilny.cz' },
-  { slug: 'gas-town',            name: 'Gas Town',             description: 'Technická a motoristická dílna v bývalém armádním areálu v Klecanech, setkávání Kafe a Káry.', accent: 'teal', relationship: 'autonomni', external_url: 'https://gastown.cz' },
-  { slug: 'metro-farm',          name: 'Metro Farm',           description: 'Komunitní zahrady a městské zemědělství, propojování obyvatel a krajiny.',               accent: 'olive',   relationship: 'autonomni', external_url: 'https://metrofarm.cz' },
-  { slug: 'junktown',            name: 'Junktown',             description: 'Nekomerční post-apokalyptický LARP festival na raketové základně Bratronice.',          accent: 'plum',    relationship: 'autonomni', external_url: 'https://junktown.postapofestival.cz' },
-];
+const all = await getCollection('subProjects', entry =>
+  entry.data.status !== 'draft' && entry.data.status !== 've-spanku',
+);
+const projects = all
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+  .slice(0, 12);
 ---
 <section class="osa-rozcestnik section">
   <div class="container-wide">
@@ -23,7 +20,16 @@ const projects = [
     </header>
     <ul class="osa-rozcestnik__grid" role="list">
       {projects.map(p => (
-        <li><ProjectCard {...p} /></li>
+        <li><ProjectCard
+          slug={p.id}
+          name={p.data.name}
+          description={p.data.description}
+          accent={p.data.accent}
+          relationship={p.data.relationship}
+          status={p.data.status}
+          topic={p.data.topic}
+          external_url={p.data.external_url}
+        /></li>
       ))}
     </ul>
   </div>

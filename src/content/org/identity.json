@@ -1,0 +1,18 @@
+{
+  "identity": {
+    "name": "Občanské sdružení Alternativa II, z.s.",
+    "abbreviations": ["OSA II", "OSA2", "Alternativa II"],
+    "ico": "270 26 345",
+    "dic": "CZ 270 26 345",
+    "datova_schranka": "xen5zi3",
+    "spisova_znacka": "L 16540, Městský soud v Praze",
+    "seat_address": "Terronská 894/56, 160 00 Praha 6",
+    "office_address": "Zúžená 2400/1a, 169 00 Praha 6 - Břevnov",
+    "email": "info@osa2.cz",
+    "phone": "+420 777 786 476",
+    "bank_transparent": "205 152 278 / 0300",
+    "bank_other": "227 601 142 / 0300",
+    "predseda": { "name": "Marek Semerád", "email": "marek.semerad@osa2.cz", "phone": "+420 602 849 342" },
+    "mistopredseda": { "name": "Štěpán Říha", "email": "stepan.riha@osa2.cz", "phone": "+420 725 307 798" }
+  }
+}

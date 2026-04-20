@@ -1,16 +1,7 @@
 ---
-/*
- * Metodologie strip — three pillars.
- * Plan section 3.1 "Metodologie strip", ≤ 80 slov total.
- */
-const pillars = [
-  { n: '01', title: 'Dobrovolnická práce členů',
-    body: 'Odborná i manuální práce bez finanční kompenzace.' },
-  { n: '02', title: 'Metoda DIY',
-    body: 'Minimalizace provozních i investičních nákladů vlastníma rukama.' },
-  { n: '03', title: 'Vlastní hospodářská činnost',
-    body: 'Členské příspěvky a služby na živnostenské bázi. Státní dotace odmítáme.' },
-];
+import { getCollection } from 'astro:content';
+const pillars = (await getCollection('pillars'))
+  .sort((a, b) => a.data.n.localeCompare(b.data.n));
 ---
 <section class="osa-manifesto">
   <div class="container-wide osa-manifesto__inner">
@@ -22,12 +13,11 @@ const pillars = [
       {pillars.map((p, i, arr) => (
         <li
           class="osa-manifesto__item"
-          data-first={i === 0 ? '' : undefined}
           data-last={i === arr.length - 1 ? '' : undefined}>
-          <span class="osa-mono osa-manifesto__num">{p.n}</span>
+          <span class="osa-mono osa-manifesto__num">{p.data.n}</span>
           <div>
-            <h3 class="osa-h3 osa-manifesto__itemtitle">{p.title}</h3>
-            <p class="osa-body osa-manifesto__itembody">{p.body}</p>
+            <h3 class="osa-h3 osa-manifesto__itemtitle">{p.data.title}</h3>
+            <p class="osa-body osa-manifesto__itembody">{p.data.body}</p>
           </div>
         </li>
       ))}
