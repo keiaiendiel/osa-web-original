@@ -1,7 +1,7 @@
 /* OSA motion vocabulary. Plan section 5.4, motion rules 1, 2, 4, 9.
    All rules honor prefers-reduced-motion via the Base layout reset. */
 
-/* Rule 1: Link hover fade — 120ms linear. Only on plain anchors, not .btn. */
+/* Rule 1: Link hover fade - 120ms linear. Only on plain anchors, not .btn. */
 a:not(.btn):not(.osa-nolink) {
   transition: opacity var(--dur-fast) linear;
 }
@@ -9,9 +9,9 @@ a:not(.btn):not(.osa-nolink):hover {
   opacity: 0.6;
 }
 
-/* Rule 2: Button inversion — 200ms standard ease, already in .btn transition. */
+/* Rule 2: Button inversion - 200ms standard ease, already in .btn transition. */
 
-/* Rule 4: Project card accent reveal — monochrome → accent border + title. */
+/* Rule 4: Project card accent reveal - monochrome → accent border + title. */
 .project-card {
   --card-border: var(--fg);
   border: 1px solid var(--card-border);
@@ -27,7 +27,7 @@ a:not(.btn):not(.osa-nolink):hover {
   transition: color var(--dur-fast) linear;
 }
 
-/* Rule 9: Keyboard focus — instant, 2px outline. */
+/* Rule 9: Keyboard focus - instant, 2px outline. */
 :focus-visible {
   outline: 2px solid var(--fg);
   outline-offset: 2px;

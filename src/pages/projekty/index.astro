@@ -11,7 +11,7 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
 const featured = sorted.filter(p => p.data.featured);
 const rest     = sorted.filter(p => !p.data.featured);
 ---
-<Base title="Projekty — Občanské sdružení Alternativa II">
+<Base title="Projekty - Občanské sdružení Alternativa II">
   <Header />
   <main class="osa-projekty">
     <section class="section">
