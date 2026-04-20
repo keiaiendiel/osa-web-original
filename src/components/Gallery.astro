@@ -1,41 +1,41 @@
 ---
 /*
- * Gallery - responsive hover-expand photo grid.
- * Pure CSS, no JS. Columns reflow on hover: the hovered cell takes more
- * space, neighbors shrink proportionally. Reduced-motion falls back to
- * a static grid.
+ * Gallery - curated 2-row photo strip.
+ * Larger tiles, no black gutters, soft grayscale default, color reveal on
+ * hover. Pure CSS, lazy-loaded. aria-hidden because images are decorative.
  *
- * Images in /public/images/ (10 placeholders shipped; add more as needed).
- * Rendered as decorative `aria-hidden` so screen readers skip them.
+ * Six hand-picked placeholders from /public/images/. Edit the array to
+ * reorder or swap.
  */
-interface Image { src: string; alt?: string; }
+interface Image { src: string; alt?: string; aspect?: 'tall' | 'wide' | 'square'; }
 interface Props { images?: Image[]; }
 
 const defaultImages: Image[] = [
-  { src: '/images/474156246_1114489417070378_2341453958952153769_n.jpg' },
-  { src: '/images/474471670_1114489410403712_957261942198756524_n.jpg' },
-  { src: '/images/482961798_1034307312060063_7263597780288843545_n.jpg' },
-  { src: '/images/482988216_1034307212060073_6494869551613273029_n.jpg' },
-  { src: '/images/484066885_1034307245393403_8313211835074985229_n.jpg' },
-  { src: '/images/104045992_3071753609537666_1134765034325896387_n.jpg' },
-  { src: '/images/104082964_3071753366204357_6028419542031153786_n.jpg' },
-  { src: '/images/104085418_3071753449537682_3735031019996797978_n.jpg' },
-  { src: '/images/104121012_3071751469537880_2823918225370078705_n.jpg' },
-  { src: '/images/83622937_3071752986204395_5087212010441728965_n.jpg' },
+  { src: '/images/474156246_1114489417070378_2341453958952153769_n.jpg', aspect: 'tall' },
+  { src: '/images/474471670_1114489410403712_957261942198756524_n.jpg', aspect: 'wide' },
+  { src: '/images/484066885_1034307245393403_8313211835074985229_n.jpg', aspect: 'square' },
+  { src: '/images/104085418_3071753449537682_3735031019996797978_n.jpg', aspect: 'wide' },
+  { src: '/images/482961798_1034307312060063_7263597780288843545_n.jpg', aspect: 'tall' },
+  { src: '/images/83622937_3071752986204395_5087212010441728965_n.jpg', aspect: 'square' },
 ];
 
 const { images = defaultImages } = Astro.props;
 ---
-<section class="osa-gallery section">
+<section class="osa-gallery section--loose" data-reveal>
   <div class="container-wide">
     <header class="osa-gallery__head">
       <span class="osa-eyebrow">Galerie</span>
       <h2 class="osa-h2 osa-gallery__title">Z provozu spolkových prostorů.</h2>
     </header>
     <ul class="osa-gallery__grid" role="list" aria-hidden="true">
-      {images.map(img => (
-        <li class="osa-gallery__cell">
-          <img src={img.src} alt={img.alt ?? ''} loading="lazy" decoding="async" class="osa-gallery__img" />
+      {images.map((img, i) => (
+        <li class:list={['osa-gallery__cell', `is-${img.aspect ?? 'wide'}`]}>
+          <img
+            src={img.src}
+            alt={img.alt ?? ''}
+            loading="lazy"
+            decoding="async"
+            class="osa-gallery__img" />
         </li>
       ))}
     </ul>
@@ -47,42 +47,54 @@ const { images = defaultImages } = Astro.props;
     display: grid;
     gap: var(--space-3);
     max-width: 56ch;
-    margin: 0 0 var(--space-7);
+    margin: 0 0 var(--space-6);
   }
   .osa-gallery__title { margin: 0; }
 
+  /* CSS Grid with dense packing so the aspect-ratio variants tile cleanly */
   .osa-gallery__grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-auto-rows: 180px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-flow: dense;
     gap: 2px;
-    border: 1px solid var(--rule);
   }
-  @media (max-width: 960px) { .osa-gallery__grid { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 160px; } }
-  @media (max-width: 480px) { .osa-gallery__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; } }
-
   .osa-gallery__cell {
+    position: relative;
     overflow: hidden;
     background: var(--bg-muted);
-    transition: transform var(--dur-base) var(--ease-standard);
   }
+  .osa-gallery__cell.is-tall   { grid-column: span 4; aspect-ratio: 3 / 4;  }
+  .osa-gallery__cell.is-wide   { grid-column: span 5; aspect-ratio: 4 / 3;  }
+  .osa-gallery__cell.is-square { grid-column: span 3; aspect-ratio: 1 / 1;  }
+
+  @media (max-width: 960px) {
+    .osa-gallery__grid { grid-template-columns: repeat(6, 1fr); }
+    .osa-gallery__cell.is-tall   { grid-column: span 3; }
+    .osa-gallery__cell.is-wide   { grid-column: span 3; }
+    .osa-gallery__cell.is-square { grid-column: span 3; }
+  }
+  @media (max-width: 540px) {
+    .osa-gallery__grid { grid-template-columns: 1fr; }
+    .osa-gallery__cell.is-tall,
+    .osa-gallery__cell.is-wide,
+    .osa-gallery__cell.is-square { grid-column: span 1; aspect-ratio: 3 / 2; }
+  }
+
   .osa-gallery__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
-    filter: grayscale(1) contrast(1.05);
-    transition: filter var(--dur-base) var(--ease-standard),
-                transform var(--dur-base) var(--ease-standard);
-  }
-  .osa-gallery__cell:hover {
-    z-index: 2;
+    filter: grayscale(1) brightness(0.92);
+    transition:
+      filter 480ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .osa-gallery__cell:hover .osa-gallery__img {
-    filter: grayscale(0) contrast(1);
+    filter: grayscale(0) brightness(1);
     transform: scale(1.03);
   }
   @media (prefers-reduced-motion: reduce) {
+    .osa-gallery__img { transition: none; }
     .osa-gallery__cell:hover .osa-gallery__img { transform: none; }
   }
 </style>

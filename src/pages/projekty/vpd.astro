@@ -1,0 +1,310 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import SVGPattern from '../../components/SVGPattern.astro';
+import InlineCTA from '../../components/InlineCTA.astro';
+---
+<Base
+  title="Veřejně prospěšný developer (VPD) - autonomní projekt OSA"
+  description="Metodika revitalizace brownfieldů bez dotací. Alternativa komerčnímu developmentu. Iniciativa OSA II.">
+  <Header />
+
+  <main class="osa-vpd">
+
+    <section class="osa-vpd__hero osa-dark">
+      <SVGPattern variant="dark" opacity={0.14}>
+        <div class="container-wide osa-vpd__hero-inner">
+          <nav aria-label="Drobečková navigace" class="osa-vpd__crumbs osa-eyebrow">
+            <a href="/">Úvod</a> <span aria-hidden="true">·</span>
+            <a href="/projekty/">Projekty</a> <span aria-hidden="true">·</span>
+            <span aria-current="page">Veřejně prospěšný developer</span>
+          </nav>
+          <h1 class="osa-vpd__h1" data-reveal>
+            Veřejně prospěšný developer.
+            <span class="osa-vpd__h1-sub">Metodika obnovy brownfieldů bez dotací.</span>
+          </h1>
+          <p class="osa-vpd__lede" data-reveal data-reveal-delay="1">
+            VPD není místo, je to platforma. Šestnáct let zkušeností s oživováním chátrajících staveb převádí spolek OSA II do přístupu, který státu, městům i soukromým vlastníkům nabízí konkrétní alternativu ke spekulativnímu developmentu.
+          </p>
+        </div>
+      </SVGPattern>
+    </section>
+
+    <section class="osa-vpd__stats section--tight">
+      <div class="container-wide">
+        <dl class="osa-vpd__stat-grid" data-reveal>
+          <div>
+            <dt class="osa-eyebrow">Vznik</dt>
+            <dd class="osa-vpd__stat-v">2020</dd>
+          </div>
+          <div>
+            <dt class="osa-eyebrow">Zázemí</dt>
+            <dd class="osa-vpd__stat-v">Dobrovolnická síť + architekti</dd>
+          </div>
+          <div>
+            <dt class="osa-eyebrow">Princip</dt>
+            <dd class="osa-vpd__stat-v">Zhodnocení, které zůstává veřejnosti</dd>
+          </div>
+          <div>
+            <dt class="osa-eyebrow">Kontakt</dt>
+            <dd class="osa-vpd__stat-v">
+              <a href="https://vepde.com" target="_blank" rel="noopener">vepde.com</a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="osa-vpd__body osa-longform">
+
+          <header class="osa-sub-head" data-reveal>
+            <span class="osa-eyebrow">Proč</span>
+            <h2>Kritika spekulativního developmentu.</h2>
+          </header>
+          <p data-reveal>
+            Standardní komerční development maximalizuje finanční výnos z území na úkor jeho sociální struktury, genia loci a dostupnosti pro veřejnost. Výsledkem jsou odcizená sídliště, privatizovaná náměstí a historické areály, které se po rekonstrukci uzavírají úzké ekonomické elitě.
+          </p>
+          <p data-reveal>
+            VPD je odpověď. Nabízí metodiku obnovy, ve které ekonomická návratnost není jediným měřítkem úspěchu. Zhodnocený prostor zůstává přístupný veřejnosti, má smysluplnou náplň a buduje lokální komunitu. Nepotřebuje k tomu státní dotace, pouze konsensuální vlastníky, dobrovolníky a trpělivost.
+          </p>
+
+          <header class="osa-sub-head" data-reveal>
+            <span class="osa-eyebrow">Jak</span>
+            <h2>Tři stavební kameny metodiky.</h2>
+          </header>
+        </div>
+      </div>
+    </section>
+
+    <section class="section--tight">
+      <div class="container-wide">
+        <ol class="osa-vpd__pillars" data-reveal>
+          <li>
+            <span class="osa-mono osa-vpd__pillar-n">01</span>
+            <h3 class="osa-h3">Dobrovolnická síť</h3>
+            <p class="osa-body">
+              Spolek zapojuje stovky dobrovolníků, od řemeslníků po architekty. Práce na konkrétní činnosti (obnova pláště, sportoviště, dílny, dokumentace) generuje know-how a drží fixní náklady blízko nule.
+            </p>
+          </li>
+          <li>
+            <span class="osa-mono osa-vpd__pillar-n">02</span>
+            <h3 class="osa-h3">Hodnotově orientovaní partneři</h3>
+            <p class="osa-body">
+              Architektonická studia, památkáři a filantropičtí investoři, kteří se definují ne čistě finanční návratností, ale dlouhodobou hodnotou pro město. VPD jim dává rámec pro účast.
+            </p>
+          </li>
+          <li>
+            <span class="osa-mono osa-vpd__pillar-n">03</span>
+            <h3 class="osa-h3">Právní a organizační záštita</h3>
+            <p class="osa-body">
+              Spolek přebírá IČO, pojištění, vyjednávání s úřady a vlastníky. Komunita, která by sama neměla kapacitu jednat se státem, dostává formální hlas a právní přítomnost.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section osa-vpd__case osa-dark">
+      <SVGPattern variant="dark" opacity={0.12}>
+        <div class="container">
+          <header class="osa-sub-head" data-reveal>
+            <span class="osa-eyebrow">Případová studie</span>
+            <h2>Výletná: vzor a zároveň limit VPD.</h2>
+          </header>
+          <div class="osa-longform" data-reveal>
+            <p>
+              Nejviditelnější aplikace VPD je spolkové sportovně společenské centrum Výletná v Letenských sadech. Dřevěná klubovna architekta Bohumíra Kozáka z roku 1926. Spolek ji převzal v únoru 2014 ve stavu zanedbanosti.
+            </p>
+            <p>
+              Pět let fungování, žádné veřejné granty. Rekonstrukce pláště, obnova sportovišť, vznik lokálního fotbalového klubu, stovky dobrovolnických dnů. Financování: členské příspěvky, crowdfunding, samostatná iniciativa <span class="osa-vpd__hashtag">#podporujVYLETNOU</span>.
+            </p>
+            <p>
+              V roce 2019 odmítl Úřad pro zastupování státu ve věcech majetkových (ÚZSVM) prodloužit smlouvu. Preferoval komerční pronájem. Centrum se zavřelo, areál znovu chátral, následný šestiměsíční komerční nájem skončil neúspěchem.
+            </p>
+            <p>
+              Reakce OSA II: petice, která nasbírala přes 10 000 podpisů; nabídka přeplatit konkurenční komerční nájem až na 105&nbsp;Kč/m²/rok; bezplatná ostraha 6 000&nbsp;m² areálu; inkluzivní přístup ke všem lokálním iniciativám. V květnu 2022 zasedli zástupci spolku přímo na Ministerstvu financí vedle generální ředitelky ÚZSVM.
+            </p>
+            <p>
+              Výletná tak přerostla ve specifický precedens: spor mezi právem komunity na rozvoj veřejného prostoru a rigidní fiskální logikou správy státního majetku.
+            </p>
+          </div>
+        </div>
+      </SVGPattern>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <header class="osa-sub-head" data-reveal>
+          <span class="osa-eyebrow">Aktuálně</span>
+          <h2>Záměr VPD1: Horní kasárna Klecany.</h2>
+        </header>
+        <div class="osa-longform" data-reveal>
+          <p>
+            Nejambicióznější záměr VPD je revitalizace rozlehlého areálu Horních kasáren Klecany, 12&nbsp;km od centra Prahy. 83&nbsp;327&nbsp;m² plochy v plném souladu s platným územním plánem. Spolek má na areál smluvně zajištěné právo odkupu, užívání a stavby do roku 2039, kupní cenu 82&nbsp;% znalecké hodnoty.
+          </p>
+          <p>
+            Pilotní krok je Startovací hub: 331 jednotek 1+kk, investice řádu 285&nbsp;mil.&nbsp;Kč. Hledáme strategického partnera, který místo spekulativního zhodnocení přistoupí na model zachovávající veřejný charakter areálu.
+          </p>
+        </div>
+        <div class="osa-vpd__ctas" data-reveal>
+          <InlineCTA href="/#investment-vpd">Přehled investičních parametrů</InlineCTA>
+          <InlineCTA href="mailto:marek.semerad@osa2.cz?subject=Z%C3%A1m%C4%9Br%20VPD1%20Klecany">Kontaktovat představenstvo</InlineCTA>
+        </div>
+      </div>
+    </section>
+
+    <section class="section--tight osa-vpd__linked">
+      <div class="container-wide">
+        <div class="osa-vpd__linked-grid">
+          <div>
+            <span class="osa-eyebrow">Související projekty</span>
+            <h3 class="osa-h3">Městský inkubátor CZ</h3>
+            <p class="osa-body">
+              Taktický urbanismus a meanwhile-use brownfieldů. Modulární kontejnerová infrastruktura, pop-up kluby, dílny, gastronomické zóny. Testuje reálné potřeby obyvatel předtím, než přijde trvalá zástavba.
+            </p>
+            <InlineCTA href="/projekty/mestsky-inkubator/">O projektu</InlineCTA>
+          </div>
+          <div>
+            <span class="osa-eyebrow">Související projekty</span>
+            <h3 class="osa-h3">Výletná</h3>
+            <p class="osa-body">
+              Historická dřevěná klubovna v Letenských sadech. Vlajková případová studie VPD. Aktuálně kampaň <span class="osa-vpd__hashtag">#podporujVYLETNOU</span> za obnovu provozu.
+            </p>
+            <InlineCTA href="https://podporujvyletnou.cz" external={true}>podporujvyletnou.cz</InlineCTA>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .osa-vpd__hero { border-bottom: 1px solid var(--rule); }
+  .osa-vpd__hero-inner {
+    padding: var(--space-8) var(--gutter) var(--space-9);
+    display: grid;
+    gap: var(--space-5);
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .osa-vpd__crumbs {
+    display: flex; gap: var(--space-2); flex-wrap: wrap;
+    color: var(--fg-muted);
+  }
+  .osa-vpd__crumbs a { text-decoration: underline; text-underline-offset: 3px; }
+  .osa-vpd__crumbs [aria-current] { color: var(--fg); }
+
+  .osa-vpd__h1 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(2.25rem, 5vw + 0.5rem, 4rem);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .osa-vpd__h1-sub {
+    display: block;
+    color: var(--fg-muted);
+    font-weight: 500;
+    font-size: clamp(1.25rem, 1.8vw + 0.5rem, 1.75rem);
+    margin-top: var(--space-3);
+  }
+  .osa-vpd__lede {
+    max-width: 56ch;
+    color: var(--fg-muted);
+    font-size: var(--text-lg);
+    margin: 0;
+  }
+
+  .osa-vpd__stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+    margin: 0;
+    border: 1px solid var(--rule);
+  }
+  .osa-vpd__stat-grid > div {
+    padding: var(--space-4) var(--space-5);
+    border-right: 1px solid var(--rule);
+    display: grid;
+    gap: var(--space-2);
+  }
+  .osa-vpd__stat-grid > div:last-child { border-right: 0; }
+  .osa-vpd__stat-grid dt { color: var(--fg-muted); }
+  .osa-vpd__stat-grid dd { margin: 0; font: 600 var(--text-md) / var(--lh-snug) var(--font-sans); letter-spacing: var(--tracking-tight); }
+  @media (max-width: 720px) { .osa-vpd__stat-grid > div { border-right: 0; border-bottom: 1px solid var(--rule); } .osa-vpd__stat-grid > div:last-child { border-bottom: 0; } }
+
+  .osa-vpd__body > * + * { margin-top: var(--space-4); }
+
+  .osa-vpd__pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--rule);
+    border-right: 0;
+  }
+  .osa-vpd__pillars > li {
+    padding: var(--space-5);
+    border-right: 1px solid var(--rule);
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+  }
+  .osa-vpd__pillar-n { color: var(--fg-muted); font-size: var(--text-xs); letter-spacing: var(--tracking-wider); }
+  .osa-vpd__pillars h3 { margin: 0; }
+  .osa-vpd__pillars p  { margin: 0; color: var(--fg-muted); }
+  @media (max-width: 860px) {
+    .osa-vpd__pillars { grid-template-columns: 1fr; border-right: 1px solid var(--rule); }
+    .osa-vpd__pillars > li { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .osa-vpd__pillars > li:last-child { border-bottom: 0; }
+  }
+
+  .osa-vpd__case {
+    --fg: var(--k-0);
+    --fg-muted: var(--k-30);
+    --bg: var(--k-100);
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .osa-vpd__case .osa-sub-head span,
+  .osa-vpd__case .osa-longform p { color: inherit; }
+
+  .osa-vpd__hashtag {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: color-mix(in oklab, currentColor 14%, transparent);
+    padding: 0 4px;
+  }
+
+  .osa-vpd__ctas { display: flex; flex-wrap: wrap; gap: var(--space-5); margin-top: var(--space-4); }
+
+  .osa-vpd__linked-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+  }
+  .osa-vpd__linked-grid > div {
+    padding: var(--space-5);
+    border-right: 1px solid var(--rule);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .osa-vpd__linked-grid > div:last-child { border-right: 0; }
+  .osa-vpd__linked-grid h3 { margin: 0; }
+  .osa-vpd__linked-grid p  { margin: 0; color: var(--fg-muted); }
+  @media (max-width: 720px) {
+    .osa-vpd__linked-grid { grid-template-columns: 1fr; }
+    .osa-vpd__linked-grid > div { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .osa-vpd__linked-grid > div:last-child { border-bottom: 0; }
+  }
+</style>

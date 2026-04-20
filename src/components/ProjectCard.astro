@@ -71,6 +71,9 @@ if (relationship === 'pilotni' && !isPaused) tags.push('Pilotní');
 </a>
 
 <style>
+  /* Clean typographic card. Title solid, description light gray. Hover
+     animates a soft inversion using a black panel that wipes up from the
+     bottom via clip-path, no layout shift, title stays in place. */
   .project-card {
     position: relative;
     display: flex;
@@ -83,7 +86,25 @@ if (relationship === 'pilotni' && !isPaused) tags.push('Pilotní');
     background: var(--bg);
     color: var(--fg);
     text-decoration: none;
+    isolation: isolate;
+    overflow: hidden;
   }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--k-100);
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 360ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .project-card:hover::before,
+  .project-card:focus-visible::before {
+    clip-path: inset(0 0 0 0);
+  }
+  .project-card > * { position: relative; z-index: 1; }
+
   .project-card__head {
     display: flex;
     gap: var(--space-3);
@@ -94,7 +115,7 @@ if (relationship === 'pilotni' && !isPaused) tags.push('Pilotní');
     font-size: var(--text-2xs);
     letter-spacing: var(--tracking-wider);
     color: var(--fg-muted);
-    transition: color var(--dur-base) var(--ease-standard);
+    transition: color 280ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .project-card__tagsep { opacity: 0.6; }
   .project-card__body { margin-top: auto; display: grid; gap: var(--space-2); }
@@ -104,9 +125,9 @@ if (relationship === 'pilotni' && !isPaused) tags.push('Pilotní');
     font-size: var(--text-2xl);
     line-height: var(--lh-snug);
     letter-spacing: var(--tracking-tight);
-    color: var(--fg-muted);
+    color: var(--fg);
     margin: 0;
-    transition: color var(--dur-base) var(--ease-standard);
+    transition: color 280ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .project-card__desc {
     font-family: var(--font-sans);
@@ -115,19 +136,29 @@ if (relationship === 'pilotni' && !isPaused) tags.push('Pilotní');
     line-height: var(--lh-normal);
     color: var(--fg-muted);
     margin: 0;
-    transition: color var(--dur-base) var(--ease-standard);
+    transition: color 280ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .project-card__foot { display: flex; align-items: center; }
-  /* Hover: pull muted text up to full fg. No background change, no invert. */
+
+  /* Hover: title + tags become white; description stays light gray. */
   .project-card:hover .project-card__title,
   .project-card:focus-visible .project-card__title,
-  .project-card:hover .project-card__desc,
-  .project-card:focus-visible .project-card__desc,
   .project-card:hover .project-card__tags,
-  .project-card:focus-visible .project-card__tags {
-    color: var(--fg);
+  .project-card:focus-visible .project-card__tags,
+  .project-card:hover .project-card__link,
+  .project-card:focus-visible .project-card__link {
+    color: var(--k-0);
+  }
+  .project-card:hover .project-card__desc,
+  .project-card:focus-visible .project-card__desc {
+    color: var(--k-30);
   }
   .project-card:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card::before { transition: none; }
+    .project-card__title, .project-card__tags, .project-card__desc { transition: none; }
+  }
   .project-card__link {
     display: inline-flex;
     align-items: center;

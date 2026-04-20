@@ -5,11 +5,11 @@ const pillars = (await getCollection('pillars'))
 ---
 <section class="osa-manifesto">
   <div class="container-wide osa-manifesto__inner">
-    <header class="osa-manifesto__head">
+    <header class="osa-manifesto__head" data-reveal>
       <span class="osa-eyebrow">Ekonomický model</span>
       <h2 class="osa-h1 osa-manifesto__title">Tři pilíře soběstačnosti.</h2>
     </header>
-    <ol class="osa-manifesto__list">
+    <ol class="osa-manifesto__list" data-reveal data-reveal-delay="1">
       {pillars.map((p, i, arr) => (
         <li
           class="osa-manifesto__item"

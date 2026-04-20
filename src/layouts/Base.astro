@@ -2,6 +2,7 @@
 import '../styles/tokens.css';
 import '../styles/kit.css';
 import '../styles/motion.css';
+import RevealOnScroll from '../components/RevealOnScroll.astro';
 
 interface Props {
   title: string;
@@ -16,11 +17,14 @@ const { title, description = 'Občanské sdružení Alternativa II, z.s.' } = As
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/logo/osa-glyph.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" sizes="16x16 32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{title}</title>
   </head>
   <body class="osa-body">
     <slot />
+    <RevealOnScroll />
   </body>
 </html>
 <style is:global>

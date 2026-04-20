@@ -11,14 +11,14 @@ const projects = all
 ---
 <section class="osa-rozcestnik section">
   <div class="container-wide">
-    <header class="osa-rozcestnik__head">
+    <header class="osa-rozcestnik__head" data-reveal>
       <span class="osa-eyebrow osa-rozcestnik__eyebrow">Rozcestník</span>
       <h2 class="osa-h2 osa-rozcestnik__title">Autonomní projekty pod hlavičkou spolku</h2>
       <p class="osa-body osa-rozcestnik__lede">
         Projekty si vedou vlastní prostory, weby a členskou základnu. Spolek jim poskytuje právní a organizační zázemí.
       </p>
     </header>
-    <ul class="osa-rozcestnik__grid" role="list">
+    <ul class="osa-rozcestnik__grid" role="list" data-reveal data-reveal-delay="1">
       {projects.map(p => (
         <li><ProjectCard
           slug={p.id}

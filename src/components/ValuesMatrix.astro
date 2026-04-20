@@ -9,13 +9,15 @@ const values = (await getCollection('values'))
 ---
 <section class:list={['osa-values', 'section', { 'osa-dark': dark }]}>
   <div class="container-wide">
-    <header class="osa-values__head">
+    <header class="osa-values__head" data-reveal>
       <span class="osa-eyebrow">§ 16 hodnot</span>
       <h2 class="osa-h2 osa-values__title">Hodnoty spolku jsou axiomy, nikoli aspirace.</h2>
     </header>
     <ul
       class:list={['osa-values__grid', { 'osa-values__grid--expanded': expanded }]}
-      role="list">
+      role="list"
+      data-reveal
+      data-reveal-delay="1">
       {values.map(v => (
         <li class="osa-values__cell">
           <span class="osa-values__num osa-mono">{String(v.data.order).padStart(2, '0')}</span>
