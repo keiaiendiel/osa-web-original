@@ -142,11 +142,10 @@ const isActive = (path: string) => {
     align-items: center;
     color: var(--fg);
     line-height: 0;
-    /* Sit above the mobile drawer (which is a sibling child of <header>
-       and draws after brand/burger in the DOM, so without an explicit
-       z-index it would cover them). */
+    /* Sit above the mobile drawer (z-index 19) within <header>'s own
+       stacking context; otherwise the drawer paints over logo + burger. */
     position: relative;
-    z-index: 2;
+    z-index: 25;
   }
   .osa-header__logo {
     display: block;
@@ -193,7 +192,7 @@ const isActive = (path: string) => {
     cursor: pointer;
     /* Same rationale as .osa-header__brand — stay above the drawer. */
     position: relative;
-    z-index: 2;
+    z-index: 25;
   }
   .osa-header__burger-box {
     display: grid;

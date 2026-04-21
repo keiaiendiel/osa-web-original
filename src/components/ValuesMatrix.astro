@@ -228,7 +228,10 @@ const values = (await getCollection('values'))
       line-height: var(--lh-tight);
     }
     .osa-values__plus {
-      position: static;
+      /* position:relative so the ::before/::after strokes anchor to the
+         plus box (10x10) rather than bubble up to the viewport and paint
+         a full-height vertical stripe across every cell. */
+      position: relative;
       flex: 0 0 auto;
       transform: none;
     }
