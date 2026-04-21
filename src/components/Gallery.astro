@@ -256,7 +256,12 @@ const { images = defaultImages } = Astro.props;
    * ESC close, ArrowLeft/ArrowRight navigate. Tap on backdrop or on the
    * empty stage area also closes.
    */
-  .osa-lightbox {
+  /* The hidden attribute MUST win over display:grid or the lightbox
+     overlay stays in the layer above the whole page and silently eats
+     every click/tap. The :not([hidden]) guard keeps the display:grid
+     only when the lightbox is actually being shown. */
+  .osa-lightbox[hidden] { display: none; }
+  .osa-lightbox:not([hidden]) {
     position: fixed;
     inset: 0;
     z-index: 40;
