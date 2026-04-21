@@ -53,7 +53,9 @@ jobs:
       - name: Check for changes
         id: diff
         run: |
-          if git diff --quiet src/content/aktuality/ public/images/aktuality/; then
+          # git diff --quiet misses untracked files. git status --porcelain
+          # covers both: '??' for new files, 'M '/' M' for modified.
+          if [ -z "$(git status --porcelain src/content/aktuality/ public/images/aktuality/)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
