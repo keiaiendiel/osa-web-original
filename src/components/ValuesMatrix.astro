@@ -8,8 +8,6 @@ interface Props {
    * When true, the matrix uses the narrower `container` (1200px) so its
    * left/right edges line up with body-copy sections on pages like
    * /o-spolku/ where text blocks define the page's baseline margin.
-   * Default (false) keeps the wider `container-wide` (1440px) that
-   * matches the landing page's full-bleed rhythm.
    */
   narrow?: boolean;
 }
@@ -19,18 +17,32 @@ const values = (await getCollection('values'))
   .sort((a, b) => a.data.order - b.data.order);
 ---
 <script is:inline>
+  /*
+   * Single-open accordion. Click on a cell:
+   *   - if already open, close it;
+   *   - otherwise, close any open sibling and open this one.
+   * Plain click logic; no :hover / :focus tricks so touch and mouse
+   * behave the same on desktop and mobile.
+   */
   (function () {
-    // On narrow screens each value cell acts as a tap target that toggles
-    // an `is-open` class to reveal the gloss. Listener is kept on <section>
-    // so a single observer handles all 16 cells (event delegation).
     document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.osa-values').forEach(function (root) {
-        root.addEventListener('click', function (e) {
+      document.querySelectorAll('.osa-values__grid').forEach(function (grid) {
+        grid.addEventListener('click', function (e) {
+          var cell = e.target.closest('.osa-values__cell');
+          if (!cell || !grid.contains(cell)) return;
+          var wasOpen = cell.classList.contains('is-open');
+          grid.querySelectorAll('.osa-values__cell.is-open').forEach(function (c) {
+            c.classList.remove('is-open');
+          });
+          if (!wasOpen) cell.classList.add('is-open');
+        });
+        // Keyboard: Enter / Space on a focused cell toggles it.
+        grid.addEventListener('keydown', function (e) {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
           var cell = e.target.closest('.osa-values__cell');
           if (!cell) return;
-          if (window.matchMedia('(max-width: 560px)').matches) {
-            cell.classList.toggle('is-open');
-          }
+          e.preventDefault();
+          cell.click();
         });
       });
     });
@@ -55,7 +67,6 @@ const values = (await getCollection('values'))
           <span class="osa-values__num">{String(v.data.order).padStart(2, '0')}</span>
           <span class="osa-values__name">{v.data.name}</span>
           <span class="osa-values__gloss">{v.data.gloss}</span>
-          <span class="osa-values__plus" aria-hidden="true"></span>
         </li>
       ))}
     </ul>
@@ -63,10 +74,11 @@ const values = (await getCollection('values'))
 </section>
 
 <style>
-  /* Swiss 4×4 value grid. At rest: number + name visible, hairline rule beneath,
-     small "+" affordance top-right signals hover reveal. On hover/focus: cell
-     inverts to black/white, gloss slides open via grid-template-rows transition,
-     "+" rotates to "×" as a subtle state marker. */
+  /*
+   * 4x4 value grid driven by a single-open accordion. No :hover / :focus
+   * affordance: only the explicit `.is-open` class reveals the gloss and
+   * inverts colours, so the state is identical across desktop and touch.
+   */
 
   .osa-values__head {
     display: grid;
@@ -97,9 +109,10 @@ const values = (await getCollection('values'))
     min-height: 150px;
     background: var(--bg);
     color: var(--fg);
-    cursor: help;
+    cursor: pointer;
+    overflow: hidden;
     transition:
-      grid-template-rows 320ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1)),
+      grid-template-rows 280ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1)),
       background 200ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1)),
       color 200ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
   }
@@ -108,22 +121,19 @@ const values = (await getCollection('values'))
     outline-offset: -2px;
   }
 
-  /* Hover / focus (interactive mode): full black-invert reveal.
-     `:focus` (not `:focus-visible`) lets tap on mobile expand the cell. */
-  .osa-values__cell:hover,
-  .osa-values__cell:focus {
-    grid-template-rows: auto auto 1fr;
-    background: var(--fg);
-    color: var(--bg);
-  }
-
-  /* Expanded mode (e.g. /o-spolku): show gloss statically, no invert. */
+  /* Expanded mode (e.g. /o-spolku): show gloss statically, no toggle. */
   .osa-values__grid--expanded .osa-values__cell {
     grid-template-rows: auto auto 1fr;
     cursor: default;
   }
 
-  /* Number: small, subdued */
+  /* Single-open: only this class reveals the gloss + inverts colours. */
+  .osa-values__cell.is-open {
+    grid-template-rows: auto auto 1fr;
+    background: var(--fg);
+    color: var(--bg);
+  }
+
   .osa-values__num {
     font-family: var(--font-sans);
     font-weight: 500;
@@ -133,7 +143,6 @@ const values = (await getCollection('values'))
     color: inherit;
   }
 
-  /* Name: primary element of the cell */
   .osa-values__name {
     font-family: var(--font-sans);
     font-weight: 600;
@@ -144,7 +153,6 @@ const values = (await getCollection('values'))
     text-wrap: balance;
   }
 
-  /* Gloss: hidden via 0fr row; inherits inverted color on hover */
   .osa-values__gloss {
     overflow: hidden;
     font-family: var(--font-sans);
@@ -155,68 +163,20 @@ const values = (await getCollection('values'))
     opacity: 0.82;
   }
 
-  /* "+" affordance top-right: rotates to "×" on hover */
-  .osa-values__plus {
-    position: absolute;
-    top: var(--space-5);
-    right: var(--space-5);
-    width: 10px;
-    height: 10px;
-    pointer-events: none;
-    color: inherit;
-    transition: transform 320ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
-  }
-  .osa-values__plus::before,
-  .osa-values__plus::after {
-    content: '';
-    position: absolute;
-    background: currentColor;
-    transition: opacity 200ms linear;
-  }
-  /* Horizontal stroke */
-  .osa-values__plus::before {
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    transform: translateY(-50%);
-  }
-  /* Vertical stroke */
-  .osa-values__plus::after {
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    transform: translateX(-50%);
-  }
-  .osa-values__cell:hover .osa-values__plus,
-  .osa-values__cell:focus-visible .osa-values__plus {
-    transform: rotate(45deg);
-  }
-  /* In fully-expanded mode, hide the "+" since there's no toggle */
-  .osa-values__grid--expanded .osa-values__plus { display: none; }
-
   /*
-   * Mobile compact strip: one-line row `01  name  +`, expands on tap.
-   * Uses flex + display:none on the gloss because grid-template-rows 0fr
-   * + overflow:hidden didn't reliably collapse on mobile browsers. A tiny
-   * inline script below toggles the `is-open` class per cell.
+   * Mobile: one-line row [number | name], tappable, expands in place.
+   * Gloss hides via display:none when closed (grid-template-rows 0fr was
+   * unreliable in some mobile browsers). Single-open behaviour is shared
+   * with desktop through the same `.is-open` class.
    */
   @media (max-width: 560px) {
-    /* Kill the desktop grid hairlines so mobile rows don't show a stray
-       vertical stroke at the right edge of each cell. */
     .osa-values__grid {
       border-left: 0;
       border-top: 0;
     }
-    /*
-     * Mobile cell layout: [number | name (flexes) | +/-]. Plus stays in
-     * its own rightmost column so it survives long names wrapping to
-     * two lines. Gloss spans all three cols on row 2 when open.
-     */
     .osa-values__cell {
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto 1fr;
       grid-template-rows: auto;
       column-gap: var(--space-3);
       row-gap: var(--space-2);
@@ -224,48 +184,20 @@ const values = (await getCollection('values'))
       min-height: 0;
       padding: var(--space-3) var(--space-4);
       border-right: 0;
-      cursor: pointer;
+      transition: background 200ms linear, color 200ms linear;
     }
-    .osa-values__num  {
-      grid-column: 1;
-      grid-row: 1;
-    }
-    .osa-values__name {
-      grid-column: 2;
-      grid-row: 1;
-      font-size: var(--text-sm);
-      line-height: var(--lh-tight);
-      min-width: 0;
-    }
-    .osa-values__plus {
-      /* position:relative so the ::before/::after strokes anchor to the
-         10x10 plus box; otherwise they'd bubble up to the viewport and
-         paint a full-height stripe down every row. */
-      position: relative;
-      grid-column: 3;
-      grid-row: 1;
-      width: 10px;
-      height: 10px;
-      opacity: 0.55;
-      transform: none;
-    }
+    .osa-values__num  { grid-column: 1; grid-row: 1; }
+    .osa-values__name { grid-column: 2; grid-row: 1; font-size: var(--text-sm); line-height: var(--lh-tight); min-width: 0; }
     .osa-values__gloss {
       grid-column: 1 / -1;
       grid-row: 2;
       display: none;
       font-size: var(--text-xs);
     }
-    /* Expanded: reveal gloss + rotate plus into × */
     .osa-values__cell.is-open .osa-values__gloss { display: block; }
-    .osa-values__cell.is-open .osa-values__plus { transform: rotate(45deg); }
-    .osa-values__cell.is-open {
-      background: var(--fg);
-      color: var(--bg);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .osa-values__cell { transition: background 0ms, color 0ms; }
-    .osa-values__plus { transition: none; }
   }
 </style>
