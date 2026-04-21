@@ -124,6 +124,23 @@ function normalize(input) {
     .replaceAll('\u2003', ' ')  // em space
     .replaceAll('\u2002', ' '); // en space
 
+  // ---- Inline image payloads -------------------------------------------
+  // Docs markdown export emits inline images as reference-style
+  //    ![alt][image1]
+  // with a matching `[image1]: data:image/jpeg;base64,...` definition at
+  // the bottom. The base64 payload can be hundreds of KB per image and
+  // gets rendered into the final HTML, blowing the page weight budget.
+  //
+  // The first inline image is already saved separately as the hero file
+  // via the Docs API (see firstInlineImage + downloadAndResizeImage), so
+  // strip both the body references AND the trailing data-URL definitions.
+  // Also handle direct-style images with data URLs; regular external
+  // http(s) image URLs pass through untouched.
+  out = out
+    .replace(/!\[[^\]]*\]\[[^\]]*\]/g, '')                 // ref-style refs
+    .replace(/^\[[^\]]+\]:\s*data:[^\n]*\n?/gim, '')       // data: URL defs
+    .replace(/!\[[^\]]*\]\(data:[^)]*\)/g, '');            // inline data-URL imgs
+
   // ---- Inline HTML wrappers --------------------------------------------
   // Docs markdown export sometimes wraps coloured, custom-font, or
   // underlined runs in HTML tags the editorial layout cannot read.
