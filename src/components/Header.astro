@@ -65,18 +65,16 @@ const isActive = (path: string) => {
     var panel = document.getElementById('osa-mobile-nav');
     if (!btn || !panel) return;
 
-    var firstLink = function () { return panel.querySelector('a'); };
-
     function setOpen(open) {
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       btn.setAttribute('aria-label', open ? 'Zavřít menu' : 'Otevřít menu');
       if (open) {
         panel.hidden = false;
-        // defer add of 'open' class so the transition runs
         requestAnimationFrame(function () { panel.classList.add('open'); });
         document.documentElement.classList.add('osa-nav-lock');
-        var f = firstLink();
-        if (f) f.focus();
+        // Intentionally no auto-focus: on mouse/touch the focus ring around
+        // the first link reads as noise. Keyboard users still tab in via
+        // natural order from the burger.
       } else {
         panel.classList.remove('open');
         document.documentElement.classList.remove('osa-nav-lock');
@@ -84,7 +82,6 @@ const isActive = (path: string) => {
         setTimeout(function () {
           if (btn.getAttribute('aria-expanded') === 'false') panel.hidden = true;
         }, 280);
-        btn.focus();
       }
     }
 
@@ -106,7 +103,7 @@ const isActive = (path: string) => {
 
 <style>
   .osa-header {
-    position: sticky; top: 0; z-index: 20;
+    position: sticky; top: 0; z-index: 30;
     background: var(--bg);
     color: var(--fg);
   }
@@ -114,6 +111,23 @@ const isActive = (path: string) => {
     background: var(--bg);
     color: var(--fg);
   }
+  /* When the mobile drawer is open, keep the header row (logo + burger)
+     pinned above the drawer so the reader can close it or tap the logo.
+     Uses the same dark scope as the drawer so the colours blend. */
+  :global(html.osa-nav-lock) .osa-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--k-100);
+    color: var(--k-0);
+    z-index: 30;
+  }
+  /* Swap in the white logo variant while the drawer is open. */
+  :global(html.osa-nav-lock) .osa-header__logo--light { display: none; }
+  :global(html.osa-nav-lock) .osa-header__logo--dark  { display: block; }
+  /* Hairline under the header would fight the drawer, keep it off. */
+  :global(html.osa-nav-lock) .osa-header .rule { display: none; }
   /* Hide the hairline rule when the header merges into a dark hero: the hero's own edge is enough. */
   .osa-header.osa-dark .rule { display: none; }
   .osa-header__inner {
@@ -128,6 +142,11 @@ const isActive = (path: string) => {
     align-items: center;
     color: var(--fg);
     line-height: 0;
+    /* Sit above the mobile drawer (which is a sibling child of <header>
+       and draws after brand/burger in the DOM, so without an explicit
+       z-index it would cover them). */
+    position: relative;
+    z-index: 2;
   }
   .osa-header__logo {
     display: block;
@@ -172,6 +191,9 @@ const isActive = (path: string) => {
     border: 0;
     color: inherit;
     cursor: pointer;
+    /* Same rationale as .osa-header__brand — stay above the drawer. */
+    position: relative;
+    z-index: 2;
   }
   .osa-header__burger-box {
     display: grid;
