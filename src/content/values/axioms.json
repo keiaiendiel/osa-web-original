@@ -14,5 +14,5 @@
   { "id": "pacifikace",        "name": "pacifikace",       "gloss": "Snižování napětí, nenásilná řešení konfliktů.", "order": 13 },
   { "id": "pozitivni-pristup", "name": "pozitivní přístup", "gloss": "Hledání východisek a řešení před pouhou kritikou.", "order": 14 },
   { "id": "socialni-pristup",  "name": "sociálně šetrný přístup k lidem",          "gloss": "Ochrana jedinců před podmínkami, které brání jejich rozvoji.", "order": 15 },
-  { "id": "ekologicky-pristup","name": "ekologicky šetrný přístup k životnímu prostředí", "gloss": "Racionální ochrana ekosystémů a trvalá udržitelnost.", "order": 16 }
+  { "id": "ekologicky-pristup","name": "ekologický způsob", "gloss": "Racionální ochrana ekosystémů a trvalá udržitelnost.", "order": 16 }
 ]

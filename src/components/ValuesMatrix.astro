@@ -209,40 +209,59 @@ const values = (await getCollection('values'))
       border-left: 0;
       border-top: 0;
     }
+    /*
+     * CSS grid not flex, so the +/- affordance stays in its own column
+     * regardless of how long the name wraps. Three cols: [plus, number,
+     * name]; gloss spans all three on the second row.
+     */
     .osa-values__cell {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--space-3);
+      display: grid;
+      grid-template-columns: 14px auto 1fr;
+      grid-template-rows: auto;
+      column-gap: var(--space-3);
+      row-gap: var(--space-2);
+      align-items: baseline;
       min-height: 0;
       padding: var(--space-3) var(--space-4);
-      grid-template-rows: none;
-      grid-template-columns: none;
       border-right: 0;
       cursor: pointer;
     }
-    .osa-values__num  { flex: 0 0 auto; }
-    .osa-values__name {
-      flex: 1 1 auto;
-      font-size: var(--text-sm);
-      line-height: var(--lh-tight);
-    }
     .osa-values__plus {
       /* position:relative so the ::before/::after strokes anchor to the
-         plus box (10x10) rather than bubble up to the viewport and paint
-         a full-height vertical stripe across every cell. */
+         10x10 plus box rather than bubbling up to the viewport and
+         painting a full-height stripe across every row. Also muted to
+         match the osa-values__num colour (secondary / informational). */
       position: relative;
-      flex: 0 0 auto;
+      grid-column: 1;
+      grid-row: 1;
+      width: 10px;
+      height: 10px;
+      align-self: center;
+      opacity: 0.55;
       transform: none;
     }
+    .osa-values__num  {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: center;
+    }
+    .osa-values__name {
+      grid-column: 3;
+      grid-row: 1;
+      align-self: center;
+      font-size: var(--text-sm);
+      line-height: var(--lh-tight);
+      min-width: 0;
+    }
     .osa-values__gloss {
-      flex: 0 0 100%;
+      grid-column: 1 / -1;
+      grid-row: 2;
       display: none;
       font-size: var(--text-xs);
-      padding-top: var(--space-2);
     }
-    /* Expanded state toggled by the inline script (see below). */
+    /* Expanded: reveal gloss + rotate plus into × */
     .osa-values__cell.is-open .osa-values__gloss { display: block; }
+    .osa-values__cell.is-open .osa-values__plus { transform: rotate(45deg); }
     .osa-values__cell.is-open {
       background: var(--fg);
       color: var(--bg);
