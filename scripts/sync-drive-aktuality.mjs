@@ -310,16 +310,63 @@ async function firstInlineImage(docs, fileId) {
   return null;
 }
 
+/**
+ * Download the hero image and re-encode it so it fits into a predictable
+ * size envelope regardless of what the author uploaded.
+ *
+ * Strategy (fail-open at every step):
+ *   1. Resize longest edge to MAX_WIDTH, never upscale.
+ *   2. Encode JPEG with progressively lower quality until the output is
+ *      under MAX_BYTES. Starts at Q80; walks down by 7 each pass.
+ *   3. If even Q45 is still over budget, drop the width by 20 % and try
+ *      again from Q80 (covers 4000px+ camera shots).
+ *   4. Give up after WIDTH_FLOOR px; write whatever we have and log a
+ *      warning so the reviewer can manually optimize.
+ *
+ * The page weight budget for the site is 400 KB eager including CSS and
+ * HTML, so we target a hero image under ~700 KB (with some head-room).
+ */
+const MAX_BYTES = 700 * 1024;
+const MAX_WIDTH = 1400;
+const WIDTH_FLOOR = 900;
+
 async function downloadAndResizeImage(uri, outPath) {
   const res = await fetch(uri);
   if (!res.ok) {
     throw new Error(`Image fetch failed: ${res.status} ${res.statusText}`);
   }
   const buf = Buffer.from(await res.arrayBuffer());
-  await sharp(buf)
-    .resize({ width: 1600, withoutEnlargement: true })
-    .jpeg({ quality: 82, mozjpeg: true })
-    .toFile(outPath);
+
+  let width = MAX_WIDTH;
+  let bytes = null;
+
+  while (width >= WIDTH_FLOOR) {
+    for (const quality of [80, 73, 66, 59, 52, 45]) {
+      const encoded = await sharp(buf)
+        .resize({ width, withoutEnlargement: true })
+        .jpeg({ quality, mozjpeg: true, progressive: true })
+        .toBuffer();
+      if (encoded.length <= MAX_BYTES) {
+        await writeFile(outPath, encoded);
+        console.log(
+          `image: ${(encoded.length / 1024).toFixed(0)} KB at ${width}px q${quality}`,
+        );
+        return;
+      }
+      bytes = encoded.length;
+    }
+    width = Math.round(width * 0.8);
+  }
+
+  // Fallback: write whatever the last pass produced and warn.
+  const fallback = await sharp(buf)
+    .resize({ width: WIDTH_FLOOR, withoutEnlargement: true })
+    .jpeg({ quality: 45, mozjpeg: true, progressive: true })
+    .toBuffer();
+  await writeFile(outPath, fallback);
+  console.warn(
+    `image: could not fit within ${MAX_BYTES / 1024} KB; wrote ${(fallback.length / 1024).toFixed(0)} KB at ${WIDTH_FLOOR}px q45 (last attempt ${bytes ? (bytes / 1024).toFixed(0) : '?'} KB). Reviewer should re-optimize.`,
+  );
 }
 
 // --- MDX emission -------------------------------------------------------
@@ -421,17 +468,46 @@ async function main() {
         }
       }
 
+      // Content validation. Matches the Zod schema in src/content.config.ts:
+      //   title 10-120 chars, lead 40-240, date YYYY-MM-DD.
+      // Rather than failing the whole sync when one Doc has bad metadata,
+      // we fix what's auto-fixable and flip draft:true for the rest so the
+      // article still lands in the PR for a human to correct.
+      const validationIssues = [];
+      let title = (meta.title ?? file.name).trim().slice(0, 120);
+      if (title.length < 10) {
+        validationIssues.push(`title too short (${title.length} chars, need >= 10)`);
+      }
+      let lead = (meta.lead ?? '').trim();
+      if (lead.length > 240) {
+        validationIssues.push(`lead too long (${lead.length} chars, trimmed to 240)`);
+        lead = lead.slice(0, 240);
+      }
+      if (lead.length < 40) {
+        validationIssues.push(`lead too short (${lead.length} chars, need >= 40)`);
+      }
+      let date = meta.date ?? file.modifiedTime.slice(0, 10);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        validationIssues.push(`date "${date}" is not YYYY-MM-DD; falling back to file modified time`);
+        date = file.modifiedTime.slice(0, 10);
+      }
+      const forceDraft = validationIssues.length > 0;
+      if (forceDraft) {
+        console.warn(`"${file.name}" has ${validationIssues.length} validation issue(s); marking as draft:`);
+        for (const msg of validationIssues) console.warn(`   - ${msg}`);
+      }
+
       const fm = buildFrontmatter({
-        title: (meta.title ?? file.name).slice(0, 120),
-        lead: meta.lead ?? '',
-        date: meta.date ?? file.modifiedTime.slice(0, 10),
+        title,
+        lead,
+        date,
         hero: heroRelative,
         hero_alt: meta.hero_alt,
         author: meta.author,
         tags: meta.tags
           ? meta.tags.split(',').map((t) => t.trim()).filter(Boolean)
           : undefined,
-        draft: meta.draft === 'true',
+        draft: forceDraft || meta.draft === 'true',
       });
 
       const mdx = `${fm}\n\n${body.trim()}\n`;

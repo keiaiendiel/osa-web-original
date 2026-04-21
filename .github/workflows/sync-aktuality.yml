@@ -40,8 +40,11 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install sync-only dependencies
-        # googleapis and sharp are only needed by the sync pipeline and are
-        # intentionally kept out of the site's package.json so the build stays lean.
+        # googleapis and sharp are only needed by the sync pipeline and should
+        # never reach the site's package.json. `pnpm add --save-dev` still
+        # edits package.json + pnpm-lock.yaml on disk; the restore step below
+        # reverts those edits so only genuine content changes survive into
+        # the PR diff.
         run: pnpm add --save-dev googleapis@^144 sharp@^0.33 --ignore-workspace-root-check
 
       - name: Run sync
@@ -49,6 +52,10 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
           DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
         run: node scripts/sync-drive-aktuality.mjs
+
+      - name: Restore package.json and lockfile
+        # Drop the transient devDependencies edit so it never reaches the PR.
+        run: git checkout HEAD -- package.json pnpm-lock.yaml
 
       - name: Check for changes
         id: diff
