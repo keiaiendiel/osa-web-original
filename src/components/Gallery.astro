@@ -7,7 +7,16 @@
  */
 import { withBase } from '../utils/url';
 interface Image { src: string; alt?: string; }
-interface Props { images?: Image[]; }
+interface Props {
+  images?: Image[];
+  /**
+   * When null, hides the big H2 under the eyebrow. Useful when the gallery
+   * is embedded inside a longer article (the article already owns the page
+   * headline and a "Z provozu spolkových prostorů." line would read as a
+   * second, misplaced title).
+   */
+  title?: string | null;
+}
 
 const defaultImages: Image[] = [
   { src: '/images/474156246_1114489417070378_2341453958952153769_n.jpg' },
@@ -20,13 +29,13 @@ const defaultImages: Image[] = [
   { src: '/images/482988216_1034307212060073_6494869551613273029_n.jpg' },
 ];
 
-const { images = defaultImages } = Astro.props;
+const { images = defaultImages, title = 'Z provozu spolkových prostorů.' } = Astro.props;
 ---
 <section class="osa-gallery section--loose">
   <div class="container-wide">
     <header class="osa-gallery__head" data-reveal>
       <span class="osa-eyebrow">Galerie</span>
-      <h2 class="osa-h2 osa-gallery__title">Z provozu spolkových prostorů.</h2>
+      {title && <h2 class="osa-h2 osa-gallery__title">{title}</h2>}
     </header>
     <ul class="osa-gallery__grid" role="list">
       {images.slice(0, 8).map((img, i) => (

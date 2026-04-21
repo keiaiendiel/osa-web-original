@@ -131,7 +131,10 @@ const articleJsonLd = {
     </article>
 
     {entry.data.gallery && entry.data.gallery.length > 0 && (
-      <Gallery images={entry.data.gallery.map((src) => ({ src, alt: '' }))} />
+      <Gallery
+        images={entry.data.gallery.map((src) => ({ src, alt: '' }))}
+        title={null}
+      />
     )}
 
     {related.length > 0 && (
