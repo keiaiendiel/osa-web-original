@@ -55,7 +55,7 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
         <span class="osa-eyebrow osa-zvpd__kicker" data-reveal>
           Investment call · VPD Klecany s.r.o.
         </span>
-        <h1 id="zvpd-title" class="osa-zvpd__h1" data-reveal-words data-reveal-words-step="50">
+        <h1 id="zvpd-title" class="osa-zvpd__h1" data-reveal>
           Horní kasárna Klecany.
           <span class="osa-zvpd__h1-sub">Revitalizace areálu 83&nbsp;327&nbsp;m² na prahu metropole.</span>
         </h1>
@@ -803,14 +803,6 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
   .osa-zvpd__timeline-bars {
     position: relative;
     height: 44px;
-    background:
-      repeating-linear-gradient(
-        60deg,
-        transparent 0,
-        transparent 9px,
-        rgba(255,255,255,0.12) 9px,
-        rgba(255,255,255,0.12) 10px
-      );
   }
   .osa-zvpd__timeline-bar {
     position: absolute;
@@ -825,23 +817,10 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition:
-      top var(--dur-base) var(--ease-standard),
-      height var(--dur-base) var(--ease-standard),
-      background var(--dur-base) var(--ease-standard);
   }
   .osa-zvpd__timeline-bar--p1 { background: var(--fg); }
   .osa-zvpd__timeline-bar--op { background: color-mix(in oklab, var(--fg) 60%, transparent); }
   .osa-zvpd__timeline-bar--p2 { background: var(--fg); }
-  /* Subtle hover: the bar swells a few pixels top + bottom, and the
-     semi-transparent "Provoz hubu" band pulls up to full opacity. Keeps
-     the tactile feedback without turning the bar into a button. */
-  @media (hover: hover) and (pointer: fine) {
-    .osa-zvpd__timeline-bar:hover { top: 4px; height: 36px; }
-    .osa-zvpd__timeline-bar--op:hover {
-      background: color-mix(in oklab, var(--fg) 90%, transparent);
-    }
-  }
   @media (max-width: 560px) {
     .osa-zvpd__timeline-years { grid-template-columns: repeat(7, 1fr); font-size: 10px; }
     .osa-zvpd__timeline-bar { font-size: 10px; padding: 0 6px; }
