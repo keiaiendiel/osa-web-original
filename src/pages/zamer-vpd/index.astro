@@ -57,23 +57,23 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
         </span>
         <h1 id="zvpd-title" class="osa-zvpd__h1" data-reveal>
           Horní kasárna Klecany.
-          <span class="osa-zvpd__h1-sub">Revitalizace <span class="osa-mono">83&nbsp;327&nbsp;m²</span> na prahu metropole.</span>
+          <span class="osa-zvpd__h1-sub">Revitalizace areálu 83&nbsp;327&nbsp;m² na prahu metropole.</span>
         </h1>
         <p class="osa-zvpd__lede" data-reveal data-reveal-delay="1">
-          Právo odkupu, užívání a stavby zajištěno do roku 2039. Okamžitě realizovatelná první fáze bez nutnosti změny územního plánu. Potenciál v mezích platného ÚP: <span class="draft"><span class="osa-mono">10+&nbsp;mld.&nbsp;Kč</span></span>.
+          Právo odkupu, užívání a stavby zajištěno do roku 2039. Okamžitě realizovatelná první fáze bez nutnosti změny územního plánu. Potenciál v mezích platného ÚP: <span class="draft">10+&nbsp;mld.&nbsp;Kč</span>.
         </p>
         <dl class="osa-zvpd__hero-stats" data-reveal data-reveal-delay="2">
           <div>
             <dt class="osa-eyebrow">Rozloha</dt>
-            <dd class="osa-mono">83&nbsp;327&nbsp;m²</dd>
+            <dd><span class="osa-figs">83&nbsp;327&nbsp;m²</span></dd>
           </div>
           <div>
             <dt class="osa-eyebrow">Vzdálenost</dt>
-            <dd class="osa-mono">12&nbsp;km od centra Prahy</dd>
+            <dd><span class="osa-figs">12&nbsp;km</span> od centra Prahy</dd>
           </div>
           <div>
             <dt class="osa-eyebrow">1.&nbsp;fáze</dt>
-            <dd class="osa-mono">331 jednotek 1+kk · IRR <span class="draft">59&nbsp;%</span></dd>
+            <dd><span class="osa-figs">331</span> jednotek 1+kk · IRR <span class="draft"><span class="osa-figs">59&nbsp;%</span></span></dd>
           </div>
         </dl>
       </div>
@@ -94,41 +94,43 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
         </div>
 
         <div class="osa-zvpd__opp-grid" data-reveal data-reveal-delay="1">
-          <figure class="osa-zvpd__opp-figure">
-            <img
-              src={img('hub-renovated-building.jpg')}
-              alt="Zrekonstruovaná bílá budova ve stylu původních kasáren s novým chodníkem a nasázenou vegetací."
-              loading="lazy"
-              decoding="async" />
-            <figcaption class="osa-mono">
-              Reference: zrekonstruovaná původní budova · vzhled po 1. fázi
+          <figure class="osa-zvpd__opp-figure osa-zvpd__zoom">
+            <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('hub-renovated-building.jpg')} data-lightbox-alt="Zrekonstruovaná bílá budova ve stylu původních kasáren s novým chodníkem a nasázenou vegetací." aria-label="Zobrazit fotografii: zrekonstruovaná budova">
+              <img
+                src={img('hub-renovated-building.jpg')}
+                alt="Zrekonstruovaná bílá budova ve stylu původních kasáren s novým chodníkem a nasázenou vegetací."
+                loading="lazy"
+                decoding="async" />
+            </button>
+            <figcaption class="osa-zvpd__opp-cap">
+              Reference: podoba rekonstruované budovy po dokončení 1.&nbsp;fáze.
             </figcaption>
           </figure>
 
           <dl class="osa-zvpd__opp-table">
             <div>
               <dt>Lokace</dt>
-              <dd><span class="osa-mono">Klecany, 12&nbsp;km od centra Prahy</span><br /><small>na trase plánované tramvaje z Kobylis</small></dd>
+              <dd>Klecany, <span class="osa-figs">12&nbsp;km</span> od&nbsp;centra Prahy<br /><small>na trase plánované tramvaje z&nbsp;Kobylis</small></dd>
             </div>
             <div>
               <dt>Rozloha</dt>
-              <dd><span class="osa-mono">83&nbsp;327&nbsp;m²</span> celkem<br /><small>z toho <span class="draft">77&nbsp;210&nbsp;m²</span> zastavitelných (SM)</small></dd>
+              <dd><span class="osa-figs">83&nbsp;327&nbsp;m²</span> celkem<br /><small>z&nbsp;toho <span class="draft"><span class="osa-figs">77&nbsp;210&nbsp;m²</span></span> zastavitelných (SM)</small></dd>
             </div>
             <div>
               <dt>Kupní cena</dt>
-              <dd><span class="draft"><span class="osa-mono">438,6&nbsp;mil.&nbsp;Kč</span> — 82&nbsp;% znalecké hodnoty</span><br /><small>znalecký odhad <span class="draft">536,2&nbsp;mil.&nbsp;Kč</span></small></dd>
+              <dd><span class="draft"><span class="osa-figs">438,6&nbsp;mil.&nbsp;Kč</span> — 82&nbsp;% znalecké hodnoty</span><br /><small>znalecký odhad <span class="draft"><span class="osa-figs">536,2&nbsp;mil.&nbsp;Kč</span></span></small></dd>
             </div>
             <div>
               <dt>Práva</dt>
-              <dd>Smluvně zajištěna do&nbsp;roku&nbsp;<strong class="osa-mono">2039</strong><br /><small>právo odkupu, užívání, stavby; plná moc</small></dd>
+              <dd>Smluvně zajištěna do&nbsp;roku&nbsp;<strong class="osa-figs">2039</strong><br /><small>právo odkupu, užívání, stavby; plná moc</small></dd>
             </div>
             <div>
               <dt>Potenciál</dt>
-              <dd><span class="draft"><span class="osa-mono">88&nbsp;946&nbsp;m²</span> ČPP nových bytů</span><br /><small>+ <span class="osa-mono">331</span> rekonstruovaných jednotek</small></dd>
+              <dd><span class="draft"><span class="osa-figs">88&nbsp;946&nbsp;m²</span> ČPP nových bytů</span><br /><small>+&nbsp;<span class="osa-figs">331</span> rekonstruovaných jednotek</small></dd>
             </div>
             <div>
               <dt>Okolí</dt>
-              <dd><span class="draft">Klecanská Alej (<span class="osa-mono">130–175&nbsp;tis.&nbsp;Kč/m²</span>)</span><br /><small>plánovaná tramvaj, cyklostezka do Prahy</small></dd>
+              <dd><span class="draft">Klecanská Alej (<span class="osa-figs">130–175&nbsp;tis.&nbsp;Kč/m²</span>)</span><br /><small>plánovaná tramvaj, cyklostezka do&nbsp;Prahy</small></dd>
             </div>
           </dl>
         </div>
@@ -136,12 +138,14 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
     </section>
 
     {/* ===== FULL-BLEED BREAK ===== */}
-    <figure class="osa-zvpd__fullbleed" aria-hidden="true">
-      <img
-        src={img('hub-street-sunset.jpg')}
-        alt=""
-        loading="lazy"
-        decoding="async" />
+    <figure class="osa-zvpd__fullbleed osa-zvpd__zoom">
+      <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('hub-street-sunset.jpg')} data-lightbox-alt="Ulice areálu za západu slunce." aria-label="Zobrazit fotografii: ulice areálu">
+        <img
+          src={img('hub-street-sunset.jpg')}
+          alt="Ulice areálu za západu slunce."
+          loading="lazy"
+          decoding="async" />
+      </button>
     </figure>
 
     {/* ===== CHAPTER 02 · PLÁN ===== */}
@@ -238,10 +242,26 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
         <h3 id="strip1-title" class="osa-h3">Referenční podoba rekonstruovaných budov a komunitního zázemí.</h3>
       </div>
       <div class="osa-zvpd__photostrip-grid">
-        <figure data-reveal><img src={img('hub-market-daytime.jpg')} alt="Průmyslová budova ve stylu tržnice s prosklenou střechou, před ní dlážděná cesta a záhony." loading="lazy" decoding="async" /></figure>
-        <figure data-reveal data-reveal-delay="1"><img src={img('hub-market-evening.jpg')} alt="Stejná tržnice za soumraku — osvětlené interiéry prosvítají skrz okna." loading="lazy" decoding="async" /></figure>
-        <figure data-reveal data-reveal-delay="2"><img src={img('hub-courtyard-trees.jpg')} alt="Vnitřní dvůr s trávníkem, břízami a dlážděnou cestou mezi budovami." loading="lazy" decoding="async" /></figure>
-        <figure data-reveal data-reveal-delay="3"><img src={img('hub-courtyard-night.jpg')} alt="Vnitřní dvůr večer, s řetězy světel mezi stromy a lidmi u stolů." loading="lazy" decoding="async" /></figure>
+        <figure class="osa-zvpd__zoom" data-reveal>
+          <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('hub-market-daytime.jpg')} data-lightbox-alt="Průmyslová budova ve stylu tržnice s prosklenou střechou.">
+            <img src={img('hub-market-daytime.jpg')} alt="Průmyslová budova ve stylu tržnice s prosklenou střechou, před ní dlážděná cesta a záhony." loading="lazy" decoding="async" />
+          </button>
+        </figure>
+        <figure class="osa-zvpd__zoom" data-reveal data-reveal-delay="1">
+          <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('hub-market-evening.jpg')} data-lightbox-alt="Stejná tržnice za soumraku.">
+            <img src={img('hub-market-evening.jpg')} alt="Stejná tržnice za soumraku — osvětlené interiéry prosvítají skrz okna." loading="lazy" decoding="async" />
+          </button>
+        </figure>
+        <figure class="osa-zvpd__zoom" data-reveal data-reveal-delay="2">
+          <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('hub-courtyard-trees.jpg')} data-lightbox-alt="Vnitřní dvůr s trávníkem a břízami.">
+            <img src={img('hub-courtyard-trees.jpg')} alt="Vnitřní dvůr s trávníkem, břízami a dlážděnou cestou mezi budovami." loading="lazy" decoding="async" />
+          </button>
+        </figure>
+        <figure class="osa-zvpd__zoom" data-reveal data-reveal-delay="3">
+          <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('hub-courtyard-night.jpg')} data-lightbox-alt="Vnitřní dvůr večer, s řetězy světel mezi stromy.">
+            <img src={img('hub-courtyard-night.jpg')} alt="Vnitřní dvůr večer, s řetězy světel mezi stromy a lidmi u stolů." loading="lazy" decoding="async" />
+          </button>
+        </figure>
       </div>
     </section>
 
@@ -262,24 +282,24 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
         {/* FINANCIAL CARDS — 4 column stat grid, mono */}
         <div class="osa-zvpd__finance" data-reveal data-reveal-delay="1">
           <div class="osa-zvpd__finance-card">
-            <span class="osa-eyebrow">CAPEX 1. fáze</span>
-            <strong class="osa-mono osa-zvpd__finance-num">≈&nbsp;285</strong>
-            <span class="osa-mono osa-zvpd__finance-unit">mil. Kč</span>
+            <span class="osa-eyebrow">CAPEX 1.&nbsp;fáze</span>
+            <strong class="osa-zvpd__finance-num">≈&nbsp;285</strong>
+            <span class="osa-zvpd__finance-unit">mil. Kč</span>
           </div>
           <div class="osa-zvpd__finance-card">
             <span class="osa-eyebrow">Gross Dev. Profit</span>
-            <strong class="osa-mono osa-zvpd__finance-num">421</strong>
-            <span class="osa-mono osa-zvpd__finance-unit">mil. Kč · S1 (1. fáze)</span>
+            <strong class="osa-zvpd__finance-num">421</strong>
+            <span class="osa-zvpd__finance-unit">mil. Kč · S1 (1.&nbsp;fáze)</span>
           </div>
           <div class="osa-zvpd__finance-card">
             <span class="osa-eyebrow">Project IRR</span>
-            <strong class="osa-mono osa-zvpd__finance-num">59&nbsp;%</strong>
-            <span class="osa-mono osa-zvpd__finance-unit">za 2,53 roku</span>
+            <strong class="osa-zvpd__finance-num">59&nbsp;%</strong>
+            <span class="osa-zvpd__finance-unit">za 2,53 roku</span>
           </div>
           <div class="osa-zvpd__finance-card">
             <span class="osa-eyebrow">Project ROI</span>
-            <strong class="osa-mono osa-zvpd__finance-num">151&nbsp;%</strong>
-            <span class="osa-mono osa-zvpd__finance-unit">S1 (base)</span>
+            <strong class="osa-zvpd__finance-num">151&nbsp;%</strong>
+            <span class="osa-zvpd__finance-unit">S1 (base)</span>
           </div>
         </div>
 
@@ -313,8 +333,8 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
               </tr>
             </tbody>
           </table>
-          <p class="osa-zvpd__areal-note osa-mono">
-            * Stavební náklady k roku 2032 při inflaci&nbsp;5&nbsp;%&nbsp;p.&nbsp;a. Hodnoty v <span class="draft">mustard poli</span> jsou odhadní — před zveřejněním se potvrdí s představenstvem VPD Klecany s.r.o.
+          <p class="osa-zvpd__areal-note">
+            <span aria-hidden="true">*</span> Stavební náklady k roku 2032 při inflaci&nbsp;5&nbsp;%&nbsp;p.&nbsp;a. Hodnoty v&nbsp;<span class="draft">mustard poli</span> jsou odhadní — před zveřejněním se potvrdí s&nbsp;představenstvem VPD Klecany s.&nbsp;r.&nbsp;o.
           </p>
         </div>
 
@@ -323,7 +343,7 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
           <div>
             <span class="osa-eyebrow">Provozní cash&#8209;flow hubu (roční)</span>
             <p class="osa-body">
-              <span class="draft"><span class="osa-mono">≈ 65 mil. Kč</span></span> ročně z pronájmu jednotek po dokončení hubu, při <span class="draft">95 % obsazenosti</span>. Gross Yield <span class="draft">6,1 %</span>. Tržní hodnota hubu po dokončení <span class="draft">≈ 1,07 mld. Kč</span>.
+              <span class="draft">≈&nbsp;65&nbsp;mil.&nbsp;Kč</span> ročně z&nbsp;pronájmu jednotek po dokončení hubu, při <span class="draft">95&nbsp;% obsazenosti</span>. Gross yield <span class="draft">6,1&nbsp;%</span>. Tržní hodnota hubu po dokončení <span class="draft">≈&nbsp;1,07&nbsp;mld.&nbsp;Kč</span>.
             </p>
           </div>
         </div>
@@ -331,12 +351,14 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
     </section>
 
     {/* ===== FULL-BLEED BREAK 2 ===== */}
-    <figure class="osa-zvpd__fullbleed" aria-hidden="true">
-      <img
-        src={img('hub-street-daytime.jpg')}
-        alt=""
-        loading="lazy"
-        decoding="async" />
+    <figure class="osa-zvpd__fullbleed osa-zvpd__zoom">
+      <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('hub-street-daytime.jpg')} data-lightbox-alt="Ulice areálu za denního světla." aria-label="Zobrazit fotografii: ulice areálu">
+        <img
+          src={img('hub-street-daytime.jpg')}
+          alt="Ulice areálu za denního světla."
+          loading="lazy"
+          decoding="async" />
+      </button>
     </figure>
 
     {/* ===== CHAPTER 04 · NOVÁ ČTVRŤ ===== */}
@@ -353,50 +375,42 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
           </div>
         </div>
         <div class="osa-zvpd__students" data-reveal data-reveal-delay="1">
-          <figure>
-            <img src={img('vision-student-1.jpg')} alt="Studentská vizualizace náměstí s nízkými bytovými domy, stromy a pěší zónou." loading="lazy" decoding="async" />
-            <figcaption class="osa-mono">Petr Štoček · studentská představa č.&nbsp;1</figcaption>
+          <figure class="osa-zvpd__zoom">
+            <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('vision-student-1.jpg')} data-lightbox-alt="Studentská představa č. 1 — Petr Štoček.">
+              <img src={img('vision-student-1.jpg')} alt="Studentská vizualizace náměstí s nízkými bytovými domy, stromy a pěší zónou." loading="lazy" decoding="async" />
+            </button>
+            <figcaption>Petr Štoček · studentská představa č.&nbsp;1</figcaption>
           </figure>
-          <figure>
-            <img src={img('vision-student-2.jpg')} alt="Studentská vizualizace bloku bytových domů s vnitroblokovou zahradou." loading="lazy" decoding="async" />
-            <figcaption class="osa-mono">Daniel Fišer · studentská představa č.&nbsp;2</figcaption>
+          <figure class="osa-zvpd__zoom">
+            <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('vision-student-2.jpg')} data-lightbox-alt="Studentská představa č. 2 — Daniel Fišer.">
+              <img src={img('vision-student-2.jpg')} alt="Studentská vizualizace bloku bytových domů s vnitroblokovou zahradou." loading="lazy" decoding="async" />
+            </button>
+            <figcaption>Daniel Fišer · studentská představa č.&nbsp;2</figcaption>
           </figure>
-          <figure>
-            <img src={img('vision-student-3.jpg')} alt="Studentská vizualizace městské čtvrti s rytmem bílých domů a vysokými stromy." loading="lazy" decoding="async" />
-            <figcaption class="osa-mono">Jakub Vašek · studentská představa č.&nbsp;4</figcaption>
+          <figure class="osa-zvpd__zoom">
+            <button type="button" class="osa-zvpd__zoom-btn" data-lightbox-src={img('vision-student-3.jpg')} data-lightbox-alt="Studentská představa č. 4 — Jakub Vašek.">
+              <img src={img('vision-student-3.jpg')} alt="Studentská vizualizace městské čtvrti s rytmem bílých domů a vysokými stromy." loading="lazy" decoding="async" />
+            </button>
+            <figcaption>Jakub Vašek · studentská představa č.&nbsp;4</figcaption>
           </figure>
         </div>
-        <p class="osa-zvpd__students-note osa-mono">
+        <p class="osa-zvpd__students-note">
           Studentské práce vznikly jako inspirace — finální podoba čtvrti se vybírá architektonickou soutěží po uzavření plánovací smlouvy s obcí.
         </p>
       </div>
     </section>
 
-    {/* ===== CHAPTER 05 · METODIKA (VPD link) ===== */}
-    <section class="osa-zvpd__methodology section--tight" aria-labelledby="ch5-title">
-      <div class="container-wide osa-zvpd__methodology-inner" data-reveal>
-        <div>
-          <span class="osa-eyebrow">Kapitola 05 · Metodika</span>
-          <h2 id="ch5-title" class="osa-h3">Veřejně prospěšný developer (VPD)</h2>
-          <p class="osa-body">
-            Metodika, kterou spolek OSA II rozvíjí od roku 2020. Staví na dobrovolnické síti, hodnotově orientovaných partnerech a spolkové právní záštitě. Záměr VPD je první velká aplikace této metodiky v měřítku celého areálu — oproti spekulativnímu developmentu maximalizuje dlouhodobou hodnotu pro lokalitu, nejen finanční zisk.
-          </p>
-          <a class="btn" href={withBase('/projekty/vpd/')} data-wipe>Celá metodika VPD</a>
-        </div>
-      </div>
-    </section>
-
-    {/* ===== CHAPTER 06 · DALŠÍ KROKY ===== */}
-    <section class="osa-zvpd__chapter section osa-dark" aria-labelledby="ch6-title">
+    {/* ===== CHAPTER 05 · DALŠÍ KROKY ===== */}
+    <section class="osa-zvpd__chapter section osa-dark" aria-labelledby="ch5-title">
       <SVGPattern variant="dark" opacity={0.1}>
         <div class="container-wide">
           <div class="osa-zvpd__chapter-head" data-reveal>
-            <span class="osa-zvpd__chapter-mark">06</span>
+            <span class="osa-zvpd__chapter-mark">05</span>
             <div>
-              <span class="osa-eyebrow">Kapitola 06</span>
-              <h2 id="ch6-title" class="osa-h2 osa-zvpd__chapter-title">Další kroky</h2>
+              <span class="osa-eyebrow">Kapitola 05</span>
+              <h2 id="ch5-title" class="osa-h2 osa-zvpd__chapter-title">Další kroky</h2>
               <p class="osa-body osa-zvpd__chapter-lede">
-                Zašleme detailní investiční podklady, domluvíme osobní prohlídku areálu, nebo úvodní jednání o struktuře partnerství.
+                Zašleme detailní investiční podklady, domluvíme osobní prohlídku areálu nebo úvodní jednání o struktuře partnerství.
               </p>
             </div>
           </div>
@@ -411,7 +425,7 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
             </div>
             <div>
               <dt class="osa-eyebrow">Telefon</dt>
-              <dd><a href="tel:+420777786473" class="osa-mono">+420&nbsp;777&nbsp;786&nbsp;473</a></dd>
+              <dd><a href="tel:+420777786473"><span class="osa-figs">+420&nbsp;777&nbsp;786&nbsp;473</span></a></dd>
             </div>
             <div>
               <dt class="osa-eyebrow">E-mail</dt>
@@ -419,7 +433,7 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
             </div>
             <div>
               <dt class="osa-eyebrow">Web</dt>
-              <dd class="osa-mono">
+              <dd>
                 <a href="https://vepde.com" rel="noopener">vepde.com</a> ·
                 <a href="https://altstav.eu" rel="noopener">altstav.eu</a> ·
                 <a href="https://osa2.cz" rel="noopener">osa2.cz</a>
@@ -428,15 +442,87 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
           </dl>
           <div class="osa-zvpd__cta" data-reveal data-reveal-delay="2">
             <a class="btn btn--primary" href="mailto:vpd@osa2.cz?subject=Z%C3%A1m%C4%9Br%20VPD%20Klecany%20%7C%20Investment%20call" data-wipe>Ozvat se představenstvu</a>
-            <a class="btn btn--ghost" href={withBase('/projekty/vpd/')} data-wipe>Metodika VPD</a>
+            <a class="btn btn--ghost" href={withBase('/projekty/vpd/')} data-wipe>Celá metodika VPD</a>
           </div>
+          <aside class="osa-zvpd__methodology-note" data-reveal data-reveal-delay="3">
+            <span class="osa-eyebrow">Kontext · Veřejně prospěšný developer</span>
+            <p class="osa-body">
+              Záměr staví na metodice, kterou spolek OSA&nbsp;II rozvíjí od roku 2020 — dobrovolnická síť, hodnotově orientovaní partneři a spolková právní záštita. Horní kasárna jsou první aplikací této metodiky v&nbsp;měřítku celého areálu.
+            </p>
+          </aside>
         </div>
       </SVGPattern>
     </section>
 
+    {/*
+     * Page-scoped lightbox. Any element with class="osa-zvpd__zoom-btn"
+     * that carries data-lightbox-src opens the overlay. Keyboard: ESC
+     * closes, ← / → navigate between all zoomable images on the page.
+     */}
+    <div class="osa-zvpd__lightbox" role="dialog" aria-modal="true" aria-label="Prohlížeč fotografií" hidden>
+      <button type="button" class="osa-zvpd__lightbox-close" aria-label="Zavřít"><span aria-hidden="true">×</span></button>
+      <button type="button" class="osa-zvpd__lightbox-nav osa-zvpd__lightbox-nav--prev" aria-label="Předchozí fotografie"><span aria-hidden="true">‹</span></button>
+      <button type="button" class="osa-zvpd__lightbox-nav osa-zvpd__lightbox-nav--next" aria-label="Další fotografie"><span aria-hidden="true">›</span></button>
+      <figure class="osa-zvpd__lightbox-stage">
+        <img class="osa-zvpd__lightbox-img" alt="" />
+        <figcaption class="osa-zvpd__lightbox-cap"></figcaption>
+      </figure>
+    </div>
+
   </main>
   <Footer />
 </Base>
+
+<script is:inline>
+  (function () {
+    document.addEventListener('DOMContentLoaded', function () {
+      var triggers = [].slice.call(document.querySelectorAll('.osa-zvpd__zoom-btn[data-lightbox-src]'));
+      var lb = document.querySelector('.osa-zvpd__lightbox');
+      if (triggers.length === 0 || !lb) return;
+
+      var img  = lb.querySelector('.osa-zvpd__lightbox-img');
+      var cap  = lb.querySelector('.osa-zvpd__lightbox-cap');
+      var close = lb.querySelector('.osa-zvpd__lightbox-close');
+      var prev = lb.querySelector('.osa-zvpd__lightbox-nav--prev');
+      var next = lb.querySelector('.osa-zvpd__lightbox-nav--next');
+      var index = 0;
+
+      function render(i) {
+        index = (i + triggers.length) % triggers.length;
+        var t = triggers[index];
+        img.src = t.getAttribute('data-lightbox-src');
+        img.alt = t.getAttribute('data-lightbox-alt') || '';
+        cap.textContent = (index + 1) + ' / ' + triggers.length + (img.alt ? ' · ' + img.alt : '');
+      }
+      function open(i) {
+        render(i);
+        lb.hidden = false;
+        requestAnimationFrame(function () { lb.classList.add('open'); });
+        document.documentElement.classList.add('osa-lightbox-lock');
+        close.focus();
+      }
+      function shut() {
+        lb.classList.remove('open');
+        document.documentElement.classList.remove('osa-lightbox-lock');
+        setTimeout(function () { if (!lb.classList.contains('open')) lb.hidden = true; }, 220);
+      }
+
+      triggers.forEach(function (t, i) { t.addEventListener('click', function () { open(i); }); });
+      close.addEventListener('click', shut);
+      prev.addEventListener('click', function () { render(index - 1); });
+      next.addEventListener('click', function () { render(index + 1); });
+      lb.addEventListener('click', function (e) {
+        if (e.target === lb || e.target.classList.contains('osa-zvpd__lightbox-stage')) shut();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (lb.hidden) return;
+        if (e.key === 'Escape') shut();
+        else if (e.key === 'ArrowLeft') render(index - 1);
+        else if (e.key === 'ArrowRight') render(index + 1);
+      });
+    });
+  }());
+</script>
 
 <style>
   /*
@@ -570,9 +656,9 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
   @media (max-width: 860px) {
     .osa-zvpd__opp-grid { grid-template-columns: 1fr; gap: var(--space-6); }
   }
-  .osa-zvpd__opp-figure { margin: 0; display: grid; gap: var(--space-3); }
+  .osa-zvpd__opp-figure { margin: 0; }
   .osa-zvpd__opp-figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
-  .osa-zvpd__opp-figure figcaption { color: var(--fg-muted); font-size: var(--text-xs); }
+  .osa-zvpd__opp-cap { color: var(--fg-muted); font-size: var(--text-xs); margin: var(--space-3) 0 0; }
 
   .osa-zvpd__opp-table { display: grid; gap: 0; margin: 0; }
   .osa-zvpd__opp-table > div {
@@ -758,13 +844,20 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
   }
   .osa-zvpd__finance-card:last-child { border-right: 0; }
   .osa-zvpd__finance-num {
+    font-family: var(--font-sans);
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 600;
     line-height: 1;
+    letter-spacing: var(--tracking-tight);
     color: var(--fg);
     margin-top: var(--space-2);
+    font-variant-numeric: tabular-nums lining-nums;
   }
-  .osa-zvpd__finance-unit { color: var(--fg-muted); font-size: var(--text-xs); }
+  .osa-zvpd__finance-unit {
+    color: var(--fg-muted);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
   @media (max-width: 860px) { .osa-zvpd__finance { grid-template-columns: repeat(2, 1fr); } .osa-zvpd__finance-card:nth-child(2) { border-right: 0; } }
   @media (max-width: 480px) { .osa-zvpd__finance { grid-template-columns: 1fr; } .osa-zvpd__finance-card { border-right: 0; } }
 
@@ -823,14 +916,24 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
     display: block;
     background: var(--k-5);
   }
-  .osa-zvpd__students figcaption { color: var(--fg-muted); font-size: var(--text-xs); padding: 0 2px; }
+  .osa-zvpd__students figcaption { color: var(--fg-muted); font-size: var(--text-xs); padding: var(--space-2) 2px 0; font-variant-numeric: tabular-nums lining-nums; }
   .osa-zvpd__students-note { color: var(--fg-muted); font-size: var(--text-xs); margin: var(--space-5) 0 0; max-width: 80ch; }
   @media (max-width: 720px) { .osa-zvpd__students { grid-template-columns: 1fr; } }
 
-  /* -------------------- METHODOLOGY -------------------- */
-  .osa-zvpd__methodology { padding: var(--space-8) 0; border-top: 1px solid var(--rule); }
-  .osa-zvpd__methodology-inner { display: grid; gap: var(--space-4); max-width: 720px; }
-  .osa-zvpd__methodology-inner .btn { justify-self: start; margin-top: var(--space-3); }
+  /* -------------------- METHODOLOGY NOTE (inside ch05 footer) --------------------
+     Small contextual footnote at the very bottom of "Další kroky". Sits below
+     the primary CTAs so it doesn't compete with the call-to-action hierarchy,
+     but still gives readers the link to the parent metodika. */
+  .osa-zvpd__methodology-note {
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid rgba(255,255,255,0.2);
+    max-width: 64ch;
+    color: var(--fg-muted);
+    display: grid;
+    gap: var(--space-2);
+  }
+  .osa-zvpd__methodology-note p { margin: 0; }
 
   /* -------------------- CONTACT -------------------- */
   .osa-zvpd__contact {
@@ -859,6 +962,114 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
     .osa-zvpd__contact > div { grid-template-columns: 1fr; gap: var(--space-2); }
   }
   .osa-zvpd__cta { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+  /* -------------------- ZOOM + LIGHTBOX --------------------
+     Every standalone photo on the page is wrapped in a .osa-zvpd__zoom
+     figure whose inner button carries data-lightbox-src. Hover nudges a
+     soft zoom; click opens the overlay. Cursor: zoom-in to signal affordance. */
+  .osa-zvpd__zoom { overflow: hidden; margin: 0; position: relative; }
+  .osa-zvpd__zoom-btn {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+    color: inherit;
+    overflow: hidden;
+  }
+  .osa-zvpd__zoom-btn:focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: -2px;
+  }
+  .osa-zvpd__zoom-btn img {
+    transition: transform 620ms var(--ease-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+                filter 520ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+  }
+  .osa-zvpd__zoom-btn:hover img,
+  .osa-zvpd__zoom-btn:focus-visible img {
+    transform: scale(1.03);
+    filter: saturate(1.06) contrast(1.03);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .osa-zvpd__zoom-btn img { transition: none; }
+    .osa-zvpd__zoom-btn:hover img { transform: none; filter: none; }
+  }
+
+  /* Full-viewport lightbox overlay. Mirror of Gallery.astro's pattern —
+     the [hidden] guard MUST win over display:grid, or the layer above the
+     page silently eats clicks. */
+  .osa-zvpd__lightbox[hidden] { display: none; }
+  .osa-zvpd__lightbox:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: #000;
+    display: grid;
+    place-items: center;
+    padding: clamp(16px, 4vw, 48px);
+    opacity: 0;
+    transition: opacity 220ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+  }
+  .osa-zvpd__lightbox.open { opacity: 1; }
+  .osa-zvpd__lightbox-stage {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+    max-width: min(1280px, 100%);
+    max-height: 100%;
+    margin: 0;
+  }
+  .osa-zvpd__lightbox-img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 120px);
+    object-fit: contain;
+    background: transparent;
+  }
+  .osa-zvpd__lightbox-cap {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: var(--text-xs);
+    text-align: center;
+    max-width: 56ch;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .osa-zvpd__lightbox-close,
+  .osa-zvpd__lightbox-nav {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    opacity: 0.85;
+    transition: opacity 140ms linear;
+  }
+  .osa-zvpd__lightbox-close:hover,
+  .osa-zvpd__lightbox-nav:hover,
+  .osa-zvpd__lightbox-close:focus-visible,
+  .osa-zvpd__lightbox-nav:focus-visible { opacity: 1; }
+  .osa-zvpd__lightbox-close:focus-visible,
+  .osa-zvpd__lightbox-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .osa-zvpd__lightbox-close { top: 16px; right: 16px; font-size: 32px; }
+  .osa-zvpd__lightbox-nav--prev { left: 8px;  top: 50%; transform: translateY(-50%); font-size: 44px; }
+  .osa-zvpd__lightbox-nav--next { right: 8px; top: 50%; transform: translateY(-50%); font-size: 44px; }
+  @media (max-width: 560px) {
+    .osa-zvpd__lightbox-nav--prev { font-size: 36px; left: 4px; }
+    .osa-zvpd__lightbox-nav--next { font-size: 36px; right: 4px; }
+    .osa-zvpd__lightbox-close    { top: 8px; right: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .osa-zvpd__lightbox { transition: none; }
+  }
 
   /* -------------------- DRAFT WRAPPER -------------------- */
   .draft {

@@ -271,6 +271,17 @@
   letter-spacing: var(--tracking-wide);
 }
 
+/*
+ * Figures in the brand sans with tabular + lining digits. Use for numbers
+ * that appear inline in running prose (headlines, hero ledes, body),
+ * where switching to JetBrains Mono would look foreign. Reserve .osa-mono
+ * for data tables, metric dls, timeline labels, and URL/phone strings.
+ */
+.osa-figs {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
 /* ---------- Base element styles (opt-in) ---------------------------------- */
 
 .osa-reset a  { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }

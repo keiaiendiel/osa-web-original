@@ -124,6 +124,42 @@ const orgJsonLd = org
   <body class="osa-body">
     <slot />
     <RevealOnScroll />
+
+    {/*
+     * Czech typographer: binds single-letter prepositions / conjunctions to
+     * the following word with a non-breaking space so they never end up
+     * orphaned at the end of a line. Covers k, s, v, z, o, u, a, i (both
+     * cases). Walks text nodes once after load; skips code/pre/script/
+     * style/textarea plus anything marked [data-no-typograf].
+     */}
+    <script is:inline>
+      (function () {
+        var SKIP = { SCRIPT: 1, STYLE: 1, CODE: 1, PRE: 1, TEXTAREA: 1, KBD: 1, SAMP: 1 };
+        var RE = /(^|[\s(\[„“"\u2018\u201C\u201A\u201E])([kKsSvVzZoOuUiIaA])[ \t]+(?=\S)/g;
+        function run() {
+          var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+            acceptNode: function (node) {
+              var p = node.parentNode;
+              while (p && p !== document.body) {
+                if (SKIP[p.nodeName]) return NodeFilter.FILTER_REJECT;
+                if (p.hasAttribute && p.hasAttribute('data-no-typograf')) return NodeFilter.FILTER_REJECT;
+                p = p.parentNode;
+              }
+              return RE.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+            },
+          });
+          var n;
+          while ((n = walker.nextNode())) {
+            n.nodeValue = n.nodeValue.replace(RE, '$1$2\u00A0');
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', run);
+        } else {
+          run();
+        }
+      }());
+    </script>
   </body>
 </html>
 <style is:global>
