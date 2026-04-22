@@ -1,0 +1,875 @@
+---
+/*
+ * /zamer-vpd/ — bespoke investor landing for the VPD1 investment call.
+ *
+ * Stands alone from the aktuality template: the aktualita MDX was the
+ * previous home for this pitch, but the client wanted a page with its
+ * own silhouette (large-image breaks, chapter marks, financial panels)
+ * separate from the generic article chrome.
+ *
+ * Canonical numbers from the two Kindl-verified PDFs:
+ *   "Investment call k záměru VPD1.pdf" + "Záměr VPD1 – základní souhrn.pdf".
+ * Where a secondary figure only shows up in VPD_Klecany_Nahled (the
+ * 5-slide deck), it's still rendered — wrapped in .draft to flag that
+ * the number is pending Marek's final sign-off.
+ */
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import SVGPattern from '../../components/SVGPattern.astro';
+import Gallery from '../../components/Gallery.astro';
+import { withBase } from '../../utils/url';
+
+const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
+---
+<Base
+  title="Záměr VPD — Horní kasárna Klecany · investiční příležitost"
+  description="Revitalizace areálu 83 327 m² na prahu metropole. Investment call na první developerskou fázi: 331 jednotek 1+kk, IRR 59 %, potenciál 10+ mld. Kč."
+  ogImage="/images/zamer-vpd/hub-market-evening.jpg">
+  <Header variant="dark" />
+
+  <main class="osa-zvpd">
+
+    {/*
+     * HERO — full-bleed photograph with overlaid title column.
+     * The photo carries the tone ("evening lights, people, life");
+     * the crumbs + H1 + lede + key figures sit on a scrim for legibility.
+     */}
+    <section class="osa-zvpd__hero osa-dark" aria-labelledby="zvpd-title">
+      <img
+        class="osa-zvpd__hero-bg"
+        src={img('hub-market-people.jpg')}
+        alt=""
+        aria-hidden="true"
+        loading="eager"
+        decoding="async" />
+      <div class="osa-zvpd__hero-scrim" aria-hidden="true"></div>
+      <div class="container-wide osa-zvpd__hero-inner">
+        <nav class="osa-zvpd__crumbs osa-eyebrow" aria-label="Drobečková navigace">
+          <a href={withBase('/')}>Úvod</a>
+          <span aria-hidden="true">·</span>
+          <a href={withBase('/projekty/vpd/')}>VPD</a>
+          <span aria-hidden="true">·</span>
+          <span aria-current="page">Záměr</span>
+        </nav>
+        <span class="osa-eyebrow osa-zvpd__kicker" data-reveal>
+          Investment call · VPD Klecany s.r.o.
+        </span>
+        <h1 id="zvpd-title" class="osa-zvpd__h1" data-reveal>
+          Horní kasárna Klecany.
+          <span class="osa-zvpd__h1-sub">Revitalizace <span class="osa-mono">83&nbsp;327&nbsp;m²</span> na prahu metropole.</span>
+        </h1>
+        <p class="osa-zvpd__lede" data-reveal data-reveal-delay="1">
+          Právo odkupu, užívání a stavby zajištěno do roku 2039. Okamžitě realizovatelná první fáze bez nutnosti změny územního plánu. Potenciál v mezích platného ÚP: <span class="draft"><span class="osa-mono">10+&nbsp;mld.&nbsp;Kč</span></span>.
+        </p>
+        <dl class="osa-zvpd__hero-stats" data-reveal data-reveal-delay="2">
+          <div>
+            <dt class="osa-eyebrow">Rozloha</dt>
+            <dd class="osa-mono">83&nbsp;327&nbsp;m²</dd>
+          </div>
+          <div>
+            <dt class="osa-eyebrow">Vzdálenost</dt>
+            <dd class="osa-mono">12&nbsp;km od centra Prahy</dd>
+          </div>
+          <div>
+            <dt class="osa-eyebrow">1.&nbsp;fáze</dt>
+            <dd class="osa-mono">331 jednotek 1+kk · IRR <span class="draft">59&nbsp;%</span></dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    {/* ===== CHAPTER 01 · PŘÍLEŽITOST ===== */}
+    <section class="osa-zvpd__chapter section" aria-labelledby="ch1-title">
+      <div class="container-wide">
+        <div class="osa-zvpd__chapter-head" data-reveal>
+          <span class="osa-zvpd__chapter-mark">01</span>
+          <div>
+            <span class="osa-eyebrow">Kapitola 01</span>
+            <h2 id="ch1-title" class="osa-h2 osa-zvpd__chapter-title">Příležitost</h2>
+            <p class="osa-body osa-zvpd__chapter-lede">
+              Jedinečný pozemek na dosah Prahy se smluvně zajištěnými právy, kupní cenou pod tržní hodnotou a okamžitě realizovatelnou první fází — bez potřeby změny územního plánu.
+            </p>
+          </div>
+        </div>
+
+        <div class="osa-zvpd__opp-grid" data-reveal data-reveal-delay="1">
+          <figure class="osa-zvpd__opp-figure">
+            <img
+              src={img('hub-renovated-building.jpg')}
+              alt="Zrekonstruovaná bílá budova ve stylu původních kasáren s novým chodníkem a nasázenou vegetací."
+              loading="lazy"
+              decoding="async" />
+            <figcaption class="osa-mono">
+              Reference: zrekonstruovaná původní budova · vzhled po 1. fázi
+            </figcaption>
+          </figure>
+
+          <dl class="osa-zvpd__opp-table">
+            <div>
+              <dt>Lokace</dt>
+              <dd><span class="osa-mono">Klecany, 12&nbsp;km od centra Prahy</span><br /><small>na trase plánované tramvaje z Kobylis</small></dd>
+            </div>
+            <div>
+              <dt>Rozloha</dt>
+              <dd><span class="osa-mono">83&nbsp;327&nbsp;m²</span> celkem<br /><small>z toho <span class="draft">77&nbsp;210&nbsp;m²</span> zastavitelných (SM)</small></dd>
+            </div>
+            <div>
+              <dt>Kupní cena</dt>
+              <dd><span class="draft"><span class="osa-mono">438,6&nbsp;mil.&nbsp;Kč</span> — 82&nbsp;% znalecké hodnoty</span><br /><small>znalecký odhad <span class="draft">536,2&nbsp;mil.&nbsp;Kč</span></small></dd>
+            </div>
+            <div>
+              <dt>Práva</dt>
+              <dd>Smluvně zajištěna do&nbsp;roku&nbsp;<strong class="osa-mono">2039</strong><br /><small>právo odkupu, užívání, stavby; plná moc</small></dd>
+            </div>
+            <div>
+              <dt>Potenciál</dt>
+              <dd><span class="draft"><span class="osa-mono">88&nbsp;946&nbsp;m²</span> ČPP nových bytů</span><br /><small>+ <span class="osa-mono">331</span> rekonstruovaných jednotek</small></dd>
+            </div>
+            <div>
+              <dt>Okolí</dt>
+              <dd><span class="draft">Klecanská Alej (<span class="osa-mono">130–175&nbsp;tis.&nbsp;Kč/m²</span>)</span><br /><small>plánovaná tramvaj, cyklostezka do Prahy</small></dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    {/* ===== FULL-BLEED BREAK ===== */}
+    <figure class="osa-zvpd__fullbleed" aria-hidden="true">
+      <img
+        src={img('hub-street-sunset.jpg')}
+        alt=""
+        loading="lazy"
+        decoding="async" />
+    </figure>
+
+    {/* ===== CHAPTER 02 · PLÁN ===== */}
+    <section class="osa-zvpd__chapter section osa-dark" aria-labelledby="ch2-title">
+      <SVGPattern variant="dark" opacity={0.08}>
+        <div class="container-wide">
+          <div class="osa-zvpd__chapter-head" data-reveal>
+            <span class="osa-zvpd__chapter-mark">02</span>
+            <div>
+              <span class="osa-eyebrow">Kapitola 02</span>
+              <h2 id="ch2-title" class="osa-h2 osa-zvpd__chapter-title">Plán</h2>
+              <p class="osa-body osa-zvpd__chapter-lede">
+                Dva kroky k transformaci areálu. První fáze — Startovací hub — využívá stávající budovy a je realizovatelná okamžitě. Druhá fáze — Nová čtvrť — přichází po uzavření plánovací smlouvy s obcí a staví na platném územním plánu.
+              </p>
+            </div>
+          </div>
+
+          <div class="osa-zvpd__phases" data-reveal data-reveal-delay="1">
+            {/* PHASE 1 */}
+            <article class="osa-zvpd__phase">
+              <header class="osa-zvpd__phase-head">
+                <span class="osa-zvpd__phase-num">① Startovací hub</span>
+                <span class="osa-mono osa-zvpd__phase-dates"><span class="draft">06/2026 → 10/2028</span></span>
+              </header>
+              <p class="osa-zvpd__phase-lede">
+                Komplexní rekonstrukce 7 stávajících budov na 331 jednotek 1+kk s komunitním a coworkingovým zázemím. V souladu se současným územním plánem — okamžitě realizovatelné.
+              </p>
+              <dl class="osa-zvpd__phase-metrics">
+                <div><dt>HPP</dt><dd class="osa-mono">10&nbsp;144&nbsp;m²</dd></div>
+                <div><dt>CAPEX</dt><dd class="osa-mono">≈ 285&nbsp;mil.&nbsp;Kč</dd></div>
+                <div><dt>Jednotek 1+kk</dt><dd class="osa-mono">331 <small>(průměr <span class="draft">20,3&nbsp;m²</span>)</small></dd></div>
+                <div><dt>Trvání</dt><dd class="osa-mono">2,53 roku</dd></div>
+                <div><dt>Project&nbsp;IRR</dt><dd class="osa-mono">59&nbsp;%</dd></div>
+                <div><dt>Project&nbsp;ROI</dt><dd class="osa-mono">151&nbsp;%</dd></div>
+                <div><dt>Gross&nbsp;Dev.&nbsp;Profit</dt><dd class="osa-mono">421&nbsp;mil.&nbsp;Kč</dd></div>
+                <div><dt>Equity IRR <small>(LTC 70&nbsp;%)</small></dt><dd class="osa-mono"><span class="draft">145&nbsp;%</span></dd></div>
+              </dl>
+              <p class="osa-zvpd__phase-target">
+                <span class="osa-eyebrow">Cílová skupina</span>
+                Mladí kreativci, živnostníci, podnikatelé a studenti.
+              </p>
+            </article>
+
+            {/* PHASE 2 */}
+            <article class="osa-zvpd__phase">
+              <header class="osa-zvpd__phase-head">
+                <span class="osa-zvpd__phase-num">② Nová čtvrť</span>
+                <span class="osa-mono osa-zvpd__phase-dates"><span class="draft">10/2030 → 11/2032</span></span>
+              </header>
+              <p class="osa-zvpd__phase-lede">
+                Výstavba bytových domů na zbytku areálu, plně v souladu s platným ÚP od roku 2030. Moderní městská čtvrť se startupovým ekosystémem, plánovaná tramvaj a cyklostezka do Prahy.
+              </p>
+              <dl class="osa-zvpd__phase-metrics">
+                <div><dt>ČPP bytů</dt><dd class="osa-mono"><span class="draft">88&nbsp;946&nbsp;m²</span></dd></div>
+                <div><dt>HPP (podmíněně)</dt><dd class="osa-mono">118&nbsp;903&nbsp;m²</dd></div>
+                <div><dt>Odhad. jednotek</dt><dd class="osa-mono"><span class="draft">≈ 1&nbsp;572</span></dd></div>
+                <div><dt>Noví obyvatelé</dt><dd class="osa-mono"><span class="draft">≈ 2&nbsp;853</span></dd></div>
+                <div><dt>Start výstavby</dt><dd class="osa-mono">≈ 10/2032</dd></div>
+                <div><dt>Potenciál</dt><dd class="osa-mono">10+&nbsp;mld.&nbsp;Kč</dd></div>
+              </dl>
+              <p class="osa-zvpd__phase-target">
+                <span class="osa-eyebrow">Hlavní zdroj výnosu</span>
+                Prodej bytových jednotek v novostavbách.
+              </p>
+            </article>
+          </div>
+
+          {/* TIMELINE */}
+          <div class="osa-zvpd__timeline" data-reveal data-reveal-delay="2" aria-label="Časová osa obou fází">
+            <div class="osa-zvpd__timeline-years">
+              <span>2026</span><span>2027</span><span>2028</span><span>2029</span><span>2030</span><span>2031</span><span>2032</span>
+            </div>
+            <div class="osa-zvpd__timeline-bars">
+              <div class="osa-zvpd__timeline-bar osa-zvpd__timeline-bar--p1" style="left: 0%; width: 34%;">
+                <span>① Startovací hub</span>
+              </div>
+              <div class="osa-zvpd__timeline-bar osa-zvpd__timeline-bar--op" style="left: 34%; width: 30%;">
+                <span>Provoz hubu</span>
+              </div>
+              <div class="osa-zvpd__timeline-bar osa-zvpd__timeline-bar--p2" style="left: 64%; width: 36%;">
+                <span>② Nová čtvrť</span>
+              </div>
+            </div>
+            <div class="osa-zvpd__timeline-rule" aria-hidden="true"></div>
+          </div>
+        </div>
+      </SVGPattern>
+    </section>
+
+    {/* ===== PHOTO STRIP — vizualizace prvni faze ===== */}
+    <section class="osa-zvpd__photostrip" aria-labelledby="strip1-title">
+      <div class="container-wide osa-zvpd__photostrip-head" data-reveal>
+        <span class="osa-eyebrow">Vizualizace · Startovací hub</span>
+        <h3 id="strip1-title" class="osa-h3">Referenční podoba rekonstruovaných budov a komunitního zázemí.</h3>
+      </div>
+      <div class="osa-zvpd__photostrip-grid">
+        <figure data-reveal><img src={img('hub-market-daytime.jpg')} alt="Průmyslová budova ve stylu tržnice s prosklenou střechou, před ní dlážděná cesta a záhony." loading="lazy" decoding="async" /></figure>
+        <figure data-reveal data-reveal-delay="1"><img src={img('hub-market-evening.jpg')} alt="Stejná tržnice za soumraku — osvětlené interiéry prosvítají skrz okna." loading="lazy" decoding="async" /></figure>
+        <figure data-reveal data-reveal-delay="2"><img src={img('hub-courtyard-trees.jpg')} alt="Vnitřní dvůr s trávníkem, břízami a dlážděnou cestou mezi budovami." loading="lazy" decoding="async" /></figure>
+        <figure data-reveal data-reveal-delay="3"><img src={img('hub-courtyard-night.jpg')} alt="Vnitřní dvůr večer, s řetězy světel mezi stromy a lidmi u stolů." loading="lazy" decoding="async" /></figure>
+      </div>
+    </section>
+
+    {/* ===== CHAPTER 03 · POTENCIÁL ===== */}
+    <section class="osa-zvpd__chapter section" aria-labelledby="ch3-title">
+      <div class="container-wide">
+        <div class="osa-zvpd__chapter-head" data-reveal>
+          <span class="osa-zvpd__chapter-mark">03</span>
+          <div>
+            <span class="osa-eyebrow">Kapitola 03</span>
+            <h2 id="ch3-title" class="osa-h2 osa-zvpd__chapter-title">Potenciál</h2>
+            <p class="osa-body osa-zvpd__chapter-lede">
+              Scénář S1 (base): investice do první fáze se vrátí z provozu hubu; druhá fáze otevírá potenciál v řádech miliard. Čísla platí pro stavební náklady k roku 2032 při inflaci 5&nbsp;%&nbsp;p.&nbsp;a.
+            </p>
+          </div>
+        </div>
+
+        {/* FINANCIAL CARDS — 4 column stat grid, mono */}
+        <div class="osa-zvpd__finance" data-reveal data-reveal-delay="1">
+          <div class="osa-zvpd__finance-card">
+            <span class="osa-eyebrow">CAPEX 1. fáze</span>
+            <strong class="osa-mono osa-zvpd__finance-num">≈&nbsp;285</strong>
+            <span class="osa-mono osa-zvpd__finance-unit">mil. Kč</span>
+          </div>
+          <div class="osa-zvpd__finance-card">
+            <span class="osa-eyebrow">Gross Dev. Profit</span>
+            <strong class="osa-mono osa-zvpd__finance-num">421</strong>
+            <span class="osa-mono osa-zvpd__finance-unit">mil. Kč · S1 (1. fáze)</span>
+          </div>
+          <div class="osa-zvpd__finance-card">
+            <span class="osa-eyebrow">Project IRR</span>
+            <strong class="osa-mono osa-zvpd__finance-num">59&nbsp;%</strong>
+            <span class="osa-mono osa-zvpd__finance-unit">za 2,53 roku</span>
+          </div>
+          <div class="osa-zvpd__finance-card">
+            <span class="osa-eyebrow">Project ROI</span>
+            <strong class="osa-mono osa-zvpd__finance-num">151&nbsp;%</strong>
+            <span class="osa-mono osa-zvpd__finance-unit">S1 (base)</span>
+          </div>
+        </div>
+
+        {/* AREÁL VALUE TABLE */}
+        <div class="osa-zvpd__areal-wrap" data-reveal data-reveal-delay="2">
+          <header class="osa-zvpd__subhead">
+            <span class="osa-eyebrow">Celkový potenciál areálu</span>
+            <h3 class="osa-h3">Sumární hodnota při prodeji všech jednotek (SH&nbsp;+&nbsp;nové).</h3>
+          </header>
+          <table class="osa-zvpd__areal">
+            <thead>
+              <tr>
+                <th scope="col">Rok</th>
+                <th scope="col">Kupní cena areálu</th>
+                <th scope="col">Prodejní cena všech bytů</th>
+                <th scope="col">Hrubý zisk</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">2032</th>
+                <td class="osa-mono"><span class="draft">573 mil. Kč</span></td>
+                <td class="osa-mono"><span class="draft">≈ 16,7 mld. Kč</span></td>
+                <td class="osa-mono"><span class="draft">≈ 16,2 mld. Kč</span></td>
+              </tr>
+              <tr>
+                <th scope="row">2038</th>
+                <td class="osa-mono"><span class="draft">689 mil. Kč</span></td>
+                <td class="osa-mono"><span class="draft">≈ 22,4 mld. Kč</span></td>
+                <td class="osa-mono"><span class="draft">≈ 21,8 mld. Kč</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="osa-zvpd__areal-note osa-mono">
+            * Stavební náklady k roku 2032 při inflaci&nbsp;5&nbsp;%&nbsp;p.&nbsp;a. Hodnoty v <span class="draft">mustard poli</span> jsou odhadní — před zveřejněním se potvrdí s představenstvem VPD Klecany s.r.o.
+          </p>
+        </div>
+
+        {/* OPERATING CF */}
+        <div class="osa-zvpd__cf" data-reveal data-reveal-delay="3">
+          <div>
+            <span class="osa-eyebrow">Provozní cash&#8209;flow hubu (roční)</span>
+            <p class="osa-body">
+              <span class="draft"><span class="osa-mono">≈ 65 mil. Kč</span></span> ročně z pronájmu jednotek po dokončení hubu, při <span class="draft">95 % obsazenosti</span>. Gross Yield <span class="draft">6,1 %</span>. Tržní hodnota hubu po dokončení <span class="draft">≈ 1,07 mld. Kč</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ===== FULL-BLEED BREAK 2 ===== */}
+    <figure class="osa-zvpd__fullbleed" aria-hidden="true">
+      <img
+        src={img('hub-street-daytime.jpg')}
+        alt=""
+        loading="lazy"
+        decoding="async" />
+    </figure>
+
+    {/* ===== CHAPTER 04 · NOVÁ ČTVRŤ ===== */}
+    <section class="osa-zvpd__chapter section" aria-labelledby="ch4-title">
+      <div class="container-wide">
+        <div class="osa-zvpd__chapter-head" data-reveal>
+          <span class="osa-zvpd__chapter-mark">04</span>
+          <div>
+            <span class="osa-eyebrow">Kapitola 04</span>
+            <h2 id="ch4-title" class="osa-h2 osa-zvpd__chapter-title">Nová čtvrť</h2>
+            <p class="osa-body osa-zvpd__chapter-lede">
+              Studie od tří různých autorů ukazují, jak může druhá fáze vypadat v praxi: bytové domy v souladu s ÚP, vnitrobloky s veřejnou zelení, parter pro služby a retail, pěší páteř od hubu k nové tramvajové zastávce.
+            </p>
+          </div>
+        </div>
+        <div class="osa-zvpd__students" data-reveal data-reveal-delay="1">
+          <figure>
+            <img src={img('vision-student-1.jpg')} alt="Studentská vizualizace náměstí s nízkými bytovými domy, stromy a pěší zónou." loading="lazy" decoding="async" />
+            <figcaption class="osa-mono">Petr Štoček · studentská představa č.&nbsp;1</figcaption>
+          </figure>
+          <figure>
+            <img src={img('vision-student-2.jpg')} alt="Studentská vizualizace bloku bytových domů s vnitroblokovou zahradou." loading="lazy" decoding="async" />
+            <figcaption class="osa-mono">Daniel Fišer · studentská představa č.&nbsp;2</figcaption>
+          </figure>
+          <figure>
+            <img src={img('vision-student-3.jpg')} alt="Studentská vizualizace městské čtvrti s rytmem bílých domů a vysokými stromy." loading="lazy" decoding="async" />
+            <figcaption class="osa-mono">Jakub Vašek · studentská představa č.&nbsp;4</figcaption>
+          </figure>
+        </div>
+        <p class="osa-zvpd__students-note osa-mono">
+          Studentské práce vznikly jako inspirace — finální podoba čtvrti se vybírá architektonickou soutěží po uzavření plánovací smlouvy s obcí.
+        </p>
+      </div>
+    </section>
+
+    {/* ===== CHAPTER 05 · METODIKA (VPD link) ===== */}
+    <section class="osa-zvpd__methodology section--tight" aria-labelledby="ch5-title">
+      <div class="container-wide osa-zvpd__methodology-inner" data-reveal>
+        <div>
+          <span class="osa-eyebrow">Kapitola 05 · Metodika</span>
+          <h2 id="ch5-title" class="osa-h3">Veřejně prospěšný developer (VPD)</h2>
+          <p class="osa-body">
+            Metodika, kterou spolek OSA II rozvíjí od roku 2020. Staví na dobrovolnické síti, hodnotově orientovaných partnerech a spolkové právní záštitě. Záměr VPD je první velká aplikace této metodiky v měřítku celého areálu — oproti spekulativnímu developmentu maximalizuje dlouhodobou hodnotu pro lokalitu, nejen finanční zisk.
+          </p>
+          <a class="btn" href={withBase('/projekty/vpd/')} data-wipe>Celá metodika VPD</a>
+        </div>
+      </div>
+    </section>
+
+    {/* ===== CHAPTER 06 · DALŠÍ KROKY ===== */}
+    <section class="osa-zvpd__chapter section osa-dark" aria-labelledby="ch6-title">
+      <SVGPattern variant="dark" opacity={0.1}>
+        <div class="container-wide">
+          <div class="osa-zvpd__chapter-head" data-reveal>
+            <span class="osa-zvpd__chapter-mark">06</span>
+            <div>
+              <span class="osa-eyebrow">Kapitola 06</span>
+              <h2 id="ch6-title" class="osa-h2 osa-zvpd__chapter-title">Další kroky</h2>
+              <p class="osa-body osa-zvpd__chapter-lede">
+                Zašleme detailní investiční podklady, domluvíme osobní prohlídku areálu, nebo úvodní jednání o struktuře partnerství.
+              </p>
+            </div>
+          </div>
+          <dl class="osa-zvpd__contact" data-reveal data-reveal-delay="1">
+            <div>
+              <dt class="osa-eyebrow">Vlastník práv</dt>
+              <dd>VPD Klecany s.r.o. · Marek Semerád</dd>
+            </div>
+            <div>
+              <dt class="osa-eyebrow">Majitel areálu</dt>
+              <dd>FTV Cerhovice s.r.o. · Jaromír Wimmer</dd>
+            </div>
+            <div>
+              <dt class="osa-eyebrow">Telefon</dt>
+              <dd><a href="tel:+420777786473" class="osa-mono">+420&nbsp;777&nbsp;786&nbsp;473</a></dd>
+            </div>
+            <div>
+              <dt class="osa-eyebrow">E-mail</dt>
+              <dd><a href="mailto:vpd@osa2.cz">vpd@osa2.cz</a></dd>
+            </div>
+            <div>
+              <dt class="osa-eyebrow">Web</dt>
+              <dd class="osa-mono">
+                <a href="https://vepde.com" rel="noopener">vepde.com</a> ·
+                <a href="https://altstav.eu" rel="noopener">altstav.eu</a> ·
+                <a href="https://osa2.cz" rel="noopener">osa2.cz</a>
+              </dd>
+            </div>
+          </dl>
+          <div class="osa-zvpd__cta" data-reveal data-reveal-delay="2">
+            <a class="btn btn--primary" href="mailto:vpd@osa2.cz?subject=Z%C3%A1m%C4%9Br%20VPD%20Klecany%20%7C%20Investment%20call" data-wipe>Ozvat se představenstvu</a>
+            <a class="btn btn--ghost" href={withBase('/projekty/vpd/')} data-wipe>Metodika VPD</a>
+          </div>
+        </div>
+      </SVGPattern>
+    </section>
+
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  /*
+   * Bespoke investor-focused editorial page. Keeps the parent brand's
+   * monochrome palette and Atyp Special type, but relies on:
+   *   - full-bleed photo breaks between chapters
+   *   - a large numeric chapter mark (01, 02, etc.)
+   *   - financial cards with the osa-mono stack for data authority
+   *   - a horizontal timeline bar for the two-phase schedule
+   *   - a ruled table for areál potential values
+   *
+   * Any figure that is still pending Marek's confirmation is wrapped in
+   * .draft (mustard wash). When the numbers settle, strip the wrappers.
+   */
+
+  .osa-zvpd { --zvpd-muted: color-mix(in oklab, var(--fg) 55%, transparent); }
+
+  /* -------------------- HERO -------------------- */
+  /* Dark hero with full-bleed photo background. Layer order bg -> scrim
+     -> inner content. Using explicit z-index (1, 2, 3) on children; the
+     section itself gets background:transparent so the photo isn't hidden
+     by the osa-dark scope's own background. */
+  .osa-zvpd__hero {
+    position: relative;
+    isolation: isolate;
+    min-height: clamp(560px, 78vh, 780px);
+    display: flex;
+    align-items: flex-end;
+    background: var(--k-100);
+  }
+  .osa-zvpd__hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.45) saturate(0.9);
+    z-index: 1;
+  }
+  .osa-zvpd__hero-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.75) 100%);
+    z-index: 2;
+  }
+  .osa-zvpd__hero-inner {
+    position: relative;
+    z-index: 3;
+    padding: clamp(80px, 9vh, 120px) var(--gutter) clamp(48px, 7vh, 80px);
+    width: 100%;
+    max-width: 1200px;
+  }
+  .osa-zvpd__crumbs {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    align-items: center;
+    color: var(--fg-muted);
+    margin-bottom: var(--space-5);
+  }
+  .osa-zvpd__crumbs a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .osa-zvpd__kicker { color: var(--fg-muted); display: block; margin-bottom: var(--space-3); }
+  .osa-zvpd__h1 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.04;
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin: 0 0 var(--space-5);
+    max-width: 22ch;
+  }
+  .osa-zvpd__h1-sub {
+    display: block;
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    font-weight: 500;
+    margin-top: var(--space-3);
+    color: var(--fg-muted);
+    max-width: 32ch;
+  }
+  .osa-zvpd__lede { color: var(--fg-muted); max-width: 56ch; margin: 0 0 var(--space-6); font-size: var(--text-lg); }
+  .osa-zvpd__hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin: 0;
+    padding-top: var(--space-5);
+    border-top: 1px solid rgba(255,255,255,0.2);
+    max-width: 720px;
+  }
+  .osa-zvpd__hero-stats > div { display: grid; gap: var(--space-2); }
+  .osa-zvpd__hero-stats dt { color: var(--fg-muted); }
+  .osa-zvpd__hero-stats dd { margin: 0; font-size: var(--text-sm); color: var(--fg); line-height: var(--lh-normal); }
+  @media (max-width: 720px) {
+    .osa-zvpd__hero-stats { grid-template-columns: 1fr; gap: var(--space-4); }
+  }
+
+  /* -------------------- CHAPTER HEAD -------------------- */
+  .osa-zvpd__chapter-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-6);
+    align-items: start;
+    margin-bottom: var(--space-8);
+    max-width: 1200px;
+  }
+  .osa-zvpd__chapter-mark {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(3.5rem, 9vw, 6rem);
+    line-height: 0.9;
+    color: var(--fg);
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .osa-zvpd__chapter-title { margin: var(--space-2) 0 var(--space-4); max-width: 22ch; }
+  .osa-zvpd__chapter-lede { margin: 0; color: var(--fg-muted); max-width: 64ch; font-size: var(--text-lg); }
+  @media (max-width: 720px) {
+    .osa-zvpd__chapter-head { grid-template-columns: 1fr; gap: var(--space-3); }
+    .osa-zvpd__chapter-mark { font-size: clamp(3rem, 14vw, 4.5rem); }
+  }
+
+  /* -------------------- OPPORTUNITY TABLE -------------------- */
+  .osa-zvpd__opp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .osa-zvpd__opp-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+  }
+  .osa-zvpd__opp-figure { margin: 0; display: grid; gap: var(--space-3); }
+  .osa-zvpd__opp-figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+  .osa-zvpd__opp-figure figcaption { color: var(--fg-muted); font-size: var(--text-xs); }
+
+  .osa-zvpd__opp-table { display: grid; gap: 0; margin: 0; }
+  .osa-zvpd__opp-table > div {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .osa-zvpd__opp-table > div:last-child { border-bottom: 1px solid var(--rule); }
+  .osa-zvpd__opp-table dt {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--fg);
+    align-self: start;
+  }
+  .osa-zvpd__opp-table dd { margin: 0; font-size: var(--text-sm); color: var(--fg); line-height: var(--lh-normal); }
+  .osa-zvpd__opp-table dd small { display: block; color: var(--fg-muted); font-size: var(--text-xs); margin-top: 2px; }
+  @media (max-width: 560px) {
+    .osa-zvpd__opp-table > div { grid-template-columns: 1fr; gap: var(--space-2); }
+  }
+
+  /* -------------------- FULL-BLEED PHOTO BREAK -------------------- */
+  .osa-zvpd__fullbleed { margin: 0; }
+  .osa-zvpd__fullbleed img {
+    display: block;
+    width: 100%;
+    height: clamp(280px, 45vh, 520px);
+    object-fit: cover;
+  }
+
+  /* -------------------- PHASES -------------------- */
+  .osa-zvpd__phases {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+  @media (max-width: 860px) {
+    .osa-zvpd__phases { grid-template-columns: 1fr; }
+  }
+  .osa-zvpd__phase {
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: var(--space-6);
+    display: grid;
+    gap: var(--space-4);
+    background: rgba(255,255,255,0.02);
+  }
+  .osa-zvpd__phase-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  .osa-zvpd__phase-num {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    color: var(--fg);
+  }
+  .osa-zvpd__phase-dates { color: var(--fg-muted); font-size: var(--text-sm); }
+  .osa-zvpd__phase-lede { margin: 0; color: var(--fg-muted); font-size: var(--text-base); max-width: 46ch; }
+  .osa-zvpd__phase-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 0;
+  }
+  .osa-zvpd__phase-metrics > div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-size: var(--text-sm);
+  }
+  .osa-zvpd__phase-metrics > div:nth-child(-n+2) { border-top: 0; }
+  .osa-zvpd__phase-metrics > div:nth-child(odd) { padding-right: var(--space-4); }
+  .osa-zvpd__phase-metrics > div:nth-child(even) { padding-left: var(--space-4); border-left: 1px solid rgba(255,255,255,0.12); }
+  .osa-zvpd__phase-metrics dt { color: var(--fg-muted); }
+  .osa-zvpd__phase-metrics dd { margin: 0; color: var(--fg); font-weight: 500; }
+  .osa-zvpd__phase-metrics dd small { font-weight: 400; color: var(--fg-muted); font-size: 0.82em; }
+  @media (max-width: 480px) {
+    .osa-zvpd__phase-metrics { grid-template-columns: 1fr; }
+    .osa-zvpd__phase-metrics > div:nth-child(2) { border-top: 1px solid rgba(255,255,255,0.12); }
+    .osa-zvpd__phase-metrics > div:nth-child(even) { padding-left: 0; border-left: 0; }
+    .osa-zvpd__phase-metrics > div:nth-child(odd) { padding-right: 0; }
+  }
+  .osa-zvpd__phase-target {
+    margin: 0;
+    padding-top: var(--space-4);
+    border-top: 1px solid rgba(255,255,255,0.2);
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    display: grid;
+    gap: var(--space-1);
+  }
+  .osa-zvpd__phase-target .osa-eyebrow { color: var(--fg); }
+
+  /* -------------------- TIMELINE -------------------- */
+  .osa-zvpd__timeline {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .osa-zvpd__timeline-years {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--fg-muted);
+    letter-spacing: var(--tracking-wider);
+  }
+  .osa-zvpd__timeline-bars {
+    position: relative;
+    height: 44px;
+  }
+  .osa-zvpd__timeline-bar {
+    position: absolute;
+    top: 0;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--bg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .osa-zvpd__timeline-bar--p1 { background: var(--fg); top: 0; }
+  .osa-zvpd__timeline-bar--op { background: color-mix(in oklab, var(--fg) 60%, transparent); top: 0; }
+  .osa-zvpd__timeline-bar--p2 { background: var(--fg); top: 0; }
+  .osa-zvpd__timeline-rule { height: 1px; background: rgba(255,255,255,0.2); }
+  @media (max-width: 560px) {
+    .osa-zvpd__timeline-years { grid-template-columns: repeat(7, 1fr); font-size: 10px; }
+    .osa-zvpd__timeline-bar { font-size: 10px; padding: 0 6px; }
+  }
+
+  /* -------------------- PHOTO STRIP -------------------- */
+  .osa-zvpd__photostrip { padding: var(--space-8) 0; background: var(--bg); }
+  .osa-zvpd__photostrip-head { margin-bottom: var(--space-6); max-width: 820px; display: grid; gap: var(--space-2); }
+  .osa-zvpd__photostrip-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    padding: 0 var(--gutter);
+  }
+  .osa-zvpd__photostrip-grid figure { margin: 0; }
+  .osa-zvpd__photostrip-grid img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 720px) {
+    .osa-zvpd__photostrip-grid { grid-template-columns: 1fr; }
+  }
+
+  /* -------------------- FINANCE CARDS -------------------- */
+  .osa-zvpd__finance {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    margin-bottom: var(--space-8);
+  }
+  .osa-zvpd__finance-card {
+    padding: var(--space-6) var(--space-5);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+  }
+  .osa-zvpd__finance-card:last-child { border-right: 0; }
+  .osa-zvpd__finance-num {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--fg);
+    margin-top: var(--space-2);
+  }
+  .osa-zvpd__finance-unit { color: var(--fg-muted); font-size: var(--text-xs); }
+  @media (max-width: 860px) { .osa-zvpd__finance { grid-template-columns: repeat(2, 1fr); } .osa-zvpd__finance-card:nth-child(2) { border-right: 0; } }
+  @media (max-width: 480px) { .osa-zvpd__finance { grid-template-columns: 1fr; } .osa-zvpd__finance-card { border-right: 0; } }
+
+  /* -------------------- AREAL TABLE -------------------- */
+  .osa-zvpd__areal-wrap { margin-bottom: var(--space-7); }
+  .osa-zvpd__subhead { max-width: 720px; margin: 0 0 var(--space-5); display: grid; gap: var(--space-2); }
+  .osa-zvpd__areal {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+  .osa-zvpd__areal th,
+  .osa-zvpd__areal td {
+    padding: var(--space-4) var(--space-3);
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: baseline;
+  }
+  .osa-zvpd__areal thead th {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    border-top: 1px solid var(--rule);
+  }
+  .osa-zvpd__areal tbody th { font-weight: 600; color: var(--fg); }
+  .osa-zvpd__areal-note { color: var(--fg-muted); font-size: var(--text-xs); margin: var(--space-4) 0 0; max-width: 80ch; }
+  @media (max-width: 720px) {
+    .osa-zvpd__areal thead { display: none; }
+    .osa-zvpd__areal tr { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2) var(--space-4); padding: var(--space-4) 0; border-bottom: 1px solid var(--rule); }
+    .osa-zvpd__areal th, .osa-zvpd__areal td { padding: 0; border-bottom: 0; }
+    .osa-zvpd__areal tbody th { grid-column: 1; grid-row: 1 / span 3; align-self: start; }
+  }
+
+  /* -------------------- CF -------------------- */
+  .osa-zvpd__cf {
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--rule);
+    max-width: 720px;
+  }
+  .osa-zvpd__cf p { margin: var(--space-3) 0 0; color: var(--fg); }
+
+  /* -------------------- STUDENTS GALLERY -------------------- */
+  .osa-zvpd__students {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .osa-zvpd__students figure { margin: 0; display: grid; gap: var(--space-2); }
+  .osa-zvpd__students img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    background: var(--k-5);
+  }
+  .osa-zvpd__students figcaption { color: var(--fg-muted); font-size: var(--text-xs); padding: 0 2px; }
+  .osa-zvpd__students-note { color: var(--fg-muted); font-size: var(--text-xs); margin: var(--space-5) 0 0; max-width: 80ch; }
+  @media (max-width: 720px) { .osa-zvpd__students { grid-template-columns: 1fr; } }
+
+  /* -------------------- METHODOLOGY -------------------- */
+  .osa-zvpd__methodology { padding: var(--space-8) 0; border-top: 1px solid var(--rule); }
+  .osa-zvpd__methodology-inner { display: grid; gap: var(--space-4); max-width: 720px; }
+  .osa-zvpd__methodology-inner .btn { justify-self: start; margin-top: var(--space-3); }
+
+  /* -------------------- CONTACT -------------------- */
+  .osa-zvpd__contact {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    margin: 0 0 var(--space-6);
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .osa-zvpd__contact > div {
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+  }
+  .osa-zvpd__contact dt { color: var(--fg-muted); }
+  .osa-zvpd__contact dd { margin: 0; color: var(--fg); font-size: var(--text-sm); line-height: var(--lh-normal); }
+  .osa-zvpd__contact a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .osa-zvpd__contact a + a { margin-left: var(--space-2); }
+  @media (max-width: 720px) {
+    .osa-zvpd__contact { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .osa-zvpd__contact > div { grid-template-columns: 1fr; gap: var(--space-2); }
+  }
+  .osa-zvpd__cta { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+  /* -------------------- DRAFT WRAPPER -------------------- */
+  .draft {
+    background: color-mix(in oklab, var(--c-mustard) 28%, transparent);
+    padding: 0 4px;
+    border-radius: 0;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .osa-zvpd__hero-bg { filter: brightness(0.45); }
+  }
+</style>

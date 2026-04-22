@@ -36,7 +36,10 @@
 import { withBase } from '../utils/url';
 interface Props { hideVpdLink?: boolean; }
 const { hideVpdLink = false } = Astro.props;
-const articleHref = withBase('/aktuality/vpd-hledame-strategickeho-partnera/');
+// "Celý článek" now routes to the bespoke /zamer-vpd/ landing instead of
+// the aktualita. The aktualita was decommissioned once the dedicated
+// investor page went live.
+const articleHref = withBase('/zamer-vpd/');
 ---
 <section class="osa-ih section" aria-labelledby="ih-title">
   <div class="container-wide osa-ih__grid">
