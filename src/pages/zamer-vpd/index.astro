@@ -229,7 +229,6 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
                 <span>② Nová čtvrť</span>
               </div>
             </div>
-            <div class="osa-zvpd__timeline-rule" aria-hidden="true"></div>
           </div>
         </div>
       </SVGPattern>
@@ -274,7 +273,7 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
             <span class="osa-eyebrow">Kapitola 03</span>
             <h2 id="ch3-title" class="osa-h2 osa-zvpd__chapter-title">Potenciál</h2>
             <p class="osa-body osa-zvpd__chapter-lede">
-              Scénář S1 (base): investice do první fáze se vrátí z provozu hubu; druhá fáze otevírá potenciál v řádech miliard. Čísla platí pro stavební náklady k roku 2032 při inflaci 5&nbsp;%&nbsp;p.&nbsp;a.
+              První fáze (Startovací hub) se zaplatí z vlastního provozu; druhá fáze (Nová čtvrť) otevírá potenciál v řádech miliard. Čísla platí pro stavební náklady k roku 2032 při inflaci 5&nbsp;%&nbsp;p.&nbsp;a.
             </p>
           </div>
         </div>
@@ -289,7 +288,7 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
           <div class="osa-zvpd__finance-card">
             <span class="osa-eyebrow">Gross Dev. Profit</span>
             <strong class="osa-zvpd__finance-num"><span data-count-to="421" data-count-format="int">421</span></strong>
-            <span class="osa-zvpd__finance-unit">mil. Kč · S1 (1.&nbsp;fáze)</span>
+            <span class="osa-zvpd__finance-unit">mil. Kč · 1.&nbsp;fáze</span>
           </div>
           <div class="osa-zvpd__finance-card">
             <span class="osa-eyebrow">Project IRR</span>
@@ -299,7 +298,7 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
           <div class="osa-zvpd__finance-card">
             <span class="osa-eyebrow">Project ROI</span>
             <strong class="osa-zvpd__finance-num"><span data-count-to="151" data-count-format="percent">151&nbsp;%</span></strong>
-            <span class="osa-zvpd__finance-unit">S1 (base)</span>
+            <span class="osa-zvpd__finance-unit">1.&nbsp;fáze</span>
           </div>
         </div>
 
@@ -755,8 +754,13 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
     .osa-zvpd__phase-metrics > div:hover { background: rgba(255,255,255,0.05); }
   }
   .osa-zvpd__phase-metrics > div:nth-child(-n+2) { border-top: 0; }
-  .osa-zvpd__phase-metrics > div:nth-child(odd) { padding-right: var(--space-4); }
-  .osa-zvpd__phase-metrics > div:nth-child(even) { padding-left: var(--space-4); border-left: 1px solid rgba(255,255,255,0.12); }
+  /* The negative horizontal margin (for the hover tint bleed) shifts both
+     boxes 8 px outward; that means neighbouring cells overlap by 16 px, so
+     inside padding has to absorb those 16 px before the visual gap starts.
+     space-6 (32 px) leaves a real 16 px of air between the dd/dt and the
+     vertical divider. */
+  .osa-zvpd__phase-metrics > div:nth-child(odd) { padding-right: var(--space-6); }
+  .osa-zvpd__phase-metrics > div:nth-child(even) { padding-left: var(--space-6); border-left: 1px solid rgba(255,255,255,0.12); }
   .osa-zvpd__phase-metrics dt { color: var(--fg-muted); }
   .osa-zvpd__phase-metrics dd { margin: 0; color: var(--fg); font-weight: 500; }
   .osa-zvpd__phase-metrics dd small { font-weight: 400; color: var(--fg-muted); font-size: 0.82em; }
@@ -780,13 +784,13 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
   /* -------------------- TIMELINE --------------------
      Bars sit inside a striped "track" — diagonal hatching mirrors the
      SVGPattern on the chapter background, so the timeline reads as part
-     of the same surface rather than a detached widget. */
+     of the same surface rather than a detached widget. No framing rule —
+     the hatching alone defines the track. */
   .osa-zvpd__timeline {
     position: relative;
     display: grid;
     gap: var(--space-3);
-    padding-top: var(--space-5);
-    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: var(--space-2);
   }
   .osa-zvpd__timeline-years {
     display: grid;
@@ -810,7 +814,7 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
   }
   .osa-zvpd__timeline-bar {
     position: absolute;
-    top: 0;
+    top: 8px;
     height: 28px;
     display: flex;
     align-items: center;
@@ -821,11 +825,23 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition:
+      top var(--dur-base) var(--ease-standard),
+      height var(--dur-base) var(--ease-standard),
+      background var(--dur-base) var(--ease-standard);
   }
-  .osa-zvpd__timeline-bar--p1 { background: var(--fg); top: 0; }
-  .osa-zvpd__timeline-bar--op { background: color-mix(in oklab, var(--fg) 60%, transparent); top: 0; }
-  .osa-zvpd__timeline-bar--p2 { background: var(--fg); top: 0; }
-  .osa-zvpd__timeline-rule { height: 1px; background: rgba(255,255,255,0.2); }
+  .osa-zvpd__timeline-bar--p1 { background: var(--fg); }
+  .osa-zvpd__timeline-bar--op { background: color-mix(in oklab, var(--fg) 60%, transparent); }
+  .osa-zvpd__timeline-bar--p2 { background: var(--fg); }
+  /* Subtle hover: the bar swells a few pixels top + bottom, and the
+     semi-transparent "Provoz hubu" band pulls up to full opacity. Keeps
+     the tactile feedback without turning the bar into a button. */
+  @media (hover: hover) and (pointer: fine) {
+    .osa-zvpd__timeline-bar:hover { top: 4px; height: 36px; }
+    .osa-zvpd__timeline-bar--op:hover {
+      background: color-mix(in oklab, var(--fg) 90%, transparent);
+    }
+  }
   @media (max-width: 560px) {
     .osa-zvpd__timeline-years { grid-template-columns: repeat(7, 1fr); font-size: 10px; }
     .osa-zvpd__timeline-bar { font-size: 10px; padding: 0 6px; }
@@ -1068,13 +1084,13 @@ const img = (name: string) => withBase(`/images/zamer-vpd/${name}`);
     outline-offset: -2px;
   }
   .osa-zvpd__zoom-btn img {
-    transition: transform 620ms var(--ease-expo, cubic-bezier(0.16, 1, 0.3, 1)),
-                filter 520ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+    transition: transform 900ms var(--ease-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+                filter 640ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
   }
   .osa-zvpd__zoom-btn:hover img,
   .osa-zvpd__zoom-btn:focus-visible img {
-    transform: scale(1.03);
-    filter: saturate(1.06) contrast(1.03);
+    transform: scale(1.015);
+    filter: saturate(1.04) contrast(1.02);
   }
   @media (prefers-reduced-motion: reduce) {
     .osa-zvpd__zoom-btn img { transition: none; }

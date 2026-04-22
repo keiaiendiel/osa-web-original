@@ -118,13 +118,13 @@ const displayLead = truncate(lead);
     filter: saturate(0.92);
     transform: scale(1);
     transition:
-      filter var(--dur-wipe, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1)),
-      transform var(--dur-wipe, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+      filter 640ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1)),
+      transform 900ms var(--ease-expo, cubic-bezier(0.16, 1, 0.3, 1));
   }
   .article-card:hover .article-card__hero img,
   .article-card:focus-visible .article-card__hero img {
-    filter: saturate(1.05);
-    transform: scale(1.03);
+    filter: saturate(1.03);
+    transform: scale(1.015);
   }
 
   /* ---------- Top + bottom zones ---------- */
