@@ -29,3 +29,6 @@ pnpm-debug.log*
 
 # Drive sync transient state (scripts/sync-drive-aktuality.mjs)
 .sync-summary.json
+
+# Superpowers skill cache
+.superpowers/
