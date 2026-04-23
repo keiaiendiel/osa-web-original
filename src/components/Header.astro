@@ -19,8 +19,14 @@ const isActive = (path: string) => {
 <header class:list={['osa-header', { 'osa-dark': variant === 'dark' }]}>
   <div class="container-wide osa-header__inner">
     <a href={withBase('/')} class="osa-header__brand" aria-label="Občanské sdružení Alternativa II - domů">
-      <img src={withBase('/logo/OSA-Wordmark-Black.svg')} alt="" aria-hidden="true" class="osa-header__logo osa-header__logo--light" />
-      <img src={withBase('/logo/OSA-Wordmark-White.svg')} alt="" aria-hidden="true" class="osa-header__logo osa-header__logo--dark" />
+      {/*
+       * width/height attributes pin the intrinsic size so the image never
+       * flashes at the SVG's fallback 300×75 while CSS is still loading.
+       * The actual rendered size comes from .osa-header__logo (height
+       * 18px desktop / 16px mobile); these attrs just reserve the box.
+       */}
+      <img src={withBase('/logo/OSA-Wordmark-Black.svg')} alt="" aria-hidden="true" width="72" height="18" class="osa-header__logo osa-header__logo--light" />
+      <img src={withBase('/logo/OSA-Wordmark-White.svg')} alt="" aria-hidden="true" width="72" height="18" class="osa-header__logo osa-header__logo--dark" />
     </a>
 
     <nav class="osa-header__nav" aria-label="Hlavní navigace">
