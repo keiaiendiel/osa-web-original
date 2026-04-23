@@ -56,9 +56,18 @@ const articleHref = withBase('/zamer-vpd/');
     </header>
 
     <aside class="osa-ih__chart" aria-hidden="true" data-reveal data-reveal-delay="2">
-      <div class="osa-ih__chart-grid">
-        {Array.from({ length: 28 }).map(() => <span></span>)}
-      </div>
+      {/*
+       * Mapa areálu — schematický půdorys (reversible). Uploaded as
+       * `/images/vpd-mapa-lp.jpg`. To revert to the old 28-cell pattern,
+       * swap this <img> back for the .osa-ih__chart-grid block; the CSS
+       * for it is retained below.
+       */}
+      <img
+        class="osa-ih__chart-map"
+        src={withBase('/images/vpd-mapa-lp.jpg')}
+        alt=""
+        loading="lazy"
+        decoding="async" />
       <p class="osa-mono osa-ih__chart-cap">
         Schematický pohled na areál · <span class="draft" data-review="pending"><span data-count-to="12" data-count-format="int">12</span>&nbsp;km od centra Prahy</span>
       </p>
@@ -194,5 +203,18 @@ const articleHref = withBase('/zamer-vpd/');
     color: var(--fg-muted);
     font-size: var(--text-2xs);
     margin: var(--space-3) 0 0;
+  }
+
+  /* Map image replacing the schematic grid. Fits inside the existing frame
+     (border + padding on .osa-ih__chart); `contain` keeps the entire map
+     visible regardless of aspect-ratio mismatch with the 4/3 frame. */
+  .osa-ih__chart-map {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    flex: 1;
+    min-height: 0;
+    object-fit: contain;
+    display: block;
   }
 </style>

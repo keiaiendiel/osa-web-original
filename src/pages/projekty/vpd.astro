@@ -22,13 +22,27 @@ import { withBase } from '../../utils/url';
             <a href={withBase('/projekty/')}>Projekty</a> <span aria-hidden="true">·</span>
             <span aria-current="page">Veřejně prospěšný developer</span>
           </nav>
-          <h1 class="osa-vpd__h1" data-reveal>
-            Veřejně prospěšný developer.
-            <span class="osa-vpd__h1-sub">Metodika obnovy brownfieldů bez dotací.</span>
-          </h1>
-          <p class="osa-vpd__lede" data-reveal data-reveal-delay="1">
-            VPD není místo, je to platforma. Šestnáct let zkušeností s oživováním chátrajících staveb převádí spolek OSA II do přístupu, který státu, městům i soukromým vlastníkům nabízí konkrétní alternativu ke spekulativnímu developmentu.
-          </p>
+          {/*
+           * VPD logomark experiment (reversible). The H1 carries screen-reader
+           * text; the visible mark is a 60° slanted bar + three stacked words
+           * rendered in Atyp Special Bold, mirroring the brand manual. To
+           * revert, swap this 2-col block back to the old single-column H1.
+           */}
+          <div class="osa-vpd__hero-grid">
+            <h1 class="osa-vpd__brand" data-reveal>
+              <span class="sr-only">Veřejně prospěšný developer</span>
+              <span class="osa-vpd__brand-bar" aria-hidden="true"></span>
+              <span class="osa-vpd__brand-word" aria-hidden="true">Veřejně</span>
+              <span class="osa-vpd__brand-word" aria-hidden="true">Prospěšný</span>
+              <span class="osa-vpd__brand-word" aria-hidden="true">Developer</span>
+            </h1>
+            <div class="osa-vpd__hero-copy">
+              <p class="osa-vpd__h1-sub" data-reveal>Metodika obnovy brownfieldů bez dotací.</p>
+              <p class="osa-vpd__lede" data-reveal data-reveal-delay="1">
+                VPD není místo, je to platforma. Šestnáct let zkušeností s oživováním chátrajících staveb převádí spolek OSA II do přístupu, který státu, městům i soukromým vlastníkům nabízí konkrétní alternativu ke spekulativnímu developmentu.
+              </p>
+            </div>
+          </div>
         </div>
       </SVGPattern>
     </section>
@@ -195,25 +209,78 @@ import { withBase } from '../../utils/url';
   .osa-vpd__crumbs a { text-decoration: underline; text-underline-offset: 3px; }
   .osa-vpd__crumbs [aria-current] { color: var(--fg); }
 
-  .osa-vpd__h1 {
+  /* ---------- Logomark experiment (v8.1, reversible) ----------
+   *
+   * 2-col hero: logomark LEFT, subhead + lede RIGHT. The mark is a
+   * horizontal bar with a 60° bevel on its bottom-left corner, stacked
+   * over three Atyp Special Bold words. Ratios follow the brand manual:
+   * bar height ≈ 0.45em of the word font-size, gap below bar ≈ 0.5em,
+   * word line-height 1.0. On narrow viewports the grid collapses.
+   */
+  .osa-vpd__hero-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) 1.3fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .osa-vpd__hero-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .osa-vpd__brand {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: clamp(2.25rem, 5vw + 0.5rem, 4rem);
-    line-height: 1.05;
+    font-size: clamp(1.75rem, 3.4vw + 0.5rem, 2.875rem);
+    line-height: 1;
     letter-spacing: var(--tracking-tight);
     color: var(--fg);
     margin: 0;
-    text-wrap: balance;
+    /* Pull the mark down so the bar's top edge lands on the cap-line of
+       the right-column subhead. The subhead's line-box inset above its
+       cap-top is ≈0.15 × its font-size; we approximate that here. */
+    padding-top: clamp(0.25rem, 0.35vw, 0.4rem);
+    display: grid;
+    gap: 0;
+    width: max-content;
+    max-width: 100%;
+  }
+  .osa-vpd__brand-bar {
+    display: block;
+    /* Brand-manual ratios: bar 6px / gap 11px / text 10pt ≈ 13.3px, so
+       bar = 0.45em and gap = 0.825em. CSS line-box on the first word
+       already adds ~0.15em inset above cap-top, so we subtract that
+       back from the margin to land on the drawn spacing. */
+    height: 0.45em;
+    width: 100%;
+    background: currentColor;
+    /* 60° bevel at bottom-left: overhang = h × cot(60°) ≈ h × 0.5774 */
+    clip-path: polygon(0.26em 0, 100% 0, 100% 100%, 0 100%);
+    margin-bottom: 0.18em;
+  }
+  .osa-vpd__brand-word {
+    display: block;
+    line-height: 1;
+  }
+
+  .osa-vpd__hero-copy {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 56ch;
   }
   .osa-vpd__h1-sub {
-    display: block;
-    color: var(--fg-muted);
-    font-weight: 500;
-    font-size: clamp(1.25rem, 1.8vw + 0.5rem, 1.75rem);
-    margin-top: var(--space-3);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2.2vw + 0.5rem, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+    text-wrap: balance;
   }
   .osa-vpd__lede {
-    max-width: 56ch;
     color: var(--fg-muted);
     font-size: var(--text-lg);
     margin: 0;
