@@ -6,28 +6,27 @@ import OrgChart from '../../components/OrgChart.astro';
 import ValuesMatrix from '../../components/ValuesMatrix.astro';
 import DocumentList from '../../components/DocumentList.astro';
 import InlineCTA from '../../components/InlineCTA.astro';
-import SVGPattern from '../../components/SVGPattern.astro';
 import { withBase } from '../../utils/url';
 ---
 <Base title="O spolku - Občanské sdružení Alternativa II, z.s.">
   <Header variant="dark" />
   <main>
-    <section class="osa-about__hero osa-dark">
-      <SVGPattern variant="dark" opacity={0.14}>
-        <div class="container-wide osa-about__hero-inner">
-          <nav aria-label="Drobečková navigace" class="osa-about__crumbs osa-eyebrow">
-            <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>
-            <span aria-current="page">O spolku</span>
-          </nav>
-          <h1 class="osa-about__h1" data-reveal>
-            Ideologický a právní kořen spolku.
-            <span class="osa-about__h1-sub">Platforma, která nic neprovozuje; rámec, bez kterého by projekty nemohly růst.</span>
-          </h1>
-          <p class="osa-about__lede" data-reveal data-reveal-delay="1">
-            OSA II je zapsaný spolek založený v roce 2006 dvanácti studenty jako nezávislá, projektově orientovaná organizace. Od té doby kolem spolku vyrostlo téměř dvacet autonomních projektů, od komunitních zahrad přes kulturní památky až po LARP festivaly.
-          </p>
-        </div>
-      </SVGPattern>
+    <section
+      class="osa-about__hero osa-dark"
+      style={`--about-pattern: url('${withBase('/graphics/osa-bg-pattern-2.svg')}')`}>
+      <div class="container-wide osa-about__hero-inner">
+        <nav aria-label="Drobečková navigace" class="osa-about__crumbs osa-eyebrow">
+          <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>
+          <span aria-current="page">O spolku</span>
+        </nav>
+        <h1 class="osa-about__h1" data-reveal>
+          Ideologický a právní kořen spolku.
+          <span class="osa-about__h1-sub">Platforma, která nic neprovozuje; rámec, bez kterého by projekty nemohly růst.</span>
+        </h1>
+        <p class="osa-about__lede" data-reveal data-reveal-delay="1">
+          OSA II je zapsaný spolek založený v roce 2006 dvanácti studenty jako nezávislá, projektově orientovaná organizace. Od té doby kolem spolku vyrostlo téměř dvacet autonomních projektů, od komunitních zahrad přes kulturní památky až po LARP festivaly.
+        </p>
+      </div>
     </section>
 
     <section class="section section--tight osa-about__narrative">
@@ -100,10 +99,27 @@ import { withBase } from '../../utils/url';
 </Base>
 
 <style>
-  /* Dark hero: same shape as landing/VPD so the three pages share one silhouette. */
+  /* Dark hero: same shape as landing/VPD so the three pages share one silhouette.
+     Background motif is the outlined-triangle OSA pattern (companion to the filled
+     pattern on the landing hero), layered via ::before under the content. */
   .osa-about__hero {
     border-bottom: 1px solid var(--rule);
+    position: relative;
+    isolation: isolate;
   }
+  .osa-about__hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--about-pattern);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.2;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .osa-about__hero-inner { position: relative; z-index: 1; }
   .osa-about__hero-inner {
     /* Vertical padding is applied per-property so the horizontal
        gutter from .container-wide is preserved (padding shorthand

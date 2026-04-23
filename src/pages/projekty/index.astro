@@ -5,7 +5,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import FilterBar from '../../components/FilterBar.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
-import SVGPattern from '../../components/SVGPattern.astro';
+import { withBase } from '../../utils/url';
 
 const all = await getCollection('subProjects', e => e.data.status !== 'draft');
 const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
@@ -22,23 +22,23 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
      * because of the filters, but the top portion (crumbs, H1, lede) follows
      * the shared contract byte-for-byte.
      */}
-    <section class="osa-projekty__hero osa-dark">
-      <SVGPattern variant="dark" opacity={0.14}>
-        <div class="container-wide osa-projekty__hero-inner">
-          <header class="osa-projekty__head" data-reveal>
-            <span class="osa-eyebrow">Autonomní projekty</span>
-            <h1 class="osa-projekty__h1">
-              Pod hlavičkou OSA působí desítky autonomních projektů.
-              <span class="osa-projekty__h1-sub">
-                Každý si vede vlastní prostor, web, členskou základnu a hospodaření. Spolek poskytuje právní a organizační zázemí.
-              </span>
-            </h1>
-          </header>
-          <div class="osa-projekty__filters" data-reveal data-reveal-delay="1">
-            <FilterBar />
-          </div>
+    <section
+      class="osa-projekty__hero osa-dark"
+      style={`--projekty-pattern: url('${withBase('/graphics/osa-bg-pattern.svg')}')`}>
+      <div class="container-wide osa-projekty__hero-inner">
+        <header class="osa-projekty__head" data-reveal>
+          <span class="osa-eyebrow">Autonomní projekty</span>
+          <h1 class="osa-projekty__h1">
+            Pod hlavičkou OSA působí desítky autonomních projektů.
+            <span class="osa-projekty__h1-sub">
+              Každý si vede vlastní prostor, web, členskou základnu a hospodaření. Spolek poskytuje právní a organizační zázemí.
+            </span>
+          </h1>
+        </header>
+        <div class="osa-projekty__filters" data-reveal data-reveal-delay="1">
+          <FilterBar />
         </div>
-      </SVGPattern>
+      </div>
     </section>
 
     <section class="section">
@@ -69,7 +69,22 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
 
   .osa-projekty__hero {
     border-bottom: 1px solid var(--rule);
+    position: relative;
+    isolation: isolate;
   }
+  .osa-projekty__hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--projekty-pattern);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .osa-projekty__hero-inner { position: relative; z-index: 1; }
   .osa-projekty__hero-inner {
     /* Same contract as .osa-about__hero-inner and .osa-vpd__hero-inner. Split
        padding preserves .container-wide's horizontal gutter. */

@@ -1,27 +1,27 @@
 ---
 import OsaGlyph from './OsaGlyph.astro';
-import SVGPattern from './SVGPattern.astro';
+import { withBase } from '../utils/url';
 ---
-<section class="osa-hero osa-dark">
-  <SVGPattern variant="dark" opacity={0.16}>
-    <div class="container-wide osa-hero__inner">
-      <div class="osa-hero__eyebrow osa-eyebrow" data-reveal>
-        <OsaGlyph size="13px" />
-        <span>Občanské sdružení Alternativa II, z.s.</span>
-      </div>
-      <h1 class="osa-hero__h1">
-        <span
-          class="osa-hero__h1-main"
-          data-reveal-words
-          data-reveal-words-delay="200"
-          data-reveal-words-step="40">Obnovujeme chátrající památky, stavíme zkušebny a dílny, zakládáme komunitní zahrady a kulturní centra.</span>
-      </h1>
-      <p class="osa-hero__strapline" data-reveal style="transition-delay: 900ms">
-        Platforma pro desítky autonomních projektů. Pomáháme tvořit bez státních dotací, dobrovolnickou prací a metodou DIY.
-      </p>
-      <div class="osa-hero__rule" aria-hidden="true" data-reveal style="transition-delay: 1100ms"></div>
+<section
+  class="osa-hero osa-dark"
+  style={`--hero-pattern: url('${withBase('/graphics/osa-bg-pattern.svg')}')`}>
+  <div class="container-wide osa-hero__inner">
+    <div class="osa-hero__eyebrow osa-eyebrow" data-reveal>
+      <OsaGlyph size="13px" />
+      <span>Občanské sdružení Alternativa II, z.s.</span>
     </div>
-  </SVGPattern>
+    <h1 class="osa-hero__h1">
+      <span
+        class="osa-hero__h1-main"
+        data-reveal-words
+        data-reveal-words-delay="200"
+        data-reveal-words-step="40">Obnovujeme chátrající památky, stavíme zkušebny a dílny, zakládáme komunitní zahrady a kulturní centra.</span>
+    </h1>
+    <p class="osa-hero__strapline" data-reveal style="transition-delay: 900ms">
+      Platforma pro desítky autonomních projektů. Pomáháme tvořit bez státních dotací, dobrovolnickou prací a metodou DIY.
+    </p>
+    <div class="osa-hero__rule" aria-hidden="true" data-reveal style="transition-delay: 1100ms"></div>
+  </div>
 </section>
 
 <style>
@@ -34,6 +34,22 @@ import SVGPattern from './SVGPattern.astro';
     position: relative;
     isolation: isolate;
   }
+  /* Background motif: bespoke OSA triangular pattern at low opacity, sized to
+     cover the banner. Was previously a diagonal-line SVGPattern — same role
+     (texture on an otherwise flat black surface), different vocabulary. */
+  .osa-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--hero-pattern);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .osa-hero__inner { position: relative; z-index: 1; }
   .osa-hero__inner {
     /* Shared dark-hero shape across Úvod / O spolku / Projekty / Aktuality detail /
        VPD. Padding is applied per-property so .container-wide's horizontal gutter
