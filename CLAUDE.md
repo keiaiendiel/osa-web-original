@@ -20,7 +20,7 @@ Static site for **Občanské sdružení Alternativa II, z.s.** (OSA). Destinatio
 | Client JS | Filter island (~900 B) + IntersectionObserver reveal observer (~400 B) + values accordion toggle + mobile hamburger + gallery lightbox (all inline `<script is:inline>`) |
 | Deploy    | Live: GitHub Pages at https://keiaiendiel.github.io/osa-web/. Repo: github.com/keiaiendiel/osa-web (public). DNS → osa2.cz is post-launch. |
 
-## Current state (2026-04-21, after v8 deploy + mobile polish + Drive-sync activation)
+## Current state (2026-04-23, after v8.1 brand + editorial pass)
 
 - 29 pages build cleanly, zero build errors. Fonts 100.8 KB site-wide, weight budget green on every page.
 - Editorial lint green. Typographic bans (em/en-dash, `!` in prose) were dropped per client direction; voice-level rules (passive, hype, legalese) still stand.
@@ -32,6 +32,11 @@ Static site for **Občanské sdružení Alternativa II, z.s.** (OSA). Destinatio
 - VPD1 → VPD naming dropped across content, component strings, page IDs, and filenames. Aktualita slug is now `vpd-hledame-strategickeho-partnera`.
 - Internal project pages (`/projekty/<slug>/`): accent colour no longer paints the H1. A 56×3 px coloured bar above the heading carries the project's colour; body text stays monochrome.
 - Dev server via `pnpm dev` on port 4321 (`.claude/launch.json` entry `osa-web`).
+- Header logo is a **wordmark** (`OSA-Wordmark-{Black,White}.svg`, source: Suitcase supplied `Glylp_OSA_Logo_*.svg`), glyph + "OSA" lettering at 4:1. Sized 18 px height / auto width on desktop, 16 px on mobile. `width="72" height="18"` HTML attrs pinned on the `<img>` so the browser reserves the correct box from first paint — without them the SVG's `width="100%"` fallback resolves to 300×75 and flashes big during navigation. Old square `OSA-Logo-{Black,White}.svg` files kept in `public/logo/` as backup; current Header imports the Wordmark files.
+- `/projekty/vpd/` hero carries the **VPD logomark** instead of a text H1: 60°-bevelled bar over three stacked Atyp Special Bold words (`Veřejně / Prospěšný / Developer`). Semantic H1 preserved via `.sr-only`. 2-col hero grid (mark left, subhead + lede right); bar top aligns with the cap-line of the right-column subhead (padding-top compensates the line-box inset). Fully scoped to `vpd.astro`, trivially reversible.
+- Hero dark-pattern treatment is now consistent across Úvod / O spolku / Projekty: one `::before` layer driven by `--{page}-pattern` CSS custom property pointing at `graphics/osa-bg-pattern.svg` (landing, Projekty, both at 0.15 opacity) or `osa-bg-pattern-2.svg` (O spolku, 0.20 opacity). Old `<SVGPattern>` wrapper still used on VPD + aktuality detail; gradually replacing with the bespoke `::before` approach for per-page opacity control.
+- O spolku page rebuilt: narrative + compact VPD-style stats dl (20 let / 20+ projektů / 8 oblastí / 0 Kč dotací), three bespoke chapter blocks (01 Vize / 02 Poslání / 03 Smysl) using the VPD chapter-head vocabulary (big numeric mark left, eyebrow + heading + body right), ValuesMatrix **before** OrgChart (client ordering), Gallery "Z činností spolku." at the bottom.
+- InvestmentHero schematic grid had a horizontal-overflow bug: cells with `aspect-ratio: 1/1` inside a flex-constrained 4:3 aside forced a min-width per column that exceeded the container. Fixed via explicit `grid-template-rows: repeat(4, minmax(0, 1fr))` + `grid-template-columns: repeat(7, minmax(0, 1fr))` and `min-width: 0; min-height: 0;` on grid and cells.
 
 ## Repo layout
 
@@ -43,7 +48,8 @@ osa-web/
 │   ├── fonts/*.woff2             # Atyp Special Medium, Bold, Italic (subsetted)
 │   ├── graphics/graphic-asset-header_{1..6}.svg   # full-bleed motif strips
 │   ├── images/*.jpg              # 10 gallery placeholders, downsampled
-│   ├── logo/{OSA-Logo-Black,White,White-Full,osa-glyph}.svg
+│   ├── logo/{OSA-Logo-Black,White,White-Full,osa-glyph}.svg       # square glyph variants (backup)
+│   ├── logo/OSA-Wordmark-{Black,White}.svg                         # v8.1 header wordmark (4:1)
 │   ├── robots.txt
 │   └── _redirects                # placeholder; real alternativa2.info map is TBD
 ├── scripts/
@@ -183,7 +189,7 @@ End-to-end verified: client writes Doc → cron (or manual `gh workflow run sync
 - **DNS → osa2.cz not cut over.** While the site serves from `keiaiendiel.github.io/osa-web/`, `astro.config.mjs` has `base: '/osa-web/'` + `tokens.css` hardcodes `/osa-web/fonts/`. When DNS flips: change `site` to `https://osa2.cz`, remove `base`, and find-replace `/osa-web/` → `/` in `tokens.css`. `withBase()` calls become no-ops and can be inlined later.
 - **Atyp Special `-OSA-` ligature.** Font file lacks the rule; explicit `<OsaGlyph />` SVG remains the workaround.
 
-## Client-driven revisions (v1 → v8)
+## Client-driven revisions (v1 → v8.1)
 
 Each `v#` commit captures a round of feedback from the client. Reading them in order tells the story:
 
@@ -205,6 +211,12 @@ Each `v#` commit captures a round of feedback from the client. Reading them in o
   (b) **Drive sync activated.** Service account, secrets, folder sharing, end-to-end verified. Sync script hardened: strips base64 data-URL images from Doc markdown exports (both `![][ref]` + `[ref]: <data:...>` autolink forms + `![](data:...)` inline form), iteratively compresses every image to ≤700 KB (Q80 → Q45, width 1400 → 900 px fallback), walks all inline images into hero + gallery array, validates frontmatter against Zod and auto-drafts unfixable docs, reverts transient `package.json` + `pnpm-lock.yaml` edits from the `pnpm add` step. PR step dropped — commits straight to master with a bot identity. Apps Script step skipped.
   (c) **Mobile polish pass.** Hamburger drawer with z-index-safe header (logo + X visible). ValuesMatrix rewritten as single-open accordion; desktop `hover: hover` + `pointer: fine` guard restores the original `:hover` peek. Gallery colour-by-default; lightbox overlay (ESC + arrow-key navigation; `hidden` attribute MUST win over `display: grid` or the invisible overlay eats every click). Rozcestník capped at 6 cards on phones + "Ostatní projekty" CTA. ValuesMatrix, InvestmentHero, footer, scroll-reveal threshold all tuned for short viewports. InvestmentHero uses CSS grid-template-areas so mobile order is header → chart → metrics → CTAs. "O VPD" shortened from "O Veřejně prospěšném developerovi".
   (d) **Content polish.** VPD1 → VPD (filenames, slug, strings, eyebrows, email subjects, hero alt). Accent colour dropped from internal project page H1s; replaced with a 56×3 px coloured bar above the heading. `/projekty/vpd/` now embeds `<InvestmentHero hideVpdLink={true} />` instead of the bespoke `#zamer-vpd1` block. Gallery gained an optional `title` prop so the in-article gallery only shows the small "Galerie" eyebrow (no H2). Editorial linter relaxed per client call — em/en-dash and `!` bans lifted; voice-level rules (passive, hype, legalese) kept. Value 16 renamed to one-line "ekologický způsob". Aktualita hero placeholder (VPD Klecany courtyard photo) awaiting final render of Horní kasárna.
+- **v8.1** (2026-04-23, brand + editorial pass) — six strands, all small-to-medium:
+  (a) **Dark-hero pattern unification.** `::before` layer driven by `--{page}-pattern` CSS custom property replaces `<SVGPattern>` on landing, Projekty, and O spolku. Landing + Projekty: filled triangles `osa-bg-pattern.svg` at 0.15 opacity. O spolku: outlined `osa-bg-pattern-2.svg` at 0.20 opacity.
+  (b) **O spolku rebuild.** Added "Více o spolku" InlineCTA under the landing Hero's big H1. Replaced the tall stats block with a compact VPD-style dl (Založeno 2006 / 20+ projektů / 8 oblastí / 0 Kč dotací). Three bespoke chapter blocks (01 Vize / 02 Poslání / 03 Smysl) in the VPD chapter-head vocabulary (big numeric mark left + eyebrow above heading right) instead of SectionBlock. Reordered sections so ValuesMatrix precedes OrgChart. Appended `<Gallery title="Z činností spolku." />` at bottom. Dropped the Havel quote per client call.
+  (c) **VPD logomark in hero.** `/projekty/vpd/` hero replaces the text H1 with a brand logomark: 60°-bevelled bar (`clip-path: polygon(0.26em 0, 100% 0, 100% 100%, 0 100%)` on a 0.45em-tall bar) over three stacked Atyp Special Bold words (`Veřejně / Prospěšný / Developer`). Semantic `<h1>` preserved via `.sr-only` for a11y/SEO. 2-col hero grid: mark left, subhead ("Metodika obnovy brownfieldů bez dotací.") + lede right. Bar top aligns with the cap-line of the right-column subhead (padding-top compensates the ≈0.15em line-box inset; measured drift ≈0.4 px). Font size `clamp(1.75rem, 3.4vw + 0.5rem, 2.875rem)` — one step smaller than the original H1. Reversible in a single block.
+  (d) **Header wordmark.** Replaced the square glyph (`OSA-Logo-{Black,White}.svg`) with the Suitcase-supplied `Glylp_OSA_Logo_{Black,White}.svg` wordmark (glyph + "OSA" lettering, 2048×512 viewBox). Stored as `public/logo/OSA-Wordmark-{Black,White}.svg`. Sized 18 px height / auto width on desktop, 16 px on mobile (~80 % of the prior glyph per client). Pinned `width="72" height="18"` HTML attrs on the `<img>` so the browser reserves the box from first paint — without them the SVG's `width="100%"` fallback resolves to 300×75 and the logo flashed big during navigation.
+  (e) **InvestmentHero grid overflow fix.** Schematic grid cells with `aspect-ratio: 1/1` inside a flex-constrained 4:3 aside forced a per-column min-width that exceeded the container, pushing the landing page horizontally and introducing a scrollbar. Fixed by defining explicit `grid-template-rows: repeat(4, minmax(0, 1fr))` + `grid-template-columns: repeat(7, minmax(0, 1fr))`, dropping cell aspect-ratio, and adding `min-width: 0; min-height: 0;` on grid and cells. A brief experiment to swap the grid for a real site-plan JPG (`vpd-mapa-lp.jpg`) was reverted — client preferred the abstract schematic.
 
 ## Running the project
 
