@@ -1,160 +1,353 @@
 # osa-web
 
-Public website for **Občanské sdružení Alternativa II, z.s.** (OSA). Built with Astro 6, zero client-side JavaScript except one 900-byte filter island on `/projekty/`. Designed to replace `alternativa2.info` at `osa2.cz`.
+Veřejná webová prezentace **Občanského sdružení Alternativa II, z.s.** (OSA).
+Statický web postavený na Astro 6, ručně psané CSS, content collections,
+nasazený na GitHub Pages. Cílová doména **osa2.cz**, dočasně běží na
+[https://keiaiendiel.github.io/osa-web/](https://keiaiendiel.github.io/osa-web/).
+
+---
+
+## Rychlý start
+
+```bash
+# 1. Klonování + instalace
+git clone https://github.com/keiaiendiel/osa-web.git
+cd osa-web
+pnpm install
+
+# 2. Lokální dev server
+pnpm dev
+# → http://localhost:4321/osa-web/
+
+# 3. Produkční build do dist/
+pnpm build
+pnpm preview            # serve dist/ na portu 4321
+
+# 4. Linty
+pnpm lint               # editorial + link lint
+pnpm lint:editorial     # samostatně pravidla psaní
+pnpm lint:weight        # per-page weight budget
+```
+
+> **pnpm.** Repo používá pnpm. Pokud nemáš nainstalované, `corepack enable` ho aktivuje skrze `packageManager` field v `package.json`. Alternativně `npm i -g pnpm`.
+
+---
+
+## Lokální preview přes Claude Preview MCP
+
+V `.claude/launch.json` je nakonfigurovaný server `osa-web`. V Claude Code stačí:
+
+```
+preview_start name="osa-web"
+```
+
+Server poběží na `http://localhost:4321/osa-web/`. Změny v `src/` se hot-reloadují, content collections (`src/content/*.json`, MDX) se reloadují při uložení (Astro občas potřebuje restart, pokud mění schéma).
+
+Pro běžný browser preview bez Claude Code:
+
+```bash
+pnpm dev
+# → http://localhost:4321/osa-web/
+```
+
+---
+
+## Deploy / push na git
+
+Web automaticky redeployuje na GitHub Pages při každém pushi na `master`.
+
+```bash
+# Standardní push flow
+git status
+git add <konkrétní soubory>          # ne git add . — ať nezapomeneme něco
+git commit -m "feat: krátký popis"
+git push origin master
+
+# CI pipeline → GitHub Pages
+# .github/workflows/deploy-pages.yml staví dist/ a publikuje na gh-pages
+# Trvá ~1–2 minuty od pushe k deployi.
+```
+
+Status nasazení a logy: **GitHub → Actions** záložka v repu.
+
+### DNS přepnutí na osa2.cz
+
+Až budeme přepínat doménu:
+
+1. V `astro.config.mjs` změnit `site: 'https://osa2.cz'`, **odstranit** `base: '/osa-web/'`.
+2. V `src/styles/tokens.css` find-replace `/osa-web/fonts/` → `/fonts/`.
+3. V repo Settings → Pages přidat custom domain `osa2.cz`.
+4. Ověřit redirecty v `public/_redirects` (kotví URL z původního alternativa2.info).
+5. `withBase()` calls zůstávají funkční (po odstranění base se chovají jako no-op).
+
+---
 
 ## Stack
 
-| Piece              | Choice                                                 |
-|--------------------|--------------------------------------------------------|
-| Framework          | [Astro 6](https://astro.build) (static output)         |
-| Language           | TypeScript strict                                      |
-| Content            | Astro Content Collections (MDX + JSON)                 |
-| Styling            | Vanilla CSS with tokens (no Tailwind, no CSS-in-JS)    |
-| Fonts              | Self-hosted WOFF2 in `public/fonts/`                   |
-| Deploy             | Cloudflare Pages (or any static host)                  |
-| Domain             | `osa2.cz` (to be configured)                           |
+| Vrstva       | Volba                                                 |
+|--------------|-------------------------------------------------------|
+| Framework    | [Astro 6](https://astro.build), output: `static`      |
+| Jazyk        | TypeScript strict                                     |
+| Content      | Astro Content Collections (MDX + JSON, Zod schemas)   |
+| Styling      | Vanilla CSS (žádný Tailwind, žádný CSS-in-JS)         |
+| Fonty        | Self-hosted Atyp Special WOFF2 v `public/fonts/`      |
+| Client JS    | ~3 kB inline `<script is:inline>` islands             |
+| Deploy       | GitHub Pages → osa2.cz (po DNS flip)                  |
 
-## Scripts
+---
 
-```bash
-pnpm install            # install deps
-pnpm dev                # dev server, http://localhost:4321
-pnpm build              # static build to dist/
-pnpm preview            # serve dist/
-pnpm lint               # run all linters
-pnpm lint:editorial     # grep-based editorial rulebook enforcement
-pnpm lint:links         # HEAD-check external_url in sub_projects
-pnpm lint:weight        # verify dist/ fits the per-page weight budget
+## Projektová struktura
+
+```
+osa-web/
+├── .github/workflows/
+│   ├── deploy-pages.yml        Build + deploy na GH Pages
+│   ├── sync-aktuality.yml      30min cron — Drive → MDX
+│   └── ci.yml                  Lint + build na PR
+├── public/
+│   ├── fonts/                  Atyp Special WOFF2 (Medium, Bold, Italic)
+│   ├── graphics/               Pattern SVG, OSA glyph
+│   ├── images/
+│   │   ├── hero-earth/         84 frames pro hero scrub (1280×720, ~1 MB)
+│   │   ├── areal/              Mapa + 4 vizualizace SH Klecany
+│   │   └── aktuality/          Hero + gallery obrázky pro aktuality
+│   ├── logo/                   OSA wordmark + glyph SVG
+│   ├── og/                     OG image fallback
+│   └── _redirects              301-mapy pro alternativa2.info
+├── scripts/
+│   ├── lint-editorial.mjs      Voice-level pravidla psaní
+│   ├── lint-links.mjs          HEAD-check externích URL
+│   ├── lint-weight.mjs         Per-page eager budget (max 250 kB)
+│   └── sync-drive-aktuality.mjs Drive → MDX exporter
+├── src/
+│   ├── content.config.ts       Zod schemas pro všechny collections
+│   ├── content/
+│   │   ├── sub_projects/*.mdx          17 projektů
+│   │   ├── values/axioms.json          16 spolkových hodnot
+│   │   ├── pillars/index.json          3 pilíře hospodaření
+│   │   ├── goals/index.json            3 horizonty cílů (kr/st/dl)
+│   │   ├── org/identity.json           ICO, DIČ, kontakt, adresa
+│   │   ├── dokumenty/*.json            PDF metadata
+│   │   └── aktuality/*.mdx             Aktuality články
+│   ├── components/
+│   │   ├── Header.astro                Sticky nav + Přihlásit button
+│   │   ├── Footer.astro                Patička s navigací
+│   │   ├── Hero.astro                  Sticky-pin scroll-scrub video hero
+│   │   ├── Rozcestnik.astro            8 projektů na úvodu
+│   │   ├── ValuesMatrix.astro          16 hodnot, 4×4 accordion
+│   │   ├── ManifestoStrip.astro        3 pilíře (poslání + ekonomický model)
+│   │   ├── ProjectCard.astro           Karta projektu (8 accent barev)
+│   │   ├── ArticleCard.astro           Karta aktuality
+│   │   ├── AktualityRecap.astro        3 nejnovější aktuality na úvodu
+│   │   ├── Gallery.astro               4×2 fotogalerie + lightbox
+│   │   ├── FilterBar.astro             Filtr (skrytý na /projekty/)
+│   │   ├── OrgChart.astro              Org struktura (3 patra, monochrome)
+│   │   ├── GoalsHorizons.astro         3 sloupce cílů
+│   │   ├── InvestmentHero.astro        VPD investiční výzva
+│   │   ├── SectionBlock.astro          Číslovaná sekce s expand
+│   │   ├── DocumentList.astro          Seznam PDF dokumentů
+│   │   ├── InlineCTA.astro             Underline + chevron CTA
+│   │   ├── OsaGlyph.astro              SVG OSA trojúhelník
+│   │   ├── SVGPattern.astro            Diagonální pattern (footer/dark)
+│   │   ├── GraphicHeader.astro         Full-bleed strip (zatím nepoužito)
+│   │   └── RevealOnScroll.astro        IntersectionObserver pro data-reveal
+│   ├── layouts/
+│   │   ├── Base.astro                  HTML head, SEO, JSON-LD, base classes
+│   │   └── LongformPage.astro          Editorial layout pro historie/metodologie
+│   ├── pages/
+│   │   ├── index.astro                 Úvod
+│   │   ├── o-spolku/{index,historie,metodologie,dokumenty}.astro
+│   │   ├── projekty/
+│   │   │   ├── index.astro             Mřížka projektů
+│   │   │   ├── [slug].astro            Stub page pro projekty bez external_url
+│   │   │   └── vpd.astro               Bespoke VPD detail
+│   │   ├── aktuality/{index,[slug]}.astro
+│   │   ├── zapojte-se/index.astro      6 cest spolupráce
+│   │   ├── clenstvi/index.astro        Členství detail + přihláška
+│   │   ├── portal/index.astro          Členský portál (login + dashboard prototyp)
+│   │   ├── kontakty/index.astro        Kontakt
+│   │   └── 404.astro
+│   ├── styles/
+│   │   ├── tokens.css                  CSS custom properties + @font-face
+│   │   ├── kit.css                     Utility classes (.btn, .tag, .container-*)
+│   │   └── motion.css                  Motion rules (transitions, easings)
+│   └── utils/url.ts                    `withBase(path)` helper
+├── astro.config.mjs                    Site URL, base, integrations
+└── package.json                        pnpm + scripts
 ```
 
-## Content model
+---
 
-All editable content lives in `src/content/`. Add a new sub-project by creating one MDX file:
+## Content collections — jak přidat
+
+### Sub-projekt
+Vytvoř `src/content/sub_projects/<slug>.mdx`:
 
 ```mdx
 ---
 name: Můj nový projekt
-description: 15-20 slov o tom, co projekt dělá.
-accent: coral           # one of: red, coral, mustard, olive, forest, teal, blue, plum
+description: 30-160 znaků, jeden odstavec o projektu.
+accent: coral                # red | coral | mustard | olive | forest | teal | blue | plum
 year_from: 2026
-status: pripravovany    # realizovany | pripravovany | ve-spanku | draft
-relationship: pilotni   # autonomni | pilotni | ve-spanku
-topic: kultura          # urbanismus | kultura | sport | media | vzdelavani | tvorba | komunita | larp
-external_url: https://mujprojekt.cz   # omit if no own domain
+status: pripravovany         # realizovany | pripravovany | ve-spanku | draft
+relationship: pilotni        # autonomni | pilotni | ve-spanku
+topic: kultura               # urbanismus | kultura | sport | media | vzdelavani | tvorba | komunita | larp
+external_url: https://mujprojekt.cz   # vynechat pokud projekt nemá vlastní URL
 featured: false
 order: 100
 ---
+
+Volný markdown obsah, pokud projekt má dedikovanou stránku.
 ```
 
-Schema is enforced at build time via Zod (`src/content.config.ts`). An invalid accent or topic fails the build immediately.
+Schéma se ověřuje při buildu (Zod). Špatný `accent` nebo `topic` build okamžitě shodí.
 
-Other collections:
+### Aktualita
+Vytvoř `src/content/aktuality/<slug>.mdx`:
 
-- `src/content/values/axioms.json` - 16 spolková hodnoty
-- `src/content/pillars/index.json` - 3 pilíře hospodaření
-- `src/content/org/identity.json` - legal identifiers, contacts, addresses
-- `src/content/dokumenty/*.json` - PDFs and archive entries
+```mdx
+---
+title: "Krátký výstižný titulek (10–120 znaků)"
+lead: "Lead odstavec, 40–240 znaků. Pomáhá si představit, o čem článek je."
+date: 2026-04-30
+hero: "/images/aktuality/<slug>/hero.jpg"
+hero_alt: "Popis hero obrázku, 3–180 znaků."
+author: "OSA II, z.s."
+tags: ["výletná", "klecany"]
+gallery:
+  - "/images/aktuality/<slug>/01.jpg"
+  - "/images/aktuality/<slug>/02.jpg"
+draft: false
+---
 
-## Editorial rulebook
+## Markdown obsah
 
-Enforced by `pnpm lint:editorial`. See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full list and rationale. Highlights:
+Texty v markdownu, sekce přes `##`. **Bold**, *italic*, [odkazy](https://example.com).
+```
 
-- No em dashes, no en dashes
-- No exclamation points in body copy
-- No passive-voice patterns (`je realizováno`, `je zajišťováno`, `snaha o`)
-- No legalistic `ve smyslu §`
-- No marketing hype (`úžasný`, `neuvěřitelný`, `zásadní význam`)
-- Ellipsis reserved for `Pomáháme tvořit...` motto only
-- Czech and Slovak diacritics must be correct
+Hero obrázek dej do `public/images/aktuality/<slug>/hero.jpg`. Galerie do stejné složky pod očíslovanými soubory.
 
-Lint script: [`scripts/lint-editorial.mjs`](./scripts/lint-editorial.mjs).
+### Cíle a záměry (goals)
+`src/content/goals/index.json` — 3 horizonty (krátko/středně/dlouhodobé). Položky podporují inline HTML (anchory na projekty):
 
-## Investment Hero (VPD1) DRAFT mode
+```json
+{
+  "id": "short",
+  "horizon": "short",
+  "label": "Krátkodobé",
+  "order": 1,
+  "items": [
+    "Dokončit aplikaci pro <a href=\"/projekty/kreditni-system/\">Kreditní systém OSA II</a>."
+  ]
+}
+```
 
-The **Aktuálně: Záměr VPD1** block on the homepage is in DRAFT mode. Every financial figure (ROI %, mld. Kč, m²) is wrapped in a mustard-highlighted span with `data-review="pending"`. CTA buttons are `aria-disabled`. To activate for production:
+### Hodnoty / Pilíře / Org / Dokumenty
+- `src/content/values/axioms.json` — 16 hodnot s `id`, `name`, `gloss`, `order`
+- `src/content/pillars/index.json` — 3 pilíře hospodaření
+- `src/content/org/identity.json` — IČO, DIČ, kontakty, adresy, předseda, místopředseda
+- `src/content/dokumenty/*.json` — PDF dokumenty
 
-1. Confirm every figure with Marek Semerád (předseda).
-2. Change `<InvestmentHero confirmed={true} />` in `src/pages/index.astro`, or remove the component altogether if the campaign is paused.
-3. Upload the real PDF to `public/dokumenty/Zamer_VPD1_zakladni_souhrn.pdf`.
+---
+
+## Hero — image-sequence scroll-scrub
+
+Úvodní hero používá Apple-style scrubbing video animaci. 84 JPG framů (`public/images/hero-earth/frame-NNN.jpg`) namapovaných na scroll progress přes sticky pin pattern.
+
+**Pin wrapper** (`.osa-hero-pin`) má `height: 200vh`. **Sticky inner** (`.osa-hero`) je `position: sticky; top: 0; height: 100vh`. Během prvních ~100vh scrollu se hero přilepí, video se scrubbuje, pak se pustí a zbytek stránky pokračuje.
+
+**Mapping:**
+- `scrollProgress = scrolled / (pin.height − inner.height)` clamped 0..1
+- `videoProgress = min(1, scrollProgress / 0.9)` — video doběhne v 90 % scroll range
+- `frame = round(videoProgress × 83)`
+- `--scroll-progress` CSS var na overlay řídí postupné stmavnutí Earth do siluety
+
+**Reduced-motion:** statický frame-001, žádný scrub.
+
+**Rozšíření videa:**
+1. Nové frames vyextrahovat: `ffmpeg -i video.mov -vf "select='not(mod(n,3))',scale=1280:720" -q:v 6 public/images/hero-earth/frame-%03d.jpg`
+2. Aktualizovat `FRAME_COUNT` v `src/components/Hero.astro` (řádek `const FRAME_COUNT = 84;`).
+
+---
+
+## Portal — členský portál (prototyp)
+
+`/portal/` je čistý frontendový prototyp bez backendu:
+
+- Po zadání identifikátoru (např. `35S`) + libovolného hesla se zobrazí dashboard
+- Mock data jsou hardcodovaná v `src/pages/portal/index.astro` (`const member = {...}`, `const aktivity = [...]`)
+- Refresh = reset (žádná perzistence, žádný localStorage)
+- Po loginu se v hlavičce mění text "Přihlásit" na členské ID (data attribute swap)
+
+Pro reálnou implementaci je potřeba doplnit auth backend a perzistenci.
+
+---
+
+## Editorial pravidla
+
+Vynucuje `pnpm lint:editorial`. Voice-level rules (typografická pravidla už se nevynucují — em-dash, en-dash, `!` v tělech jsou OK):
+
+- **Žádný passive voice** (`je realizováno`, `je zajišťováno`, `snaha o`)
+- **Žádný legalese** (`ve smyslu §`)
+- **Žádný marketingový hype** (`úžasný`, `neuvěřitelný`, `revoluční`, `zásadní význam`)
+- **Ellipsis** (`…`) povolen pro `Pomáháme tvořit…` motto a další smysluplná použití
+
+Detail: `scripts/lint-editorial.mjs` + `CONTRIBUTING.md`.
+
+---
 
 ## Performance budget
 
-Checked on every build by `pnpm lint:weight`. Hard limits per page:
+`pnpm lint:weight` kontroluje per-page eager váhu. Aktuální stav (~80 kB landing, většina ostatních pod 50 kB).
 
-| Metric    | Budget |
-|-----------|-------:|
-| Total     | 400 KB |
-| JS        |  10 KB |
-| CSS       |  40 KB |
-| Fonts (site total) | 160 KB |
+Limity v `scripts/lint-weight.mjs`:
 
-Current homepage ships at ~51 KB total, CSS ~16 KB, JS 0 KB.
+| Metrika                | Budget |
+|------------------------|-------:|
+| Eager total per page   | 250 KB |
+| Fonty (site total)     | 110 KB |
 
-## Deploy
+---
 
-### Cloudflare Pages
+## Driveový sync aktualit
 
-1. Create a new Pages project in Cloudflare, connect it to this Git repository.
-2. Build command: `pnpm build`
-3. Build output directory: `dist`
-4. Node version: 22
-5. Environment variables: none required in v1.
-6. Custom domain: `osa2.cz` (and optionally `www.osa2.cz`).
-7. Retire `alternativa2.info` via 301 redirects (see `public/_redirects` for the placeholder pattern; full SEO-safe redirect map is a separate follow-up).
+Drive složka **OSA Aktuality** sdílena se service accountem. 30min cron (`.github/workflows/sync-aktuality.yml`) spouští `scripts/sync-drive-aktuality.mjs`, který:
 
-### GitHub Actions
+1. Stáhne všechny Google Docs z Drive složky
+2. Konvertuje na MDX
+3. Komprimuje obrázky (sharp, max 700 KB každý)
+4. Validuje frontmatter proti Zod schématu (auto-draft pokud invalidní)
+5. Commituje přímo na master
 
-`.github/workflows/ci.yml` runs on every push:
+Detail: `docs/DRIVE_SYNC_ACTIVATION.md` (operační runbook), `docs/APPS_SCRIPT.md` (klientský how-to).
 
-- `lint:editorial` (hard fail)
-- `build`
-- `lint:weight` (hard fail)
-- `lint:links` (informational; third-party flakiness must not block merges)
+---
 
-## Out of scope (v1)
+## Užitečné skripty
 
-- English mirror
-- Long-form body content for `/o-spolku/historie/` and `/o-spolku/metodologie/` (stubs only; the board fills them post-launch)
-- Member-join backend (replaced by `mailto:` links)
-- Image thumbnails on project cards
-- Map embed on Kontakty
-- Analytics of any kind
-- Full SEO redirect map from `alternativa2.info/*` to `osa2.cz/*`
+```bash
+pnpm dev                  # dev server
+pnpm build                # produkce do dist/
+pnpm preview              # serve dist/
 
-## Project layout
+pnpm lint                 # editorial + link lint
+pnpm lint:editorial       # voice-level pravidla
+pnpm lint:weight          # eager budget
+pnpm lint:links           # HEAD-check externích URL
 
-```
-osa-web/
-├── .github/workflows/ci.yml
-├── public/
-│   ├── fonts/                 # WOFF2 (Atyp Special, Space Grotesk)
-│   ├── logo/osa-glyph.svg
-│   ├── robots.txt
-│   └── _redirects             # placeholder for production
-├── scripts/
-│   ├── lint-editorial.mjs
-│   ├── lint-links.mjs
-│   └── lint-weight.mjs
-├── src/
-│   ├── content/
-│   │   ├── sub_projects/*.mdx       # 17 projects (6 full + 11 stubs)
-│   │   ├── values/axioms.json       # 16 spolková hodnoty
-│   │   ├── pillars/index.json       # 3 pilíře hospodaření
-│   │   ├── org/identity.json        # legal identifiers
-│   │   └── dokumenty/*.json         # archive entries
-│   ├── content.config.ts            # Zod schemas
-│   ├── components/                  # .astro components
-│   ├── layouts/                     # Base.astro, LongformPage.astro
-│   ├── pages/                       # routes
-│   └── styles/
-│       ├── tokens.css               # design system tokens
-│       ├── kit.css                  # utility classes
-│       └── motion.css               # motion rulebook
-├── astro.config.mjs
-├── tsconfig.json
-└── package.json
+pnpm doc:content          # Python script — generuje content přehled (volitelné)
 ```
 
-## Provenance
+---
 
-Plan and research lives in the OSA maker's Obsidian vault at `Projects/OSA_Website/OSA_Website_Plan.md` (binding spec). The Kit Audit at `Projects/OSA_Website/OSA_Website_Kit_Audit.md` documents which components were ported from the React UI kit and what changed during the port.
+## Open loops
+
+Viz **`CLAUDE.md`** sekce "Known issues and open loops" pro aktuální stav nedotažených věcí (placeholder PDFs, DNS flip, VPD finanční čísla, …).
+
+---
+
+## Kontakt
+
+- **Maintainer / Maker:** Antonín Kindl ([a.kindl@osa2.cz](mailto:a.kindl@osa2.cz))
+- **Předseda spolku:** Marek Semerád ([marek.semerad@osa2.cz](mailto:marek.semerad@osa2.cz))
+- **Spolek:** info@osa2.cz, IČ 270 26 345

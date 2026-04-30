@@ -3,75 +3,96 @@ import OsaGlyph from './OsaGlyph.astro';
 import InlineCTA from './InlineCTA.astro';
 import { withBase } from '../utils/url';
 
-// Image-sequence scroll scrubbing (Apple-style). 84 JPG frames
+// Image-sequence scroll-scrubbing (Apple-style). 84 JPG frames
 // extracted z 4.2s placeholder videa (Earth z vesmíru), namapované
-// na scroll progress přes výšku hero sekce. Žádný <video> element —
+// na scroll progress přes výšku PIN wrapperu. Žádný <video> element —
 // scrubbing přes <video currentTime> je na mobilech nestabilní;
 // preloadované Image() objekty + canvas dávají deterministický 60fps
 // scrub bez jitteru.
+//
+// Sticky-pin pattern: vnější .osa-hero-pin je 200vh vysoký, vnitřní
+// .osa-hero je `position: sticky; top: 0; height: 100vh`, takže během
+// 100vh scrollu je hero přilepený k viewportu a scrub progress
+// reaguje na scroll position. Po 100vh hero "pustí" a stránka pod
+// hero se začne posouvat normálně.
 const FRAME_COUNT = 84;
 const FRAME_BASE = withBase('/images/hero-earth/');
 ---
-<section class="osa-hero osa-dark">
-  <canvas
-    class="osa-hero__canvas"
-    data-hero-canvas
-    data-frame-count={FRAME_COUNT}
-    data-frame-base={FRAME_BASE}
-    aria-hidden="true">
-  </canvas>
-  <div class="osa-hero__overlay" data-hero-overlay aria-hidden="true"></div>
-  {/* První frame jako img fallback pro prefers-reduced-motion + dokud
-       canvas nedokreslí. position: absolute + z-index: 0 znamená, že
-       je pod overlayem, stejně jako canvas. */}
-  <img
-    class="osa-hero__poster"
-    src={`${FRAME_BASE}frame-001.jpg`}
-    alt=""
-    aria-hidden="true"
-    loading="eager"
-    fetchpriority="high"
-  />
+<div class="osa-hero-pin">
+  <section class="osa-hero osa-dark">
+    <canvas
+      class="osa-hero__canvas"
+      data-hero-canvas
+      data-frame-count={FRAME_COUNT}
+      data-frame-base={FRAME_BASE}
+      aria-hidden="true">
+    </canvas>
+    <div class="osa-hero__overlay" data-hero-overlay aria-hidden="true"></div>
+    {/* První frame jako img poster — viditelný okamžitě, dokud canvas
+         neudělá první draw + fallback pro prefers-reduced-motion. */}
+    <img
+      class="osa-hero__poster"
+      src={`${FRAME_BASE}frame-001.jpg`}
+      alt=""
+      aria-hidden="true"
+      loading="eager"
+      fetchpriority="high"
+    />
 
-  <div class="container-wide osa-hero__inner">
-    <div class="osa-hero__eyebrow osa-eyebrow" data-reveal>
-      <OsaGlyph size="13px" />
-      <span>Pomáháme tvořit&hellip;</span>
+    <div class="container-wide osa-hero__inner">
+      <div class="osa-hero__eyebrow osa-eyebrow" data-reveal>
+        <OsaGlyph size="13px" />
+        <span>Pomáháme tvořit&hellip;</span>
+      </div>
+      <h1 class="osa-hero__h1">
+        <span
+          class="osa-hero__h1-main"
+          data-reveal-words
+          data-reveal-words-delay="200"
+          data-reveal-words-step="40">Chceme vytvořit moderní, prosperující a hodnotově orientovanou společnost, jejímž smyslem a účelem bude efektivní podpora všech jedinců v jejich plnohodnotné a všestranné seberealizaci.</span>
+      </h1>
+      <div class="osa-hero__rule" aria-hidden="true" data-reveal style="transition-delay: 1100ms"></div>
+      <div class="osa-hero__cta" data-reveal style="transition-delay: 1250ms">
+        <InlineCTA href={withBase('/o-spolku/')}>Více o spolku</InlineCTA>
+        <InlineCTA href={withBase('/aktuality/')} class="osa-hero__cta-secondary">Aktuality</InlineCTA>
+      </div>
     </div>
-    <h1 class="osa-hero__h1">
-      <span
-        class="osa-hero__h1-main"
-        data-reveal-words
-        data-reveal-words-delay="200"
-        data-reveal-words-step="40">Chceme vytvořit moderní, prosperující a hodnotově orientovanou společnost, jejímž smyslem a účelem bude efektivní podpora všech jedinců v jejich plnohodnotné a všestranné seberealizaci.</span>
-    </h1>
-    <div class="osa-hero__rule" aria-hidden="true" data-reveal style="transition-delay: 1100ms"></div>
-    <div class="osa-hero__cta" data-reveal style="transition-delay: 1250ms">
-      <InlineCTA href={withBase('/o-spolku/')}>Více o spolku</InlineCTA>
-      <InlineCTA href={withBase('/aktuality/')} class="osa-hero__cta-secondary">Aktuality</InlineCTA>
-    </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <script is:inline>
   /*
-   * Hero scroll-scrubber. Načte všech FRAME_COUNT obrázků jako
-   * Image() objekty, na scroll RAF loop kreslí příslušný frame na
-   * canvas. Bez RAF throttle by stmavnutí způsobovalo jitter na
-   * slabších CPU. Když je hero mimo viewport, přeskočíme práci.
+   * Hero scroll-scrubber se sticky pin pattern.
    *
-   * `--scroll-progress` CSS custom property se synchronně zapisuje
-   * na overlay div, který přes ni řídí svou alpha (rgba s var()).
+   * - Pin wrapper (.osa-hero-pin) je 200vh tall.
+   * - Sticky inner (.osa-hero) je 100vh, top:0 → během prvních 100vh
+   *   scrollu zůstane přilepený k viewportu, pak se pustí.
+   * - scrolled = -pinWrapper.getBoundingClientRect().top
+   * - range  = pinWrapper.offsetHeight - section.offsetHeight (~100vh)
+   * - scrollProgress = scrolled / range, clamped 0..1
+   * - videoProgress = min(1, scrollProgress / 0.9) — video doběhne
+   *   v 90% pin range; posledních 10% sedí na last frame, abychom
+   *   měli prostor mezi koncem videa a unstickem.
+   * - frame = round(videoProgress * (FRAME_COUNT - 1))
+   * - overlay --scroll-progress = videoProgress (řídí stmavnutí Earth)
+   *
+   * Reduced motion: zachováme statický frame-001 a žádný scrub.
    */
   (function () {
     var canvas = document.querySelector('[data-hero-canvas]');
     var overlay = document.querySelector('[data-hero-overlay]');
     var poster = document.querySelector('.osa-hero__poster');
     if (!canvas || !overlay) return;
-    var section = canvas.parentElement;
+    var section = canvas.parentElement;        // .osa-hero
+    var pinWrap = section.parentElement;       // .osa-hero-pin
 
     var FRAME_COUNT = parseInt(canvas.getAttribute('data-frame-count'), 10) || 84;
     var FRAME_BASE = canvas.getAttribute('data-frame-base') || '/images/hero-earth/';
+    // Video doběhne v 90 % pin scroll range. Posledních 10 % range
+    // drží frame na konci, dokud se hero neodlepí. Klient prosil
+    // "až 85-90 % videa, pak začne scrollování stránky".
+    var VIDEO_END_AT = 0.9;
+
     function frameSrc(i) {
       var n = String(i + 1);
       while (n.length < 3) n = '0' + n;
@@ -91,8 +112,7 @@ const FRAME_BASE = withBase('/images/hero-earth/');
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var w = canvas.offsetWidth;
       var h = canvas.offsetHeight;
-      // Pokud je canvas zatím 0×0 (layout ještě neběžel), padáme zpátky
-      // na rozměry parent sekce — díky tomu se první draw nepřeskočí.
+      // Defensive fallback — první resize() po init někdy vidí 0×0.
       if (w === 0 && section) w = section.offsetWidth || section.clientWidth;
       if (h === 0 && section) h = section.offsetHeight || section.clientHeight;
       if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
@@ -124,25 +144,26 @@ const FRAME_BASE = withBase('/images/hero-earth/');
     }
 
     function updateProgress() {
-      if (!section) return;
-      var rect = section.getBoundingClientRect();
-      var total = section.offsetHeight;
+      if (!pinWrap || !section) return;
+      var rect = pinWrap.getBoundingClientRect();
+      var range = Math.max(1, pinWrap.offsetHeight - section.offsetHeight);
       var scrolled = -rect.top;
-      var progress = Math.min(1, Math.max(0, scrolled / total));
-      var frame = Math.min(FRAME_COUNT - 1, Math.round(progress * (FRAME_COUNT - 1)));
+      var scrollProgress = Math.min(1, Math.max(0, scrolled / range));
+      var videoProgress = Math.min(1, scrollProgress / VIDEO_END_AT);
+      var frame = Math.min(FRAME_COUNT - 1, Math.round(videoProgress * (FRAME_COUNT - 1)));
       if (frame !== pendingFrame) {
         pendingFrame = frame;
         needsDraw = true;
       }
-      overlay.style.setProperty('--scroll-progress', progress.toFixed(4));
+      overlay.style.setProperty('--scroll-progress', videoProgress.toFixed(4));
     }
 
     function tick() {
       if (inView && needsDraw) {
-        // fall-back to nearest loaded frame, dokud nedoběhne preload
         var f = pendingFrame;
         var drew = drawFrame(f);
         if (!drew) {
+          // fall-back na nejbližší naloadovaný frame
           for (var d = 1; d < FRAME_COUNT && !drew; d++) {
             if (f - d >= 0) drew = drawFrame(f - d);
             if (!drew && f + d < FRAME_COUNT) drew = drawFrame(f + d);
@@ -154,10 +175,6 @@ const FRAME_BASE = withBase('/images/hero-earth/');
         }
       }
       requestAnimationFrame(tick);
-    }
-
-    function onScroll() {
-      updateProgress();
     }
 
     function reveal() {
@@ -175,38 +192,27 @@ const FRAME_BASE = withBase('/images/hero-earth/');
           images[idx].onload = function () {
             loadedCount++;
             if (idx === 0) {
-              // jakmile máme první frame, zviditelníme canvas
               needsDraw = true;
               reveal();
             }
-            // dokud se ladí canvas, redraw průběžně, aby uživatel
-            // ne-viděl nehybný snímek pokud zrovna scrolluje
             if (idx === pendingFrame) needsDraw = true;
           };
         })(i);
       }
     }
 
-    // IntersectionObserver — vypneme draw práci když hero není ve výhledu
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         inView = entries[0].isIntersecting;
-      }, { rootMargin: '50px' });
-      io.observe(section);
+      }, { rootMargin: '200px' });
+      io.observe(pinWrap);
     }
 
-    // ResizeObserver — kreslení canvasu drží sync s reálnou velikostí
-    // sekce. resize event sám o sobě nestačí: layout se v Astro někdy
-    // dotahuje až po DOMContentLoaded a první resize() při init dostane
-    // 0×0. RO chytí změnu hned, jak proběhne první layout.
     if ('ResizeObserver' in window) {
       var ro = new ResizeObserver(function () { resize(); });
       ro.observe(section);
     }
 
-    // Reduced motion: zachováme statický první frame a stmavnutí
-    // řízené jen scrollem (bez frame swapování). Pořád preloadneme
-    // jeden frame, ostatní necháme být.
     if (rmm.matches) {
       var only = new Image();
       only.onload = function () { images[0] = only; needsDraw = true; reveal(); };
@@ -220,7 +226,7 @@ const FRAME_BASE = withBase('/images/hero-earth/');
 
     resize();
     preload();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', function () { resize(); needsDraw = true; });
     updateProgress();
     requestAnimationFrame(tick);
@@ -228,26 +234,42 @@ const FRAME_BASE = withBase('/images/hero-earth/');
 </script>
 
 <style>
+  /* PIN wrapper — výška = 200vh, takže sticky inner má 100vh
+     scroll-range na "scrub" video před tím, než se pustí. Použito
+     :global() protože Astro CSS scoping občas selektor `.osa-hero-pin`
+     odhodí, když jediným match elementem je wrapper sám (nikoli něco
+     uvnitř s daným atributem). */
+  :global(.osa-hero-pin) {
+    position: relative;
+    height: 200vh;
+    background: var(--k-100);
+    color: var(--k-0);
+  }
+  /* Mobile: kratší pin range — na malých zařízeních je 100vh dost
+     scrollu na to, aby user měl pocit, že "se stalo dost". */
+  @media (max-width: 720px) {
+    :global(.osa-hero-pin) { height: 170vh; }
+  }
+
+  /* ============================================================
+     STICKY hero — přilepený 100vh box. Background canvas + overlay
+     + text obsah; opouští viewport teprve když pin wrapper končí.
+     ============================================================ */
   .osa-hero {
     --fg: var(--k-0);
     --fg-muted: var(--k-30);
     --bg: var(--k-100);
     background: var(--bg);
     color: var(--fg);
-    position: relative;
+    position: sticky;
+    top: 0;
+    height: 100vh;
     isolation: isolate;
     overflow: hidden;
-    /* Vyšší hero, aby video vyniklo. clamp drží minimum na malých
-       displejích a maximum na 4K monitorech. */
-    min-height: clamp(680px, 95vh, 1080px);
-    /* Žádný display:grid — některé browser kombinace "grid + align-items:end
-       + position:absolute children" daly canvasu width 0 při prvním
-       layoutu. Pozici dolního obsahu řeší padding-top na .osa-hero__inner. */
+    width: 100%;
   }
 
-  /* Statický poster (první frame) — ukazuje se, dokud canvas
-     neproběhne první draw. Eager loading + fetchpriority high
-     sníží blank-state při načítání. */
+  /* Statický poster — ukazuje frame 1 než canvas dokreslí. */
   .osa-hero__poster {
     position: absolute;
     inset: 0;
@@ -255,20 +277,13 @@ const FRAME_BASE = withBase('/images/hero-earth/');
     height: 100%;
     object-fit: cover;
     z-index: 0;
-    opacity: 0;
-    transition: opacity 800ms cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 1;
+    transition: opacity 200ms linear;
     pointer-events: none;
   }
-  .osa-hero__poster:not(.is-hidden) {
-    opacity: 1;
-  }
-  .osa-hero__poster.is-hidden {
-    opacity: 0;
-    transition: opacity 200ms linear;
-  }
+  .osa-hero__poster.is-hidden { opacity: 0; }
 
-  /* Canvas — kreslí aktuální frame. Po načtení prvního obrázku se
-     třída `is-loaded` přidá → fade in. */
+  /* Canvas — fade in 0 → 1 jakmile první frame loaduje. */
   .osa-hero__canvas {
     position: absolute;
     inset: 0;
@@ -280,16 +295,11 @@ const FRAME_BASE = withBase('/images/hero-earth/');
     pointer-events: none;
     background: var(--bg);
   }
-  .osa-hero__canvas.is-loaded {
-    opacity: 1;
-  }
+  .osa-hero__canvas.is-loaded { opacity: 1; }
 
-  /* Overlay řídí stmavnutí Earth → silueta → mizí. CSS var
-     `--scroll-progress` zapisuje JS na každý scroll event;
-     interpoluje se mezi 0 a 1 podle progress hero sekcí.
-     Bare rgba() color v `background` shorthand padá na `none`,
-     proto `--scroll-progress` interpolujeme přímo uvnitř obou
-     gradient stops. Top stop 0.15 → 0.85, bottom stop 0.55 → 0.95. */
+  /* Overlay — gradient s alpha řízenou přes --scroll-progress.
+     Bare rgba() v `background` shorthand padá na `none`, takže obě
+     stop barvy obsahují calc() přímo. */
   .osa-hero__overlay {
     position: absolute;
     inset: 0;
@@ -306,12 +316,14 @@ const FRAME_BASE = withBase('/images/hero-earth/');
   .osa-hero__inner {
     position: relative;
     z-index: 3;
-    /* Vysoký top padding tlačí hlavní obsah blízko spodního okraje
-       hero sekce, aby video nahoře dostalo prostor. */
-    padding-top: clamp(40vh, 48vh, 540px);
-    padding-bottom: var(--space-9);
-    display: grid;
+    height: 100%;
+    /* Text padá ke spodnímu okraji sticky boxu přes flex column. */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     gap: var(--space-5);
+    padding-top: var(--space-9);
+    padding-bottom: var(--space-9);
   }
   .osa-hero__eyebrow {
     display: inline-flex; align-items: center; gap: var(--space-2);
@@ -326,7 +338,6 @@ const FRAME_BASE = withBase('/images/hero-earth/');
     color: var(--fg);
     margin: 0;
     max-width: 32ch;
-    /* Subtilní stín pro lepší čitelnost nad videem. */
     text-shadow: 0 1px 28px rgba(0, 0, 0, 0.45);
   }
   .osa-hero__h1-main {
@@ -337,11 +348,9 @@ const FRAME_BASE = withBase('/images/hero-earth/');
     height: 1px;
     background: var(--fg-muted);
     width: 64px;
-    margin-top: var(--space-2);
     transform-origin: left;
   }
   .osa-hero__cta {
-    margin-top: var(--space-2);
     display: flex;
     align-items: center;
     gap: var(--space-5);
@@ -359,9 +368,6 @@ const FRAME_BASE = withBase('/images/hero-earth/');
   @media (max-width: 720px) {
     .osa-hero__h1 { max-width: 24ch; }
     .osa-hero__cta { gap: var(--space-4); }
-    .osa-hero {
-      min-height: clamp(640px, 90vh, 900px);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
