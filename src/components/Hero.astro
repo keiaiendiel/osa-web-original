@@ -62,21 +62,24 @@ const FRAME_BASE = withBase('/images/hero-earth/');
 
 <script is:inline>
   /*
-   * Hero scroll-scrubber se sticky pin pattern.
+   * Hero scroll-scrubber se sticky pin pattern + text parallax.
    *
    * - Pin wrapper (.osa-hero-pin) je 200vh tall.
    * - Sticky inner (.osa-hero) je 100vh, top:0 → během prvních 100vh
    *   scrollu zůstane přilepený k viewportu, pak se pustí.
-   * - scrolled = -pinWrapper.getBoundingClientRect().top
-   * - range  = pinWrapper.offsetHeight - section.offsetHeight (~100vh)
-   * - scrollProgress = scrolled / range, clamped 0..1
-   * - videoProgress = min(1, scrollProgress / 0.9) — video doběhne
-   *   v 90% pin range; posledních 10% sedí na last frame, abychom
-   *   měli prostor mezi koncem videa a unstickem.
-   * - frame = round(videoProgress * (FRAME_COUNT - 1))
-   * - overlay --scroll-progress = videoProgress (řídí stmavnutí Earth)
    *
-   * Reduced motion: zachováme statický frame-001 a žádný scrub.
+   * Mapping scrollu (scrollProgress 0..1 přes pin scroll range):
+   *   • 0..0.6  → video scrubuje 0..100 % framů (videoProgress)
+   *               text stojí na místě
+   *   • 0.6..1  → video sedí na last frame (silueta + zmizí)
+   *               text se posune nahoru (parallax) přes CSS var
+   *               --hero-text-y; vypadá to, jako že stránka už
+   *               normálně scrolluje pod nehybným pozadím
+   *   • >1      → sticky se pustí, hero opouští viewport, content
+   *               pod hero se začne odhalovat
+   *
+   * Reduced motion: zachováme statický frame-001 a žádný scrub
+   * ani parallax.
    */
   (function () {
     var canvas = document.querySelector('[data-hero-canvas]');
@@ -88,10 +91,15 @@ const FRAME_BASE = withBase('/images/hero-earth/');
 
     var FRAME_COUNT = parseInt(canvas.getAttribute('data-frame-count'), 10) || 84;
     var FRAME_BASE = canvas.getAttribute('data-frame-base') || '/images/hero-earth/';
-    // Video doběhne v 90 % pin scroll range. Posledních 10 % range
-    // drží frame na konci, dokud se hero neodlepí. Klient prosil
-    // "až 85-90 % videa, pak začne scrollování stránky".
-    var VIDEO_END_AT = 0.9;
+    // Video doběhne v 60 % pin scroll range. Zbývajících 40 % drží
+    // poslední frame v pozadí a místo toho se scrolluje text
+    // nahoru (parallax). Klient: "okolo 60 % playbaku videa pak
+    // začne scrollování textu nahoru, video zůstane na pozadí".
+    var VIDEO_END_AT = 0.6;
+    // Text parallax: stojí klidně do 60 %, pak lineárně translateY
+    // až -100 % své vlastní výšky (efektivně mizí nahoru).
+    var TEXT_PARALLAX_START = 0.6;
+    var TEXT_PARALLAX_END = 1.0;
 
     function frameSrc(i) {
       var n = String(i + 1);
@@ -143,6 +151,8 @@ const FRAME_BASE = withBase('/images/hero-earth/');
       return true;
     }
 
+    var inner = section.querySelector('.osa-hero__inner');
+
     function updateProgress() {
       if (!pinWrap || !section) return;
       var rect = pinWrap.getBoundingClientRect();
@@ -156,6 +166,19 @@ const FRAME_BASE = withBase('/images/hero-earth/');
         needsDraw = true;
       }
       overlay.style.setProperty('--scroll-progress', videoProgress.toFixed(4));
+
+      // Text parallax: 0 do TEXT_PARALLAX_START, pak lineárně k 1
+      var textT;
+      if (scrollProgress <= TEXT_PARALLAX_START) {
+        textT = 0;
+      } else if (scrollProgress >= TEXT_PARALLAX_END) {
+        textT = 1;
+      } else {
+        textT = (scrollProgress - TEXT_PARALLAX_START) / (TEXT_PARALLAX_END - TEXT_PARALLAX_START);
+      }
+      // Posuneme inner sloupec text v rozsahu 0 → −100 % vlastní výšky
+      // (přes CSS calc s % ho efektivně dostaneme z viewportu nahoru).
+      if (inner) inner.style.setProperty('--hero-text-y', (-textT * 100).toFixed(2) + '%');
     }
 
     function tick() {
@@ -323,7 +346,16 @@ const FRAME_BASE = withBase('/images/hero-earth/');
     justify-content: flex-end;
     gap: var(--space-5);
     padding-top: var(--space-9);
-    padding-bottom: var(--space-9);
+    /* Bottom alignment: menší padding přilepí text blíž ke spodní hraně
+       sticky boxu (klient: "není přesně doknutý na spodní hraně display").
+       safe-area-inset zajistí prostor pro home indicator na iOS. */
+    padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+    /* Parallax: JS přepisuje --hero-text-y z 0 % na -100 % v posledních
+       40 % pin scroll range. Translate na vlastní výšku → text mizí
+       nahoru, video v pozadí zůstává. */
+    --hero-text-y: 0%;
+    transform: translateY(var(--hero-text-y));
+    will-change: transform;
   }
   .osa-hero__eyebrow {
     display: inline-flex; align-items: center; gap: var(--space-2);
