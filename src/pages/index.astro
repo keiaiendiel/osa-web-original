@@ -9,6 +9,8 @@ import ManifestoStrip from '../components/ManifestoStrip.astro';
 import InvestmentHero from '../components/InvestmentHero.astro';
 import Gallery from '../components/Gallery.astro';
 import AktualityRecap from '../components/AktualityRecap.astro';
+import InlineCTA from '../components/InlineCTA.astro';
+import { withBase } from '../utils/url';
 ---
 <Base
   title="Občanské sdružení Alternativa II, z.s."
@@ -20,8 +22,108 @@ import AktualityRecap from '../components/AktualityRecap.astro';
     <ValuesMatrix dark={true} />
     <ManifestoStrip />
     <Gallery />
+
+    {/* Areál Klecany — vizuální lead-in k VPD investiční výzvě dole.
+        Schematická mapa areálu vlevo, krátký kontext + CTA vpravo. */}
+    <section class="osa-areal section">
+      <div class="container-wide">
+        <header class="osa-areal__head" data-reveal>
+          <span class="osa-eyebrow">Vlajkový záměr VPD</span>
+          <h2 class="osa-h2 osa-areal__title">Horní kasárna Klecany.</h2>
+        </header>
+        <div class="osa-areal__grid">
+          <figure class="osa-areal__map" data-reveal>
+            <img src={withBase('/images/areal/areal-mapa.jpg')} alt="Schematický pohled na areál Horních kasáren v Klecanech — 2D mapa s vyznačenými budovami a navazujícími veřejnými prostory." loading="lazy" />
+            <figcaption>Schéma areálu — 2D mapa</figcaption>
+          </figure>
+          <div class="osa-areal__copy" data-reveal data-reveal-delay="1">
+            <p class="osa-body">
+              Hlavní hardwarový záměr Veřejně prospěšného developera: revitalizace bývalého vojenského areálu na multifunkční komunitní centrum se startovacím hubem, coworkingem, bytovým družstvem a komunitním centrem.
+            </p>
+            <p class="osa-body">
+              Areál spojí vzdělávací programy (software) s fyzickou infrastrukturou (hardware) a posune vyspělou metodu obnovy brownfieldů beze státních dotací o krok dál.
+            </p>
+            <div class="osa-areal__ctas">
+              <InlineCTA href={withBase('/projekty/vpd/')}>O projektu VPD</InlineCTA>
+            </div>
+          </div>
+        </div>
+        <div class="osa-areal__strip" data-reveal data-reveal-delay="2">
+          <figure>
+            <img src={withBase('/images/areal/sh-1.jpg')} alt="Vizualizace startovacího hubu Klecany — pohled na centrální plochu mezi budovami." loading="lazy" />
+          </figure>
+          <figure>
+            <img src={withBase('/images/areal/sh-2.jpg')} alt="Vizualizace klecanského hubu — interiér společných prostor." loading="lazy" />
+          </figure>
+          <figure>
+            <img src={withBase('/images/areal/sh-3.jpg')} alt="Vizualizace klecanského areálu — pohled z ulice na vstupní část objektu." loading="lazy" />
+          </figure>
+          <figure>
+            <img src={withBase('/images/areal/sh-4.jpg')} alt="Vizualizace klecanského areálu — letní pobytová terasa a komunitní zóna." loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
     <InvestmentHero />
     <AktualityRecap />
   </main>
   <Footer />
 </Base>
+
+<style>
+  .osa-areal { border-top: 1px solid var(--rule); }
+  .osa-areal__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 64ch;
+    margin: 0 0 var(--space-6);
+  }
+  .osa-areal__title { margin: 0; }
+  .osa-areal__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+  .osa-areal__map { margin: 0; border: 1px solid var(--rule); background: var(--k-5); }
+  .osa-areal__map img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    padding: var(--space-3);
+  }
+  .osa-areal__map figcaption {
+    padding: var(--space-3) var(--space-4);
+    color: var(--fg-muted);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .osa-areal__copy { display: grid; gap: var(--space-4); }
+  .osa-areal__copy p { margin: 0; color: var(--fg); max-width: 50ch; }
+  .osa-areal__ctas { margin-top: var(--space-2); }
+
+  .osa-areal__strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .osa-areal__strip figure { margin: 0; border: 1px solid var(--rule); overflow: hidden; }
+  .osa-areal__strip img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  @media (max-width: 900px) {
+    .osa-areal__grid { grid-template-columns: 1fr; gap: var(--space-5); }
+    .osa-areal__strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>

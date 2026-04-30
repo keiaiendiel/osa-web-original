@@ -23,9 +23,22 @@ const member = {
   professions: ['Umělec', 'Grafik', 'Artista', 'Autor loga'],
 };
 
+// Czech pluralizace: 1 rok | 2-4 roky | 5+ let. Memberovi to ukáže
+// gramaticky správně podle aktuálního yearsCount.
+function letRoky(n: number): string {
+  if (n === 1) return 'rok';
+  if (n >= 2 && n <= 4) return 'roky';
+  return 'let';
+}
+const yearsLabel = `${member.yearsCount} ${letRoky(member.yearsCount)} členství`;
+
+// Aktivita v projektech — accent je kompletní CSS výraz (var(--c-x)
+// nebo var(--fg) pro OSA II), aby šly mixovat barvy z palety i přímo
+// foreground color bez zvláštního kódování v šabloně.
 const aktivity = [
-  { name: 'Veřejně prospěšný developer',         accent: 'olive', role: 'Vedoucí projektu', hours: 247, lastActivity: 'včera' },
-  { name: 'Občanské sdružení Alternativa II',    accent: 'blue',  role: 'Statutární zástupce', hours: 1240, lastActivity: 'dnes' },
+  { name: 'Veřejně prospěšný developer',         accent: 'var(--c-olive)', role: 'Designer',                       hours: 247, lastActivity: 'včera' },
+  { name: 'Občanské sdružení Alternativa II',    accent: 'var(--fg)',      role: 'Designer · Statutární zástupce', hours: 1240, lastActivity: 'dnes' },
+  { name: 'Dynamitka Alfréda Nobela',            accent: 'var(--c-red)',   role: 'Umělec',                          hours: 56,  lastActivity: 'před 3 dny' },
 ];
 
 const credits = 1247;
@@ -105,7 +118,7 @@ const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', acce
             <span class="osa-eyebrow">Vítejte zpět</span>
             <h2 class="osa-portal__welcome-h2"><span data-portal-displayname>{member.name}</span> <small>({member.id})</small></h2>
             <p class="osa-portal__welcome-meta">
-              Členem od {member.since} · {member.yearsCount} let členství
+              Členem od {member.since} · {yearsLabel}
             </p>
           </div>
           <dl class="osa-portal__welcome-stats">
@@ -155,7 +168,7 @@ const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', acce
           </header>
           <ul class="osa-portal__activity" role="list">
             {aktivity.map((a) => (
-              <li class="osa-portal__activity-row" style={`--accent: var(--c-${a.accent});`}>
+              <li class="osa-portal__activity-row" style={`--accent: ${a.accent};`}>
                 <span class="osa-portal__activity-dot" aria-hidden="true"></span>
                 <div class="osa-portal__activity-text">
                   <strong class="osa-portal__activity-name">{a.name}</strong>
@@ -870,8 +883,9 @@ const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', acce
   }
 
   /* ---------- Member card preview ----------
-     Optický inset border (box-shadow inset) přidává kartě hloubku,
-     aby vypadala jako fyzická plastová karta a ne jen plochý box. */
+     Dvojitý hairline border (outer 1px solid + inner 1px hairline 4px
+     dovnitř přes ::before) připomíná fyzickou plastovou kartu. Seal
+     v rohu je pozičně mimo inner border, aby se nepřekrýval. */
   .osa-portal__memcard {
     aspect-ratio: 86 / 54;
     background: var(--fg);
@@ -881,21 +895,25 @@ const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', acce
     grid-template-rows: auto 1fr auto;
     gap: var(--space-2);
     position: relative;
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 255, 255, 0.18),
-      inset 0 0 0 6px var(--fg);
+    border: 1px solid var(--fg);
     overflow: hidden;
   }
-  /* Subtle textured corner mark — discreet brand seal in the
-     top-right, not loud, just a hint that this is a real card. */
+  .osa-portal__memcard::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    pointer-events: none;
+  }
+  /* Subtle corner seal — bezpečně uvnitř inner borderu (>= 5px+8px = 13px). */
   .osa-portal__memcard::after {
     content: "";
     position: absolute;
-    top: var(--space-3);
-    right: var(--space-3);
-    width: 28px;
-    height: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    top: 14px;
+    right: 14px;
+    width: 24px;
+    height: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.32);
     border-radius: 50%;
     pointer-events: none;
   }
@@ -905,7 +923,10 @@ const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', acce
     gap: var(--space-2);
     color: var(--bg);
     z-index: 1;
+    position: relative;
   }
+  .osa-portal__memcard-body,
+  .osa-portal__memcard-foot { position: relative; z-index: 1; }
   .osa-portal__memcard-brand {
     font-family: var(--font-sans);
     font-weight: 600;
@@ -990,11 +1011,15 @@ const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', acce
     border-bottom: 1px solid var(--rule);
   }
   /* Danger CTA: ukončení členství = červená barva, aby čtenář
-     viděl varovný signál a klikl jen vědomě. */
-  .osa-portal__noop--danger {
+     viděl varovný signál a klikl jen vědomě. :global() je nutný,
+     protože element renderuje komponenta InlineCTA — Astro scoping
+     by jinak třídu nezachytil. Chaining `.osa-portal__noop` zvedá
+     specificitu na úroveň InlineCTA scoped selektoru, jinak by
+     `var(--fg)` z .osa-inline-cta vyhrál cascade. */
+  :global(a.osa-portal__noop.osa-portal__noop--danger) {
     color: #b8362c;
   }
-  .osa-portal__noop--danger:hover {
+  :global(a.osa-portal__noop.osa-portal__noop--danger:hover) {
     color: #8e221a;
     opacity: 1;
   }

@@ -122,7 +122,7 @@ const transparentniUcet = org?.data.bank_transparent ?? '205152278/0300';
       </div>
     </section>
 
-    <section class="section">
+    <section class="section osa-join__externi osa-dark">
       <div class="container">
         <header class="osa-join__group-head" data-reveal>
           <span class="osa-eyebrow">Externí možnosti spolupráce</span>
@@ -262,6 +262,15 @@ const transparentniUcet = org?.data.bank_transparent ?? '205152278/0300';
   .osa-join__group-title { margin: 0; }
 
   .osa-join__sections { display: grid; }
+
+  /* Externí sekce má negativní (dark) scope, aby se vizuálně oddělila
+     od interních možností spolupráce nahoře. SectionBlock + InlineCTA
+     respektují var(--fg)/var(--bg) z osa-dark scope automaticky. */
+  .osa-join__externi {
+    background: var(--bg);
+    color: var(--fg);
+    border-top: 1px solid var(--rule);
+  }
 
   .osa-join__ctas {
     display: flex;
