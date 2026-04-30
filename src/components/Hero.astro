@@ -69,14 +69,15 @@ const FRAME_BASE = withBase('/images/hero-earth/');
    *   scrollu zůstane přilepený k viewportu, pak se pustí.
    *
    * Mapping scrollu (scrollProgress 0..1 přes pin scroll range):
+   *   • 0..1    → text parallax: text se hned od začátku translateY
+   *               nahoru, lineárně přes celý pin range, až k −100 %
+   *               vlastní výšky (efektivně zmizí nad horní hranu hero).
    *   • 0..0.6  → video scrubuje 0..100 % framů (videoProgress)
-   *               text stojí na místě
-   *   • 0.6..1  → video sedí na last frame (silueta + zmizí)
-   *               text se posune nahoru (parallax) přes CSS var
-   *               --hero-text-y; vypadá to, jako že stránka už
-   *               normálně scrolluje pod nehybným pozadím
+   *   • 0.6..1  → video sedí na last frame (silueta + zmizí), text
+   *               pokračuje nahoru. Vypadá to, jako že stránka už
+   *               normálně scrolluje pod nehybným pozadím.
    *   • >1      → sticky se pustí, hero opouští viewport, content
-   *               pod hero se začne odhalovat
+   *               pod hero se začne odhalovat.
    *
    * Reduced motion: zachováme statický frame-001 a žádný scrub
    * ani parallax.
@@ -96,9 +97,10 @@ const FRAME_BASE = withBase('/images/hero-earth/');
     // nahoru (parallax). Klient: "okolo 60 % playbaku videa pak
     // začne scrollování textu nahoru, video zůstane na pozadí".
     var VIDEO_END_AT = 0.6;
-    // Text parallax: stojí klidně do 60 %, pak lineárně translateY
-    // až -100 % své vlastní výšky (efektivně mizí nahoru).
-    var TEXT_PARALLAX_START = 0.6;
+    // Text parallax: scrolluje hned od začátku (0.0), lineárně až do
+    // -100 % vlastní výšky na konci pin range. Video v pozadí běží
+    // do 60 % a pak sedí na siluetě, zatímco text dojede nahoru.
+    var TEXT_PARALLAX_START = 0.0;
     var TEXT_PARALLAX_END = 1.0;
 
     function frameSrc(i) {
