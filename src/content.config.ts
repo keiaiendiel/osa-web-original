@@ -100,6 +100,16 @@ const dokumenty = defineCollection({
   }),
 });
 
+const goals = defineCollection({
+  loader: file('./src/content/goals/index.json'),
+  schema: z.object({
+    horizon: z.enum(['short', 'medium', 'long']),
+    label: z.string(),
+    items: z.array(z.string()).min(3).max(8),
+    order: z.number().int(),
+  }),
+});
+
 /*
  * Aktuality: self-service editorial channel.
  * Placeholder MDX lives in src/content/aktuality/ during the pre-launch phase;
@@ -124,4 +134,4 @@ const aktuality = defineCollection({
   }),
 });
 
-export const collections = { subProjects, values, pillars, org, dokumenty, aktuality };
+export const collections = { subProjects, values, pillars, org, dokumenty, aktuality, goals };

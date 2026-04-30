@@ -13,7 +13,8 @@
     "lint": "pnpm lint:editorial && pnpm lint:links",
     "lint:editorial": "node scripts/lint-editorial.mjs",
     "lint:links": "node scripts/lint-links.mjs",
-    "lint:weight": "node scripts/lint-weight.mjs"
+    "lint:weight": "node scripts/lint-weight.mjs",
+    "doc:content": "python3 scripts/build-content-doc.py"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",

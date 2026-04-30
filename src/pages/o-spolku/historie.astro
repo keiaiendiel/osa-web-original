@@ -1,27 +1,43 @@
 ---
 import LongformPage from '../../layouts/LongformPage.astro';
+import InlineCTA from '../../components/InlineCTA.astro';
+import Gallery from '../../components/Gallery.astro';
+import { withBase } from '../../utils/url';
 ---
 <LongformPage title="Historie spolku" eyebrow="O spolku">
-  <aside>
-    <strong>Tato stránka bude dopsána.</strong> Níže stojí pouze kostra. Kompletní text historie OSA II od roku 2006 napíše člen představenstva po spuštění webu.
-  </aside>
-
   <p>
-    Občanské sdružení Alternativa II vzniklo 14. března 2006. Zakládající schůze se konala v podzemním krytu v Cerhenicích. Zakladateli bylo dvanáct studentů, kteří hledali formu umožňující společně držet střechu nad projekty, které by každý z nich sám nezvládl právně, administrativně ani finančně.
+    Občanské sdružení, které se na základě nového občanského zákoníku v roce 2014 transformovalo do právnické formy zapsaného spolku a ke svému původnímu názvu připojilo zkratku „z.s.", vzniklo registrací stanov u Ministerstva vnitra ČR <strong>14. března 2006</strong> pod názvem „občanské sdružení Alternativa II" (zkráceně též „OSA II").
+  </p>
+  <p>
+    Zakládající schůze sdružení se konala v podzemním krytu civilní obrany na pražském Břevnově. Spolek založilo dvanáct osob, převážně z řad studentů středních a vysokých škol. Protože nově založené sdružení navazovalo z velké části cíli, filozofií i personálně na dřívější o.s. Alternativa, rozhodli zakládající členové, že nový subjekt ponese obdobný název, ke kterému připojí římskou číslovku II.
   </p>
 
-  <h2>Roky 2006-2010: založení a první projekty</h2>
+  <h2>2006–2013: založení a první projekty</h2>
   <p>
-    V prvních letech spolek fungoval spíš jako ideový rámec. První paintballové areály vznikly v Klecanech a Bratronicích; generovaly drobný zisk, který financoval ostatní aktivity. DIY dílny se otevřely pod střechou Volnočasového centra.
+    Účelem nově založeného subjektu bylo v první řadě poskytnout všem zakládajícím členům společný právní rámec, pod jehož záštitou by mohli společně realizovat projekt <strong>MKJ (Mobilní Kulturní Jednotky)</strong>, na jehož realizaci se chtěli všichni zakládající členi spolku podílet. Dále vznikla touha vytvořit společný právní subjekt, pod jehož záštitou by bylo možné v budoucnu maximálně svobodně realizovat rozmanité ideje, nápady a záměry členů spolku ve formě autonomních projektů.
+  </p>
+  <p>
+    V prvních letech spolek fungoval spíše jako ideový rámec. První paintballové areály vznikly v Klecanech a Bratronicích a generovaly drobný zisk, který financoval ostatní aktivity. Otevřely se DIY dílny pod střechou Volnočasového centra; rozeběhly se první kreativní prostory pro hudebníky a výtvarníky.
   </p>
 
-  <h2>Roky 2011-2018: expanze</h2>
+  <h2>2014–2020: transformace na zapsaný spolek a expanze</h2>
   <p>
-    V tomto období přibývá projekt Metro Farm (2017), Kite Klub (2011), Sport KIDS (2013), Gas Town (2018) a řada dalších volnočasových aktivit. Spolek koupí nebo získává do dlouhodobé výpůjčky několik areálů na okraji Prahy.
+    V roce 2014 se sdružení transformovalo do právnické formy zapsaného spolku a ke svému názvu připojilo zkratku „z.s.". V tomto období přibývá projekt Metro Farm, Kite Klub, Sport KIDS, Gas Town a řada dalších volnočasových aktivit. Spolek získává do dlouhodobé výpůjčky či kupuje několik areálů na okraji Prahy a začíná se profilovat jako platforma pro decentralizované autonomní projekty.
   </p>
 
-  <h2>Roky 2019-současnost: instituce jako platforma</h2>
+  <h2>2020–současnost: instituce jako platforma</h2>
   <p>
-    Spolek se stává platformou pro desítky autonomních projektů. Vzniká Výletná (2019), VPD (2020), Kreativní prostory (2021). Formalizuje se vnitřní rozhodovací proces, zavádějí se konsensuální mechanismy a příprava Kreditního systému OSA II.
+    Spolek se stává platformou pro desítky autonomních projektů. Vzniká <strong>Výletná</strong>, <strong>Veřejně prospěšný developer</strong>, Kreativní prostory CZ a další iniciativy. Formalizuje se vnitřní rozhodovací proces, zavádějí se konsensuální mechanismy a začíná příprava Kreditního systému OSA II, který má systematizovat dobrovolnickou práci napříč projekty.
+  </p>
+  <p>
+    Jak se původní záměr podařilo rozvinout, můžete posoudit na fotografiích z činnosti spolku a v sekci aktuálně realizovaných spolkových projektů.
+  </p>
+
+  <Gallery title={null} />
+
+  <p style="margin-top: 2rem;">
+    <InlineCTA href={withBase('/projekty/')}>Aktuální projekty</InlineCTA>
+    &nbsp;&nbsp;
+    <InlineCTA href={withBase('/clenstvi/')}>Staňte se členem</InlineCTA>
   </p>
 </LongformPage>

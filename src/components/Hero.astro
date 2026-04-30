@@ -3,27 +3,23 @@ import OsaGlyph from './OsaGlyph.astro';
 import InlineCTA from './InlineCTA.astro';
 import { withBase } from '../utils/url';
 ---
-<section
-  class="osa-hero osa-dark"
-  style={`--hero-pattern: url('${withBase('/graphics/osa-bg-pattern.svg')}')`}>
+<section class="osa-hero osa-dark">
   <div class="container-wide osa-hero__inner">
     <div class="osa-hero__eyebrow osa-eyebrow" data-reveal>
       <OsaGlyph size="13px" />
-      <span>Občanské sdružení Alternativa II, z.s.</span>
+      <span>Pomáháme tvořit&hellip;</span>
     </div>
     <h1 class="osa-hero__h1">
       <span
         class="osa-hero__h1-main"
         data-reveal-words
         data-reveal-words-delay="200"
-        data-reveal-words-step="40">Obnovujeme chátrající památky, stavíme zkušebny a dílny, zakládáme komunitní zahrady a kulturní centra.</span>
+        data-reveal-words-step="40">Chceme vytvořit moderní, prosperující a hodnotově orientovanou společnost, jejímž smyslem a účelem bude efektivní podpora všech jedinců v jejich plnohodnotné a všestranné seberealizaci.</span>
     </h1>
-    <p class="osa-hero__strapline" data-reveal style="transition-delay: 900ms">
-      Platforma pro desítky autonomních projektů. Pomáháme tvořit bez státních dotací, dobrovolnickou prací a metodou DIY.
-    </p>
     <div class="osa-hero__rule" aria-hidden="true" data-reveal style="transition-delay: 1100ms"></div>
     <div class="osa-hero__cta" data-reveal style="transition-delay: 1250ms">
       <InlineCTA href={withBase('/o-spolku/')}>Více o spolku</InlineCTA>
+      <InlineCTA href={withBase('/aktuality/')} class="osa-hero__cta-secondary">Aktuality</InlineCTA>
     </div>
   </div>
 </section>
@@ -38,30 +34,8 @@ import { withBase } from '../utils/url';
     position: relative;
     isolation: isolate;
   }
-  /* Background motif: bespoke OSA triangular pattern at low opacity, sized to
-     cover the banner. Was previously a diagonal-line SVGPattern — same role
-     (texture on an otherwise flat black surface), different vocabulary. */
-  .osa-hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: var(--hero-pattern);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.15;
-    z-index: 0;
-    pointer-events: none;
-  }
   .osa-hero__inner { position: relative; z-index: 1; }
   .osa-hero__inner {
-    /* Shared dark-hero shape across Úvod / O spolku / Projekty / Aktuality detail /
-       VPD. Padding is applied per-property so .container-wide's horizontal gutter
-       (padding: 0 var(--gutter)) is preserved - a shorthand like
-       `padding: X 0 Y` would reset the horizontal side to 0 and break layout on
-       narrow viewports. The max-width override that was here (1280 px) was
-       removed so container-wide's 1440 px tier governs uniformly across all
-       landing sections. */
     padding-top: clamp(var(--space-7), 8vw, var(--space-9));
     padding-bottom: var(--space-9);
     display: grid;
@@ -71,27 +45,23 @@ import { withBase } from '../utils/url';
     display: inline-flex; align-items: center; gap: var(--space-2);
     color: var(--fg-muted);
   }
+  /* Vision quote H1: longer than the previous sloganized headline, so the
+     max-width is widened and the font-size scales slightly smaller at the
+     top of the clamp range. The line-height is also a touch looser to keep
+     a long body of words from feeling stacked. */
   .osa-hero__h1 {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: clamp(2rem, 3.8vw + 0.75rem, 4rem);
-    line-height: 1.06;
+    font-size: clamp(1.625rem, 2.6vw + 0.85rem, 3.25rem);
+    line-height: 1.12;
     letter-spacing: var(--tracking-tight);
     color: var(--fg);
     margin: 0;
-    max-width: 22ch;
+    max-width: 32ch;
   }
   .osa-hero__h1-main {
     display: block;
     text-wrap: balance;
-  }
-  .osa-hero__strapline {
-    font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: var(--text-lg);
-    color: var(--fg-muted);
-    max-width: 54ch;
-    margin: 0;
   }
   .osa-hero__rule {
     height: 1px;
@@ -100,12 +70,24 @@ import { withBase } from '../utils/url';
     margin-top: var(--space-2);
     transform-origin: left;
   }
-  .osa-hero__cta { margin-top: var(--space-2); }
-  /* Reveal override: rule scales from 0 width instead of y-offset. */
+  .osa-hero__cta {
+    margin-top: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+  .osa-hero__cta :global(.osa-hero__cta-secondary) {
+    color: var(--fg-muted);
+  }
+  .osa-hero__cta :global(.osa-hero__cta-secondary:hover) {
+    color: var(--fg);
+  }
   [data-reveal].osa-hero__rule { transform: scaleX(0); }
   [data-reveal].osa-hero__rule.shown { transform: scaleX(1); opacity: 1; }
 
   @media (max-width: 720px) {
-    .osa-hero__h1 { max-width: 18ch; }
+    .osa-hero__h1 { max-width: 24ch; }
+    .osa-hero__cta { gap: var(--space-4); }
   }
 </style>

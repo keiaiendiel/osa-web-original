@@ -100,13 +100,13 @@ const values = (await getCollection('values'))
 
   .osa-values__cell {
     position: relative;
-    padding: var(--space-5);
+    padding: var(--space-4);
     border-right: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
     display: grid;
     grid-template-rows: auto auto 0fr;
-    gap: var(--space-3);
-    min-height: 150px;
+    gap: var(--space-2);
+    min-height: 96px;
     background: var(--bg);
     color: var(--fg);
     cursor: pointer;
@@ -160,7 +160,7 @@ const values = (await getCollection('values'))
   .osa-values__name {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: var(--text-lg);
+    font-size: var(--text-md);
     line-height: var(--lh-snug);
     letter-spacing: var(--tracking-tight);
     color: inherit;
@@ -171,7 +171,7 @@ const values = (await getCollection('values'))
     overflow: hidden;
     font-family: var(--font-sans);
     font-weight: 500;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     line-height: var(--lh-normal);
     color: inherit;
     opacity: 0.82;

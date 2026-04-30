@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
+import InlineCTA from './InlineCTA.astro';
+import { withBase } from '../utils/url';
+
+interface Props {
+  limit?: number;
+}
+const { limit = 3 } = Astro.props;
+
+const all = await getCollection('aktuality', (entry) => !entry.data.draft);
+const articles = all
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, limit);
+---
+<section class="osa-recap section">
+  <div class="container-wide">
+    <header class="osa-recap__head" data-reveal>
+      <span class="osa-eyebrow">Aktuálně</span>
+      <h2 class="osa-h2 osa-recap__title">Co se u nás děje.</h2>
+      <p class="osa-body osa-recap__lede">
+        Krátké zprávy, oznámení a tematické texty od lidí, kteří spolek tvoří.
+      </p>
+    </header>
+    {articles.length > 0 && (
+      <ul class="osa-recap__grid" role="list">
+        {articles.map((entry, i) => (
+          <li
+            data-reveal
+            data-reveal-delay={String((i % 3) + 1)}
+          ><ArticleCard
+            slug={entry.id}
+            title={entry.data.title}
+            lead={entry.data.lead}
+            date={entry.data.date}
+            hero={entry.data.hero}
+            hero_alt={entry.data.hero_alt}
+            author={entry.data.author}
+            tags={entry.data.tags}
+          /></li>
+        ))}
+      </ul>
+    )}
+    <div class="osa-recap__more" data-reveal>
+      <InlineCTA href={withBase('/aktuality/')}>Všechny aktuality</InlineCTA>
+    </div>
+  </div>
+</section>
+
+<style>
+  .osa-recap {
+    border-top: 1px solid var(--rule);
+  }
+  .osa-recap__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 64ch;
+    margin: 0 0 var(--space-7);
+  }
+  .osa-recap__title { margin: 0; }
+  .osa-recap__lede {
+    margin: 0;
+    color: var(--fg-muted);
+    max-width: 56ch;
+  }
+
+  .osa-recap__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .osa-recap__grid > li { display: flex; }
+  .osa-recap__grid > li > * { flex: 1; }
+
+  .osa-recap__more {
+    margin: var(--space-6) 0 0;
+  }
+</style>

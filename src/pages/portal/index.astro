@@ -1,0 +1,1056 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import OsaGlyph from '../../components/OsaGlyph.astro';
+import InlineCTA from '../../components/InlineCTA.astro';
+import { withBase } from '../../utils/url';
+
+// Mock data — refresh = reset, žádný backend ani perzistence.
+// "35S" je vlastní ID majitele projektu (Antonín Kindl). Při zadání
+// jakéhokoliv jiného identifikátoru se používají generická data.
+const member = {
+  id: '35S',
+  name: 'Antonín Kindl',
+  initials: 'AK',
+  since: '1. 9. 2022',
+  yearsCount: 4,
+  email: 'a.kindl@osa2.cz',
+  phone: '+420 ••• ••• 476',
+  address: 'Terronská 894/56, Praha 6',
+  // Profesní profil v rámci spolku — kým daný člen je z pohledu vlastní
+  // odborné praxe, nikoli administrativních statusů (ty řešíme jinde).
+  professions: ['Umělec', 'Grafik', 'Artista', 'Autor loga'],
+};
+
+const aktivity = [
+  { name: 'Veřejně prospěšný developer',         accent: 'olive', role: 'Vedoucí projektu', hours: 247, lastActivity: 'včera' },
+  { name: 'Občanské sdružení Alternativa II',    accent: 'blue',  role: 'Statutární zástupce', hours: 1240, lastActivity: 'dnes' },
+];
+
+const credits = 1247;
+// 30-point trend, mírně rostoucí — jen pro vizuální dojem v sparklinu.
+const trend = [42, 48, 47, 53, 55, 58, 56, 61, 64, 67, 69, 73, 71, 76, 80, 82, 85, 89, 92, 95, 96, 99, 102, 104, 108, 112, 115, 119, 122, 125];
+const trendMax = Math.max(...trend);
+const trendMin = Math.min(...trend);
+const sparkPoints = trend
+  .map((v, i) => {
+    const x = (i / (trend.length - 1)) * 100;
+    const y = 100 - ((v - trendMin) / (trendMax - trendMin)) * 100;
+    return `${x.toFixed(2)},${y.toFixed(2)}`;
+  })
+  .join(' ');
+
+const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', accent: 'olive' };
+---
+<Base
+  title="Členský portál - Občanské sdružení Alternativa II, z.s."
+  description="Prototyp členského portálu. Pro stávající členy spolku.">
+  <Header variant="dark" />
+  <main class="osa-portal" data-portal>
+
+    {/* ===== LOGIN VIEW ===== */}
+    <section class="osa-portal__login osa-dark" data-portal-view="login">
+      <div class="container osa-portal__login-inner">
+        <header class="osa-portal__login-head" data-reveal>
+          <span class="osa-eyebrow">Členský portál</span>
+          <h1 class="osa-portal__login-h1">Přihlášení.</h1>
+          <p class="osa-portal__login-lede">
+            Pro stávající členy spolku. Zadejte svůj členský identifikátor — najdete ho na členské kartě nebo v emailu od Orgánu pro nábor a příspěvky.
+          </p>
+        </header>
+
+        <form class="osa-portal__login-form" data-portal-login data-reveal data-reveal-delay="1">
+          <div class="osa-portal__field">
+            <label for="portal-id">Členský identifikátor</label>
+            <input id="portal-id" name="member-id" type="text" placeholder="např. 35S" autocomplete="off" required />
+          </div>
+          <div class="osa-portal__field">
+            <label for="portal-pw">Heslo</label>
+            <input id="portal-pw" name="password" type="password" placeholder="V prototypu zadejte cokoliv" />
+          </div>
+          <div class="osa-portal__login-foot">
+            <button type="submit" class="btn">Přihlásit &rarr;</button>
+            <p class="osa-portal__login-error" data-portal-error hidden>Neplatný identifikátor.</p>
+          </div>
+        </form>
+
+        <footer class="osa-portal__login-meta" data-reveal data-reveal-delay="2">
+          <InlineCTA href={withBase('/clenstvi/')}>Nejste člen? Staňte se členem</InlineCTA>
+          <InlineCTA href="mailto:info@osa2.cz?subject=Zapomenut%C3%A9%20ID" class="osa-portal__login-meta-secondary">Zapomenuté ID?</InlineCTA>
+        </footer>
+      </div>
+    </section>
+
+    {/* ===== DASHBOARD VIEW ===== */}
+    <section class="osa-portal__dashboard" data-portal-view="dashboard" hidden>
+      <div class="osa-portal__topbar">
+        <div class="container-wide osa-portal__topbar-inner">
+          <div class="osa-portal__topbar-id">
+            <span class="osa-eyebrow">Přihlášený člen</span>
+            <strong data-portal-displayid>{member.id}</strong>
+          </div>
+          <button type="button" class="osa-portal__logout" data-portal-logout>
+            <span>Odhlásit</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="container-wide osa-portal__grid">
+
+        {/* 1 — Welcome */}
+        <article class="osa-portal__card osa-portal__card--welcome" data-reveal>
+          <div>
+            <span class="osa-eyebrow">Vítejte zpět</span>
+            <h2 class="osa-portal__welcome-h2"><span data-portal-displayname>{member.name}</span> <small>({member.id})</small></h2>
+            <p class="osa-portal__welcome-meta">
+              Členem od {member.since} · {member.yearsCount} let členství
+            </p>
+          </div>
+          <dl class="osa-portal__welcome-stats">
+            <div>
+              <dt>Aktivní projekty</dt>
+              <dd>{aktivity.length}</dd>
+            </div>
+            <div>
+              <dt>OSA kredity</dt>
+              <dd>{credits.toLocaleString('cs-CZ')}<small> OSA¢</small></dd>
+            </div>
+            <div>
+              <dt>Odpracováno hodin</dt>
+              <dd>{aktivity.reduce((sum, a) => sum + a.hours, 0)}</dd>
+            </div>
+          </dl>
+        </article>
+
+        {/* 2 — Můj profil */}
+        <article class="osa-portal__card osa-portal__card--col-4" data-reveal>
+          <header class="osa-portal__card-head">
+            <span class="osa-eyebrow">Můj profil</span>
+            <h3 class="osa-portal__card-title">Kontaktní údaje</h3>
+          </header>
+          <dl class="osa-portal__profile">
+            <div><dt>Jméno</dt><dd>{member.name}</dd></div>
+            <div><dt>Email</dt><dd>{member.email}</dd></div>
+            <div><dt>Telefon</dt><dd>{member.phone}</dd></div>
+            <div><dt>Adresa</dt><dd>{member.address}</dd></div>
+            <div>
+              <dt>Profese</dt>
+              <dd class="osa-portal__statuses">
+                {member.professions.map((p) => <span class="osa-portal__status-tag">{p}</span>)}
+              </dd>
+            </div>
+          </dl>
+          <footer class="osa-portal__card-foot">
+            <InlineCTA href="#" class="osa-portal__noop" data-portal-noop="Editace profilu bude dostupná po launchi.">Upravit profil</InlineCTA>
+          </footer>
+        </article>
+
+        {/* 3 — Aktivita v projektech */}
+        <article class="osa-portal__card osa-portal__card--col-8" data-reveal data-reveal-delay="1">
+          <header class="osa-portal__card-head">
+            <span class="osa-eyebrow">Aktivita v projektech</span>
+            <h3 class="osa-portal__card-title">Vaše zapojení v rámci spolku</h3>
+          </header>
+          <ul class="osa-portal__activity" role="list">
+            {aktivity.map((a) => (
+              <li class="osa-portal__activity-row" style={`--accent: var(--c-${a.accent});`}>
+                <span class="osa-portal__activity-dot" aria-hidden="true"></span>
+                <div class="osa-portal__activity-text">
+                  <strong class="osa-portal__activity-name">{a.name}</strong>
+                  <span class="osa-portal__activity-role">{a.role}</span>
+                </div>
+                <dl class="osa-portal__activity-stats">
+                  <div><dt>Hodin</dt><dd>{a.hours}</dd></div>
+                  <div><dt>Aktivita</dt><dd>{a.lastActivity}</dd></div>
+                </dl>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        {/* 4 — OSA kredity */}
+        <article class="osa-portal__card osa-portal__card--col-4" data-reveal>
+          <header class="osa-portal__card-head">
+            <span class="osa-eyebrow">OSA kredity</span>
+            <h3 class="osa-portal__card-title">Stav účtu</h3>
+          </header>
+          <div class="osa-portal__credits">
+            <strong class="osa-portal__credits-number">{credits.toLocaleString('cs-CZ')}<small> OSA¢</small></strong>
+            <svg class="osa-portal__sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <polyline points={sparkPoints} fill="none" stroke="currentColor" stroke-width="1.6" vector-effect="non-scaling-stroke" />
+            </svg>
+            <p class="osa-portal__credits-meta">Trend posledních 30 dní</p>
+          </div>
+          <footer class="osa-portal__card-foot">
+            <InlineCTA href="#" class="osa-portal__noop" data-portal-noop="Historie kreditů bude dostupná v dalších iteracích.">Historie kreditů</InlineCTA>
+          </footer>
+        </article>
+
+        {/* 5 — Členská karta */}
+        <article class="osa-portal__card osa-portal__card--col-4" data-reveal data-reveal-delay="1">
+          <header class="osa-portal__card-head">
+            <span class="osa-eyebrow">Členská karta</span>
+            <h3 class="osa-portal__card-title">Náhled karty</h3>
+          </header>
+          <div class="osa-portal__memcard">
+            <div class="osa-portal__memcard-art">
+              <OsaGlyph size="20px" />
+              <span class="osa-portal__memcard-brand">OSA II</span>
+            </div>
+            <div class="osa-portal__memcard-body">
+              <strong class="osa-portal__memcard-name">{member.name}</strong>
+              <span class="osa-portal__memcard-id">ID · {member.id}</span>
+              <span class="osa-portal__memcard-since">Od {member.since}</span>
+            </div>
+            <div class="osa-portal__memcard-foot">
+              <span class="osa-portal__memcard-status">{member.professions[0]}</span>
+            </div>
+          </div>
+          <footer class="osa-portal__card-foot osa-portal__card-foot--row">
+            <InlineCTA href="#" class="osa-portal__noop" data-portal-noop="PDF generování karty zatím neběží — bude dostupné po launchi.">Stáhnout PDF</InlineCTA>
+            <InlineCTA href="#" class="osa-portal__noop osa-portal__noop--print" data-portal-print>Tisknout</InlineCTA>
+          </footer>
+        </article>
+
+        {/* 6 — Můj projekt */}
+        <article class="osa-portal__card osa-portal__card--col-4" data-reveal data-reveal-delay="2">
+          <header class="osa-portal__card-head">
+            <span class="osa-eyebrow">Můj projekt</span>
+            <h3 class="osa-portal__card-title">Vedete projekt</h3>
+          </header>
+          <div class="osa-portal__myproject" style={`--accent: var(--c-${ledProject.accent});`}>
+            <span class="osa-portal__myproject-dot" aria-hidden="true"></span>
+            <strong class="osa-portal__myproject-name">{ledProject.name}</strong>
+          </div>
+          <footer class="osa-portal__card-foot osa-portal__card-foot--col">
+            <InlineCTA href={withBase(`/projekty/${ledProject.slug}/`)}>Otevřít projekt</InlineCTA>
+            <InlineCTA href="#" class="osa-portal__noop" data-portal-open="new-project">Založit nový projekt</InlineCTA>
+          </footer>
+        </article>
+
+        {/* 7 — Členská nastavení */}
+        <article class="osa-portal__card osa-portal__card--col-12 osa-portal__card--settings" data-reveal>
+          <header class="osa-portal__card-head">
+            <span class="osa-eyebrow">Členská nastavení</span>
+            <h3 class="osa-portal__card-title">Spravujte své členství.</h3>
+          </header>
+          <ul class="osa-portal__settings" role="list">
+            <li>
+              <InlineCTA href="#" class="osa-portal__noop" data-portal-noop="Změna kontaktních údajů bude dostupná po launchi.">Změnit kontaktní údaje</InlineCTA>
+            </li>
+            <li>
+              <InlineCTA href={withBase('/o-spolku/dokumenty/')}>Stanovy a interní předpisy</InlineCTA>
+            </li>
+            <li>
+              <InlineCTA href={withBase('/clenstvi/')}>Práva a povinnosti členů</InlineCTA>
+            </li>
+            <li>
+              <InlineCTA href="#" class="osa-portal__noop osa-portal__noop--danger" data-portal-open="end-membership">Ukončit členství</InlineCTA>
+            </li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    {/* ===== MODALS ===== */}
+    <dialog class="osa-portal__dialog" data-portal-modal="new-project">
+      <form method="dialog" data-portal-form="new-project">
+        <header class="osa-portal__dialog-head">
+          <span class="osa-eyebrow">Nový projekt</span>
+          <h3 class="osa-portal__dialog-title">Založit autonomní projekt pod hlavičkou OSA</h3>
+        </header>
+        <div class="osa-portal__dialog-body">
+          <div class="osa-portal__field">
+            <label for="np-name">Název projektu</label>
+            <input id="np-name" name="name" type="text" required />
+          </div>
+          <div class="osa-portal__field">
+            <label for="np-desc">Krátký popis</label>
+            <textarea id="np-desc" name="description" rows="3" required></textarea>
+          </div>
+          <div class="osa-portal__field-row">
+            <div class="osa-portal__field">
+              <label for="np-accent">Akcentová barva</label>
+              <select id="np-accent" name="accent">
+                <option value="red">Red</option>
+                <option value="coral">Coral</option>
+                <option value="mustard">Mustard</option>
+                <option value="olive">Olive</option>
+                <option value="forest">Forest</option>
+                <option value="teal">Teal</option>
+                <option value="blue">Blue</option>
+                <option value="plum">Plum</option>
+              </select>
+            </div>
+            <div class="osa-portal__field">
+              <label for="np-topic">Téma</label>
+              <select id="np-topic" name="topic">
+                <option>Urbanismus</option>
+                <option>Kultura</option>
+                <option>Sport</option>
+                <option>Média</option>
+                <option>Vzdělávání</option>
+                <option>Tvorba</option>
+                <option>Komunita</option>
+                <option>LARP</option>
+              </select>
+            </div>
+          </div>
+          <div class="osa-portal__field">
+            <label for="np-leader">Vedoucí</label>
+            <input id="np-leader" name="leader" type="text" value={member.name} />
+          </div>
+        </div>
+        <footer class="osa-portal__dialog-foot">
+          <button type="button" class="btn btn--ghost" data-portal-cancel>Zrušit</button>
+          <button type="submit" class="btn">Předložit projektovou dokumentaci &rarr;</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="osa-portal__dialog" data-portal-modal="end-membership">
+      <form method="dialog" data-portal-form="end-membership">
+        <header class="osa-portal__dialog-head">
+          <span class="osa-eyebrow">Ukončit členství</span>
+          <h3 class="osa-portal__dialog-title">Opravdu chcete ukončit své členství?</h3>
+        </header>
+        <div class="osa-portal__dialog-body">
+          <p>
+            Po odeslání žádosti vás bude kontaktovat zástupce Orgánu pro nábor a příspěvky. Vaše členská práva zůstávají platná až do potvrzení ukončení ze strany spolku.
+          </p>
+          <div class="osa-portal__field">
+            <label for="em-reason">Důvod ukončení <small>(volitelné)</small></label>
+            <textarea id="em-reason" name="reason" rows="3" placeholder="Stačí pár vět; pomáhá nám to se zlepšováním."></textarea>
+          </div>
+        </div>
+        <footer class="osa-portal__dialog-foot">
+          <button type="button" class="btn btn--ghost" data-portal-cancel>Zrušit</button>
+          <button type="submit" class="btn">Potvrdit ukončení &rarr;</button>
+        </footer>
+      </form>
+    </dialog>
+
+  </main>
+  <Footer />
+</Base>
+
+<script is:inline>
+  (function () {
+    var root = document.querySelector('[data-portal]');
+    if (!root) return;
+
+    var loginView = root.querySelector('[data-portal-view="login"]');
+    var dashboardView = root.querySelector('[data-portal-view="dashboard"]');
+    var loginForm = root.querySelector('[data-portal-login]');
+    var loginError = root.querySelector('[data-portal-error]');
+    var displayId = root.querySelector('[data-portal-displayid]');
+    var displayName = root.querySelector('[data-portal-displayname]');
+    var logoutBtn = root.querySelector('[data-portal-logout]');
+
+    var DEFAULT_NAME = 'Antonín Kindl';
+
+    var headerLabel = document.querySelector('[data-portal-header-label]');
+
+    function showDashboard(idStr) {
+      var safeId = (idStr || '').trim().toUpperCase() || '35S';
+      if (displayId) displayId.textContent = safeId;
+      if (displayName) {
+        // Pro známé "35S" zobrazíme reálné jméno; pro cokoliv jiného
+        // generický placeholder, ať to dává smysl při různých vstupech.
+        displayName.textContent = safeId === '35S' ? DEFAULT_NAME : 'Člen ' + safeId;
+      }
+      // Header link "Přihlásit" → identifikátor člena. Po odhlášení se
+      // text vrací zpátky na "Přihlásit". Šíří jediný stav skrz layout.
+      if (headerLabel) headerLabel.textContent = safeId;
+      if (loginView) loginView.hidden = true;
+      if (dashboardView) dashboardView.hidden = false;
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function showLogin() {
+      if (loginView) loginView.hidden = false;
+      if (dashboardView) dashboardView.hidden = true;
+      if (loginForm) loginForm.reset();
+      if (headerLabel) headerLabel.textContent = 'Přihlásit';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    if (loginForm) {
+      loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var idEl = loginForm.querySelector('#portal-id');
+        var idStr = idEl ? idEl.value : '';
+        if (!idStr || !idStr.trim()) {
+          if (loginError) loginError.hidden = false;
+          return;
+        }
+        if (loginError) loginError.hidden = true;
+        showDashboard(idStr);
+      });
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', showLogin);
+    }
+
+    // No-op CTAs (placeholder akcí)
+    root.querySelectorAll('[data-portal-noop]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        var msg = el.getAttribute('data-portal-noop');
+        if (msg) alert(msg);
+      });
+    });
+
+    // Tisk: pokus o nativní print dialog
+    var printBtn = root.querySelector('[data-portal-print]');
+    if (printBtn) {
+      printBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (typeof window.print === 'function') window.print();
+      });
+    }
+
+    // Modal openers
+    root.querySelectorAll('[data-portal-open]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        var key = el.getAttribute('data-portal-open');
+        var dialog = root.querySelector('[data-portal-modal="' + key + '"]');
+        if (dialog && typeof dialog.showModal === 'function') {
+          dialog.showModal();
+        } else if (dialog) {
+          dialog.setAttribute('open', 'open');
+        }
+      });
+    });
+
+    // Cancel buttons
+    root.querySelectorAll('[data-portal-cancel]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var dlg = el.closest('dialog');
+        if (dlg && typeof dlg.close === 'function') dlg.close();
+        else if (dlg) dlg.removeAttribute('open');
+      });
+    });
+
+    // Form submits inside modals — show alert + close.
+    root.querySelectorAll('[data-portal-form]').forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        var kind = form.getAttribute('data-portal-form');
+        if (kind === 'new-project') {
+          alert('Projektová dokumentace byla odeslána statutárnímu orgánu k posouzení.');
+        } else if (kind === 'end-membership') {
+          alert('Žádost o ukončení členství byla odeslána. Brzy vás budeme kontaktovat.');
+          // Po ukončení se vracíme na login screen
+          setTimeout(showLogin, 100);
+        }
+        // dialog form method="dialog" se zavře sám
+      });
+    });
+  }());
+</script>
+
+<style>
+  /* ============================================================ */
+  /* LOGIN VIEW                                                   */
+  /* ============================================================ */
+  /* [hidden] attribute must beat the .osa-portal__login class
+     selector — without explicit override, `display: grid` would win
+     and the login section would stay visible alongside the dashboard. */
+  .osa-portal__login[hidden],
+  .osa-portal__dashboard[hidden] { display: none; }
+  .osa-portal__login {
+    min-height: 70vh;
+    display: grid;
+    place-items: center;
+    background: var(--bg);
+    color: var(--fg);
+    border-bottom: 1px solid var(--rule);
+    padding: var(--space-9) 0;
+  }
+  .osa-portal__login-inner {
+    display: grid;
+    gap: var(--space-7);
+    max-width: 480px;
+    width: 100%;
+  }
+  .osa-portal__login-head { display: grid; gap: var(--space-3); }
+  .osa-portal__login-h1 {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw + 0.5rem, 3.25rem);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+    color: var(--fg);
+  }
+  .osa-portal__login-lede {
+    margin: 0;
+    color: var(--fg-muted);
+    line-height: var(--lh-normal);
+  }
+  .osa-portal__login-form {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .osa-portal__login-foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+  .osa-portal__login-error {
+    margin: 0;
+    color: var(--fg);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .osa-portal__login-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--space-5);
+  }
+  .osa-portal__login-meta-secondary { color: var(--fg-muted); }
+  .osa-portal__login-meta-secondary:hover { color: var(--fg); }
+
+  /* ============================================================ */
+  /* SHARED FIELD STYLE                                            */
+  /* ============================================================ */
+  .osa-portal__field {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .osa-portal__field label {
+    font: 600 var(--text-sm) / 1.2 var(--font-sans);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg);
+  }
+  .osa-portal__field label small {
+    font-weight: 500;
+    color: var(--fg-muted);
+    margin-left: var(--space-1);
+  }
+  .osa-portal__field input,
+  .osa-portal__field select,
+  .osa-portal__field textarea {
+    font: 500 var(--text-md) / var(--lh-normal) var(--font-sans);
+    color: var(--fg);
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: var(--space-3);
+    border-radius: 0;
+    width: 100%;
+  }
+  .osa-portal__field input:focus,
+  .osa-portal__field select:focus,
+  .osa-portal__field textarea:focus {
+    outline: 2px solid var(--fg);
+    outline-offset: -2px;
+  }
+  .osa-portal__field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  @media (max-width: 480px) {
+    .osa-portal__field-row { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================ */
+  /* DASHBOARD VIEW                                                */
+  /* ============================================================ */
+  .osa-portal__dashboard {
+    background: var(--bg);
+    color: var(--fg);
+    padding-bottom: var(--space-9);
+  }
+
+  .osa-portal__topbar {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .osa-portal__topbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4) var(--gutter);
+  }
+  .osa-portal__topbar-id { display: grid; gap: 2px; }
+  .osa-portal__topbar-id .osa-eyebrow { color: var(--fg-muted); }
+  .osa-portal__topbar-id strong {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-md);
+    letter-spacing: var(--tracking-wide);
+  }
+  .osa-portal__logout {
+    background: transparent;
+    border: 1px solid var(--fg);
+    color: var(--fg);
+    font: 600 var(--text-sm) / 1 var(--font-sans);
+    padding: 8px 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition:
+      background-color var(--dur-base, 280ms) var(--ease-quart),
+      color var(--dur-base, 280ms) var(--ease-quart);
+  }
+  .osa-portal__logout:hover,
+  .osa-portal__logout:focus-visible {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  /* 12-col editorial grid */
+  .osa-portal__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+    margin-top: var(--space-6);
+  }
+  .osa-portal__card {
+    grid-column: span 12;
+    padding: var(--space-5);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+    min-height: 200px;
+  }
+  .osa-portal__card--col-4  { grid-column: span 4; }
+  .osa-portal__card--col-8  { grid-column: span 8; }
+  .osa-portal__card--col-12 { grid-column: span 12; }
+  @media (max-width: 1080px) {
+    .osa-portal__card--col-4 { grid-column: span 6; }
+    .osa-portal__card--col-8 { grid-column: span 12; }
+  }
+  @media (max-width: 720px) {
+    .osa-portal__card--col-4,
+    .osa-portal__card--col-6,
+    .osa-portal__card--col-8 { grid-column: span 12; }
+  }
+
+  .osa-portal__card-head { display: grid; gap: var(--space-1); }
+  .osa-portal__card-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-snug);
+  }
+  .osa-portal__card-foot {
+    margin-top: auto;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--rule);
+  }
+  .osa-portal__card-foot--row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+  }
+  .osa-portal__card-foot--col {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  /* ---------- Welcome card ---------- */
+  .osa-portal__card--welcome {
+    grid-column: span 12;
+    grid-template-columns: 2fr 3fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  .osa-portal__welcome-h2 {
+    margin: var(--space-2) 0 var(--space-1);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3vw + 0.4rem, 2.25rem);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.05;
+  }
+  .osa-portal__welcome-h2 small {
+    font-weight: 500;
+    font-size: 0.55em;
+    color: var(--fg-muted);
+    letter-spacing: var(--tracking-wide);
+    margin-left: var(--space-2);
+  }
+  .osa-portal__welcome-meta {
+    margin: 0;
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+  }
+  .osa-portal__welcome-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 0;
+    border-left: 1px solid var(--rule);
+  }
+  .osa-portal__welcome-stats > div {
+    padding: var(--space-3) var(--space-4);
+    border-right: 1px solid var(--rule);
+    display: grid;
+    gap: var(--space-1);
+  }
+  .osa-portal__welcome-stats dt {
+    font: 500 var(--text-2xs) / 1 var(--font-sans);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .osa-portal__welcome-stats dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2vw + 0.5rem, 2rem);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    line-height: 1.05;
+  }
+  .osa-portal__welcome-stats dd small {
+    font-weight: 500;
+    font-size: 0.5em;
+    color: var(--fg-muted);
+    margin-left: 2px;
+  }
+  @media (max-width: 720px) {
+    .osa-portal__card--welcome { grid-template-columns: 1fr; }
+    .osa-portal__welcome-stats { grid-template-columns: 1fr; border-left: 0; border-top: 1px solid var(--rule); }
+    .osa-portal__welcome-stats > div { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .osa-portal__welcome-stats > div:last-child { border-bottom: 0; }
+  }
+
+  /* ---------- Profile card ---------- */
+  .osa-portal__profile {
+    margin: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .osa-portal__profile > div {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .osa-portal__profile dt {
+    font: 500 var(--text-2xs) / 1 var(--font-sans);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    align-self: center;
+  }
+  .osa-portal__profile dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--fg);
+    align-self: center;
+    word-break: break-word;
+  }
+  .osa-portal__statuses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+  .osa-portal__status-tag {
+    display: inline-block;
+    border: 1px solid var(--rule);
+    padding: 2px 8px;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg);
+  }
+
+  /* ---------- Activity card ---------- */
+  .osa-portal__activity {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .osa-portal__activity-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .osa-portal__activity-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .osa-portal__activity-text { display: grid; gap: 2px; }
+  .osa-portal__activity-name {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-md);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+  }
+  .osa-portal__activity-role {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+  }
+  .osa-portal__activity-stats {
+    display: flex;
+    gap: var(--space-4);
+    margin: 0;
+  }
+  .osa-portal__activity-stats > div { display: grid; gap: 2px; text-align: right; }
+  .osa-portal__activity-stats dt {
+    font: 500 var(--text-2xs) / 1 var(--font-sans);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .osa-portal__activity-stats dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--fg);
+  }
+  @media (max-width: 560px) {
+    .osa-portal__activity-row { grid-template-columns: auto 1fr; row-gap: var(--space-2); }
+    .osa-portal__activity-stats { grid-column: 1 / -1; justify-content: flex-start; }
+    .osa-portal__activity-stats > div { text-align: left; }
+  }
+
+  /* ---------- Credits card ---------- */
+  .osa-portal__credits {
+    display: grid;
+    gap: var(--space-3);
+    align-items: end;
+  }
+  .osa-portal__credits-number {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw + 0.4rem, 3rem);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1;
+    color: var(--fg);
+  }
+  .osa-portal__credits-number small {
+    font-weight: 500;
+    font-size: 0.4em;
+    color: var(--fg-muted);
+    margin-left: 4px;
+    letter-spacing: var(--tracking-wide);
+  }
+  .osa-portal__sparkline {
+    width: 100%;
+    height: 44px;
+    color: var(--fg);
+    display: block;
+  }
+  .osa-portal__credits-meta {
+    margin: 0;
+    color: var(--fg-muted);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+  }
+
+  /* ---------- Member card preview ----------
+     Optický inset border (box-shadow inset) přidává kartě hloubku,
+     aby vypadala jako fyzická plastová karta a ne jen plochý box. */
+  .osa-portal__memcard {
+    aspect-ratio: 86 / 54;
+    background: var(--fg);
+    color: var(--bg);
+    padding: var(--space-4);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-2);
+    position: relative;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+      inset 0 0 0 6px var(--fg);
+    overflow: hidden;
+  }
+  /* Subtle textured corner mark — discreet brand seal in the
+     top-right, not loud, just a hint that this is a real card. */
+  .osa-portal__memcard::after {
+    content: "";
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .osa-portal__memcard-art {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--bg);
+    z-index: 1;
+  }
+  .osa-portal__memcard-brand {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+  }
+  .osa-portal__memcard-body {
+    display: grid;
+    gap: 4px;
+    align-self: end;
+  }
+  .osa-portal__memcard-name {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.1;
+  }
+  .osa-portal__memcard-id {
+    font-family: var(--font-mono, var(--font-sans));
+    font-weight: 500;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wider);
+    opacity: 0.78;
+  }
+  .osa-portal__memcard-since {
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .osa-portal__memcard-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .osa-portal__memcard-status {
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    padding: 3px 10px;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    opacity: 0.92;
+  }
+
+  /* ---------- My project card ---------- */
+  .osa-portal__myproject {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .osa-portal__myproject-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .osa-portal__myproject-name {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-md);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.2;
+  }
+
+  /* ---------- Settings list ---------- */
+  .osa-portal__settings {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .osa-portal__settings > li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  /* Danger CTA: ukončení členství = červená barva, aby čtenář
+     viděl varovný signál a klikl jen vědomě. */
+  .osa-portal__noop--danger {
+    color: #b8362c;
+  }
+  .osa-portal__noop--danger:hover {
+    color: #8e221a;
+    opacity: 1;
+  }
+
+  /* ============================================================ */
+  /* MODAL DIALOGS                                                 */
+  /* ============================================================ */
+  .osa-portal__dialog {
+    border: 1px solid var(--fg);
+    background: var(--bg);
+    color: var(--fg);
+    padding: 0;
+    max-width: 540px;
+    width: calc(100% - var(--space-6));
+  }
+  .osa-portal__dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+  }
+  .osa-portal__dialog form {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-6);
+  }
+  .osa-portal__dialog-head { display: grid; gap: var(--space-2); }
+  .osa-portal__dialog-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-snug);
+  }
+  .osa-portal__dialog-body {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .osa-portal__dialog-body p {
+    margin: 0;
+    color: var(--fg-muted);
+  }
+  .osa-portal__dialog-foot {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--rule);
+    padding-top: var(--space-4);
+  }
+  .btn--ghost {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--rule);
+  }
+  .btn--ghost:hover { border-color: var(--fg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .osa-portal__logout { transition: none; }
+  }
+</style>

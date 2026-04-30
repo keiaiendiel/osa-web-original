@@ -4,78 +4,53 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import OrgChart from '../../components/OrgChart.astro';
 import ValuesMatrix from '../../components/ValuesMatrix.astro';
+import GoalsHorizons from '../../components/GoalsHorizons.astro';
 import DocumentList from '../../components/DocumentList.astro';
 import InlineCTA from '../../components/InlineCTA.astro';
 import Gallery from '../../components/Gallery.astro';
 import { withBase } from '../../utils/url';
+
+const hospodareniPillars = [
+  {
+    n: '01',
+    title: 'Dobrovolnická práce členů',
+    body: 'Široce využívaná dobrovolnická práce minimalizuje mzdové náklady a potřebu finančního kapitálu na rozjezd projektů. Spolku přivádí pro věc zapálené spolupracovníky.',
+  },
+  {
+    n: '02',
+    title: 'Metoda DIY',
+    body: 'Pracovní metoda „Do it yourself" minimalizuje provozní a investiční náklady. Zajišťuje vysokou flexibilitu, akceschopnost a soběstačnost projektů.',
+  },
+  {
+    n: '03',
+    title: 'Vlastní hospodářská činnost',
+    body: 'Členské příspěvky a vedlejší podnikatelská činnost na živnostenské bázi. Spolek odmítá státní dotace; zachovává si tím svobodu rozhodování.',
+  },
+];
 ---
 <Base title="O spolku - Občanské sdružení Alternativa II, z.s.">
   <Header variant="dark" />
   <main>
-    <section
-      class="osa-about__hero osa-dark"
-      style={`--about-pattern: url('${withBase('/graphics/osa-bg-pattern-2.svg')}')`}>
+    <section class="osa-about__hero osa-dark">
       <div class="container-wide osa-about__hero-inner">
         <nav aria-label="Drobečková navigace" class="osa-about__crumbs osa-eyebrow">
           <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>
           <span aria-current="page">O spolku</span>
         </nav>
         <h1 class="osa-about__h1" data-reveal>
-          Ideologický a právní kořen spolku.
-          <span class="osa-about__h1-sub">Platforma, která nic neprovozuje; rámec, bez kterého by projekty nemohly růst.</span>
+          Spolek, který slouží seberealizaci.
+          <span class="osa-about__h1-sub">Platforma pro autonomní projekty s konsensuálním rozhodováním a širokým posláním.</span>
         </h1>
         <p class="osa-about__lede" data-reveal data-reveal-delay="1">
-          OSA II je zapsaný spolek založený v roce 2006 dvanácti studenty jako nezávislá, projektově orientovaná organizace. Od té doby kolem spolku vyrostlo téměř dvacet autonomních projektů, od komunitních zahrad přes kulturní památky až po LARP festivaly.
+          Občanské sdružení Alternativa II, z.s. bylo založeno v roce 2006 dvanácti zakládajícími členy z řad studentů středních a vysokých škol. Vznikla nezávislá, nezisková a projektově orientovaná organizace se široce definovaným posláním, konsensuálním rozhodováním kolektivních orgánů a autonomním rozhodováním spolkových projektů.
         </p>
       </div>
     </section>
 
-    {/* ===== NARRATIVE + KLÍČOVÁ ČÍSLA =====
-         Two-column: long-form paragraphs left, compact VPD-style datalist
-         right. Stack under 900 px. Numbers consciously kept to four
-         meaningful figures — independence, longevity, reach, shared
-         value base. */}
-    <section class="section section--tight osa-about__narrative">
-      <div class="container-wide osa-about__narrative-grid">
-        <div class="osa-about__kdojsme osa-longform" data-reveal>
-          <p>
-            Spolek funguje jako platforma. Sám přímo nic neprovozuje. Zajišťuje společný právní rámec, zázemí a konsensuální rozhodování; výkonnou činnost provádějí autonomní projekty, které si vedou vlastní členskou základnu, hospodaření i programovou linii.
-          </p>
-          <p>
-            Spolek odmítá státní granty a dotace. Provoz financuje ze tří pilířů: dobrovolnická práce členů, metoda DIY a vlastní hospodářská činnost (členské příspěvky a služby na živnostenské bázi).
-          </p>
-          <p>
-            Nejvyšším orgánem je Členský sněm. Statutárním orgánem je Představenstvo. Výkonnou úroveň tvoří autonomní projekty a kluby. O strategických rozhodnutích rozhoduje spolek konsensem.
-          </p>
-        </div>
-        <aside class="osa-about__stats" data-reveal data-reveal-delay="1" aria-label="Spolek v číslech">
-          <dl class="osa-about__numbers">
-            <div>
-              <dt>Založeno</dt>
-              <dd><span class="osa-figs">2006</span><br /><small>před 20 lety, registrace u MV ČR</small></dd>
-            </div>
-            <div>
-              <dt>Autonomních projektů</dt>
-              <dd><span class="osa-figs">20+</span><br /><small>včetně klubů a decentralizovaných výkonných složek</small></dd>
-            </div>
-            <div>
-              <dt>Oblastí činnosti</dt>
-              <dd><span class="osa-figs">8</span><br /><small>urbanismus, kultura, sport, média, vzdělávání, tvorba, komunita, LARP</small></dd>
-            </div>
-            <div>
-              <dt>Ze státních dotací</dt>
-              <dd><span class="osa-figs">0&nbsp;Kč</span><br /><small>nezávislost na veřejných zdrojích je podmínka autonomie</small></dd>
-            </div>
-          </dl>
-        </aside>
-      </div>
-    </section>
-
     {/* ===== VIZE · POSLÁNÍ · SMYSL =====
-         Bespoke chapter-head layout matching the VPD investor page
-         (big "01" numeric mark + small sub-head above the heading +
-         body lede). Mobile drops the big mark and the sub-head
-         alone carries the wayfinding. */}
+         Chapter-head vocabulary (big numeric mark + eyebrow above heading).
+         Smysl is the long original text — wrapped in <details> so the
+         section stays scannable and readers can opt into the full quote. */}
     <section class="section osa-about__vize">
       <div class="container-wide">
         <header class="osa-about__sub-head" data-reveal>
@@ -87,9 +62,9 @@ import { withBase } from '../../utils/url';
           <span class="osa-about__chapter-mark" aria-hidden="true">01</span>
           <div>
             <span class="osa-eyebrow">Čeho chceme dosáhnout</span>
-            <h3 class="osa-h3 osa-about__chapter-title">Vize</h3>
+            <h3 class="osa-h3 osa-about__chapter-title">Vize spolku</h3>
             <p class="osa-body osa-about__chapter-body">
-              Moderní, prosperující a hodnotově orientovaná společnost. Každý jedinec v ní má zázemí a podmínky pro plnohodnotnou a všestrannou seberealizaci.
+              Chceme vytvořit moderní, prosperující a hodnotově orientovanou společnost, jejímž smyslem a účelem bude efektivní podpora všech jedinců v jejich plnohodnotné a všestranné seberealizaci.
             </p>
           </div>
         </div>
@@ -98,9 +73,9 @@ import { withBase } from '../../utils/url';
           <span class="osa-about__chapter-mark" aria-hidden="true">02</span>
           <div>
             <span class="osa-eyebrow">Jak toho chceme dosáhnout</span>
-            <h3 class="osa-h3 osa-about__chapter-title">Poslání</h3>
+            <h3 class="osa-h3 osa-about__chapter-title">Poslání spolku</h3>
             <p class="osa-body osa-about__chapter-body">
-              Podporujeme seberealizaci, aktivní bytí, vědu, kulturu, sport, tělovýchovu, vzdělávání, volný čas, humanitární aktivity, občanskou angažovanost i sociálně a ekologicky šetrné podnikání.
+              Posláním spolku je naplňování spolkové vize prostřednictvím podpory seberealizace, aktivního bytí, vědy, kultury, sportu, tělovýchovy, vzdělávání, volnočasového vyžití, humanitárních aktivit, občanské angažovanosti, sociálně a ekologicky šetrného podnikání, jakož i všech ostatních činností směřujících k všestrannému rozvoji jedince i společnosti.
             </p>
           </div>
         </div>
@@ -108,26 +83,95 @@ import { withBase } from '../../utils/url';
         <div class="osa-about__chapter" data-reveal>
           <span class="osa-about__chapter-mark" aria-hidden="true">03</span>
           <div>
-            <span class="osa-eyebrow">Proč to děláme</span>
-            <h3 class="osa-h3 osa-about__chapter-title">Smysl</h3>
+            <span class="osa-eyebrow">Proč toho chceme dosáhnout</span>
+            <h3 class="osa-h3 osa-about__chapter-title">Smysl naší činnosti</h3>
             <p class="osa-body osa-about__chapter-body">
-              Rozvinuté zájmy, hodnoty a aktivity jednotlivce jsou předpokladem rozvinuté společnosti. Osobní štěstí a obecné blaho rostou spolu. Proto stavíme zázemí, kde se co nejvíce lidí může plnohodnotně rozvíjet.
+              Pokud upadají zájmy, aktivity a hodnoty jednotlivých členů společnosti, upadá i celá společnost. A naopak: pokud se rozvíjí jednotlivec, rozvíjí se i celek. Osobní štěstí a obecné blaho jsou neoddělitelné.
             </p>
+            <details class="osa-about__details">
+              <summary>Více</summary>
+              <p class="osa-body osa-about__chapter-body">
+                Jsme toho názoru, že pokud upadají zájmy, aktivity a hodnoty jednotlivých členů společnosti, upadá, degeneruje a trpí tím nejen příslušný jedinec, ale i celá společnost. A naopak, že pokud se zájmy, hodnoty a aktivity jednotlivých členů společnosti rozvíjí, rozvíjí se v důsledku toho i společnost jako celek.
+              </p>
+              <p class="osa-body osa-about__chapter-body">
+                A protože současně máme za to, že i osobní štěstí a obecné blaho je analogickým způsobem provázané, jakož i za to, že štěstí jedince vyplývá především z míry jeho úspěšné seberealizace, jejímž nutným předpokladem je saturace základních životních potřeb, aktivní způsob života, jakož i úspěšný a všestranný rozvoj příslušného jedince v oblasti jeho zájmů, rozhodli jsme se, že smyslem existence a činnosti našeho spolku bude vytváření takového zázemí, prostředí, podmínek, projektů, principů a organizačních struktur, které nám umožní efektivním způsobem podporovat maximální množství jedinců v jejich plnohodnotné a všestranné seberealizaci.
+              </p>
+              <p class="osa-body osa-about__chapter-body">
+                Domníváme se, že právě tímto způsobem budeme nejefektivněji přispívat jak k maximalizaci štěstí podporovaných jedinců, tak i k maximalizaci blahobytu celé společnosti.
+              </p>
+            </details>
           </div>
         </div>
       </div>
     </section>
 
-    {/* Values come before the org chart so the page reads ideology →
-         structure: axioms establish what the spolek is about, org chart
-         then shows how it's arranged around those axioms. */}
+    {/* ===== HODNOTY ===== */}
     <ValuesMatrix dark={true} />
 
-    <section class="section">
+    {/* ===== HISTORIE =====
+         Side-by-side: text left, kompaktní stats datalist right. Stejný
+         vzor jako mělo dřívější narrative+stats v top sekci. */}
+    <section class="section osa-about__historie">
+      <div class="container-wide">
+        <header class="osa-about__sub-head" data-reveal>
+          <span class="osa-eyebrow">Historie spolku</span>
+          <h2 class="osa-h2">Spolek od roku 2006.</h2>
+        </header>
+
+        <div class="osa-about__narrative-grid">
+          <div class="osa-longform osa-about__historie-body" data-reveal>
+            <p>
+              Zakládající schůze sdružení se konala v podzemním krytu civilní obrany na pražském Břevnově. Sdružení založilo dvanáct osob, převážně z řad studentů středních a vysokých škol. Spolek navazoval cíli, filozofií i personálně na dřívější o.s. Alternativa, k jehož názvu připojil římskou číslovku II.
+            </p>
+            <p>
+              Účelem nového subjektu bylo poskytnout všem zakládajícím členům společný právní rámec pro realizaci projektu MKJ (Mobilní Kulturní Jednotky) a vytvořit záštitu, pod kterou by bylo možné v budoucnu svobodně realizovat rozmanité ideje a záměry členů formou autonomních projektů. V roce 2014 se sdružení transformovalo do právnické formy zapsaného spolku a ke svému názvu připojilo zkratku „z.s.".
+            </p>
+            <p>
+              Jak se tento původní záměr podařilo rozvinout, můžete posoudit v sekci projektů, na fotografiích z činnosti spolku či v plné chronologii historie.
+            </p>
+          </div>
+          <aside class="osa-about__stats" data-reveal data-reveal-delay="1" aria-label="Spolek v číslech">
+            <dl class="osa-about__numbers">
+              <div>
+                <dt>Založeno</dt>
+                <dd><span class="osa-figs">2006</span><br /><small>14. března, registrace u MV ČR</small></dd>
+              </div>
+              <div>
+                <dt>Autonomních projektů</dt>
+                <dd><span class="osa-figs">20+</span><br /><small>včetně klubů a decentralizovaných složek</small></dd>
+              </div>
+              <div>
+                <dt>Oblastí činnosti</dt>
+                <dd><span class="osa-figs">8</span><br /><small>urbanismus, kultura, sport, média, vzdělávání, tvorba, komunita, LARP</small></dd>
+              </div>
+              <div>
+                <dt>Ze státních dotací</dt>
+                <dd><span class="osa-figs">0&nbsp;Kč</span><br /><small>nezávislost na veřejných zdrojích je podmínka autonomie</small></dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+
+        <div class="osa-about__historie-ctas" data-reveal>
+          <InlineCTA href={withBase('/o-spolku/historie/')}>Celá historie spolku</InlineCTA>
+          <InlineCTA href={withBase('/clenstvi/')}>Staňte se členem</InlineCTA>
+        </div>
+      </div>
+    </section>
+
+    {/* ===== GALERIE =====
+         Přesunuto mezi Historii a Organizační strukturu. Přidává
+         vizuální oddělení textových sekcí o historii a o struktuře. */}
+    <Gallery title="Z činností spolku." />
+
+    {/* ===== ORGANIZAČNÍ STRUKTURA =====
+         Zig-zag layout: text vlevo, malý diagram vpravo. Konkrétní
+         názvy projektů zde nezmiňujeme — proklik je přes /projekty/. */}
+    <section class="section osa-about__org">
       <div class="container-wide">
         <header class="osa-about__sub-head" data-reveal>
           <span class="osa-eyebrow">Organizační struktura</span>
-          <h2 class="osa-h2">Tři úrovně, decentralizovaná výkonná část.</h2>
+          <h2 class="osa-h2">Tři patra, decentralizovaná výkonná část.</h2>
         </header>
         <div data-reveal>
           <OrgChart />
@@ -135,30 +179,53 @@ import { withBase } from '../../utils/url';
       </div>
     </section>
 
-    <section class="section osa-about__metod">
+    {/* ===== HOSPODAŘENÍ =====
+         Custom 3-pillar layout (NEnasazujeme ManifestoStrip, který žije
+         na landingu — vyhýbáme se duplicitě stejné komponenty se stejným
+         obsahem na dvou stránkách za sebou). */}
+    <section class="section osa-about__hospodareni">
       <div class="container-wide">
         <header class="osa-about__sub-head" data-reveal>
-          <span class="osa-eyebrow">Metodologie a hospodaření</span>
-          <h2 class="osa-h2">Proč odmítáme státní dotace.</h2>
+          <span class="osa-eyebrow">Hospodaření</span>
+          <h2 class="osa-h2">Tři pilíře bez státních dotací.</h2>
+          <p class="osa-about__sub-lede osa-body">
+            Hospodaření spolku je založeno na třech základních pilířích, které mu umožňují zajistit kompletní financování projektů bez nutnosti čerpat veřejné finanční zdroje.
+          </p>
         </header>
-        <div class="osa-longform osa-about__metod-body" data-reveal>
-          <p>
-            Hospodaření spolku stojí na třech pilířích: dobrovolnická práce, metoda DIY a vlastní hospodářská činnost.
+
+        <ol class="osa-about__hospodareni-list">
+          {hospodareniPillars.map((p) => (
+            <li class="osa-about__hospodareni-item" data-reveal>
+              <span class="osa-about__hospodareni-num osa-mono">{p.n}</span>
+              <div>
+                <h3 class="osa-h3 osa-about__hospodareni-title">{p.title}</h3>
+                <p class="osa-body osa-about__hospodareni-body">{p.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        {/* Kreditní systém — aside box. Logicky patří k hospodaření
+            (přerozdělování výnosů mezi dobrovolníky), proto sedí pod
+            třemi pilíři jako rozšiřující poznámka. */}
+        <aside class="osa-about__kredit" data-reveal>
+          <span class="osa-eyebrow osa-about__kredit-eyebrow">Připravujeme</span>
+          <h3 class="osa-about__kredit-title">Kreditní systém OSA II</h3>
+          <p class="osa-about__kredit-body">
+            Spolkový nástroj pro evidenci a nenárokové odměňování dobrovolnické práce. Zajišťuje spravedlivé přerozdělování výnosů z hospodářské činnosti mezi členy, kteří se na nich prací podíleli. Systém je v přípravě.
           </p>
-          <p>
-            Dobrovolnická práce dovoluje startovat projekty s minimálním počátečním kapitálem a přitahuje členy, které projekt vnitřně zajímá. Metoda DIY drží provozní náklady nízko a nutí spolek rozvíjet vlastní kompetence, místo aby je kupoval. Vlastní hospodářská činnost zahrnuje výběr členských příspěvků a poskytování služeb vybraných projektů veřejnosti i firmám na standardní živnostenské bázi.
-          </p>
-          <p>
-            Nezávislost na veřejných zdrojích považujeme za nezbytnou podmínku vlastní autonomie a rozhodovací pružnosti.
-          </p>
-        </div>
-        <div class="osa-about__metod-ctas" data-reveal>
-          <InlineCTA href={withBase('/o-spolku/metodologie/')}>Celý text o metodologii DIY</InlineCTA>
-          <InlineCTA href={withBase('/o-spolku/historie/')}>Historie spolku od roku 2006</InlineCTA>
+        </aside>
+
+        <div class="osa-about__hospodareni-cta" data-reveal>
+          <InlineCTA href={withBase('/o-spolku/metodologie/')}>Metodologie DIY a Kreditní systém</InlineCTA>
         </div>
       </div>
     </section>
 
+    {/* ===== CÍLE A ZÁMĚRY ===== */}
+    <GoalsHorizons />
+
+    {/* ===== DOKUMENTY ===== */}
     <section class="section">
       <div class="container-wide">
         <header class="osa-about__sub-head" data-reveal>
@@ -170,32 +237,16 @@ import { withBase } from '../../utils/url';
         </div>
       </div>
     </section>
-
-    <Gallery title="Z činností spolku." />
   </main>
   <Footer />
 </Base>
 
 <style>
-  /* Dark hero: same shape as landing/VPD so the three pages share one silhouette.
-     Background motif is the outlined-triangle OSA pattern (companion to the filled
-     pattern on the landing hero), layered via ::before under the content. */
+  /* Dark hero: same shape as landing/VPD so the three pages share one silhouette. */
   .osa-about__hero {
     border-bottom: 1px solid var(--rule);
     position: relative;
     isolation: isolate;
-  }
-  .osa-about__hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: var(--about-pattern);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.2;
-    z-index: 0;
-    pointer-events: none;
   }
   .osa-about__hero-inner { position: relative; z-index: 1; }
   .osa-about__hero-inner {
@@ -228,7 +279,7 @@ import { withBase } from '../../utils/url';
     font-weight: 500;
     font-size: clamp(1.25rem, 1.8vw + 0.5rem, 1.75rem);
     margin-top: var(--space-3);
-    max-width: 28ch;
+    max-width: 30ch;
   }
   .osa-about__lede {
     margin: 0;
@@ -237,12 +288,99 @@ import { withBase } from '../../utils/url';
     max-width: 62ch;
   }
 
-  /* ---------- Narrative + compact datalist ---------- */
+  /* ---------- Vize / poslání / smysl ---------- */
+  .osa-about__chapter {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-6);
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--rule);
+    align-items: start;
+  }
+  .osa-about__chapter:last-of-type { border-bottom: 1px solid var(--rule); }
+  .osa-about__chapter-mark {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(2.8rem, 7.2vw, 4.8rem);
+    line-height: 0.9;
+    color: var(--fg);
+    letter-spacing: -0.02em;
+    min-width: 3ch;
+  }
+  .osa-about__chapter-title {
+    margin: var(--space-1) 0 var(--space-2);
+    font-weight: 600;
+  }
+  .osa-about__chapter-body {
+    margin: 0 0 var(--space-3);
+    max-width: 64ch;
+  }
+  .osa-about__chapter-body:last-child { margin-bottom: 0; }
+
+  /* Collapsible details for the long Smysl text */
+  .osa-about__details {
+    margin-top: var(--space-3);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--space-3);
+  }
+  .osa-about__details > summary {
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg);
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .osa-about__details > summary::-webkit-details-marker { display: none; }
+  .osa-about__details > summary::before {
+    content: "+";
+    display: inline-flex;
+    width: 1em;
+    justify-content: center;
+    color: var(--fg-muted);
+    transition: transform var(--dur-base, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+  }
+  .osa-about__details[open] > summary::before {
+    content: "−";
+  }
+  .osa-about__details > p:first-of-type { margin-top: var(--space-3); }
+
+  @media (max-width: 720px) {
+    .osa-about__chapter {
+      grid-template-columns: 1fr;
+      column-gap: 0;
+      row-gap: var(--space-2);
+      padding: var(--space-5) 0;
+    }
+    .osa-about__chapter-mark { display: none; }
+    .osa-about__chapter-title { font-size: var(--text-2xl); }
+  }
+
+  /* ---------- Common section heading ---------- */
+  .osa-about__sub-head {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-6);
+  }
+  .osa-about__sub-lede {
+    margin: var(--space-2) 0 0;
+    color: var(--fg-muted);
+    max-width: 60ch;
+  }
+
+  /* ---------- Historie ---------- */
   .osa-about__narrative-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
     gap: var(--space-8);
     align-items: start;
+    margin-bottom: var(--space-6);
   }
   .osa-about__stats { margin: 0; }
   .osa-about__numbers {
@@ -271,6 +409,13 @@ import { withBase } from '../../utils/url';
     color: var(--fg);
     line-height: var(--lh-normal);
   }
+  .osa-about__numbers dd .osa-figs {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2vw + 0.4rem, 1.625rem);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+  }
   .osa-about__numbers dd small {
     display: block;
     color: var(--fg-muted);
@@ -287,55 +432,83 @@ import { withBase } from '../../utils/url';
     .osa-about__numbers > div { grid-template-columns: 1fr; gap: var(--space-2); }
   }
 
-  /* ---------- Vize / poslání / smysl — VPD chapter-head vocabulary ---------- */
-  .osa-about__chapter {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    column-gap: var(--space-6);
-    padding: var(--space-6) 0;
-    border-top: 1px solid var(--rule);
-    align-items: start;
-  }
-  .osa-about__chapter:last-of-type { border-bottom: 1px solid var(--rule); }
-  .osa-about__chapter-mark {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: clamp(2.8rem, 7.2vw, 4.8rem);
-    line-height: 0.9;
-    color: var(--fg);
-    letter-spacing: -0.02em;
-    min-width: 3ch;
-  }
-  .osa-about__chapter-title {
-    margin: var(--space-1) 0 var(--space-2);
-    font-weight: 600;
-  }
-  .osa-about__chapter-body {
-    margin: 0;
-    max-width: 64ch;
-  }
-  @media (max-width: 720px) {
-    .osa-about__chapter {
-      grid-template-columns: 1fr;
-      column-gap: 0;
-      row-gap: var(--space-2);
-      padding: var(--space-5) 0;
-    }
-    .osa-about__chapter-mark { display: none; }
-    .osa-about__chapter-title { font-size: var(--text-2xl); }
-  }
+  .osa-about__historie-body > * { margin: 0 0 var(--space-4); max-width: 64ch; }
+  .osa-about__historie-body > *:last-child { margin-bottom: 0; }
 
-  .osa-about__sub-head {
-    display: grid;
-    gap: var(--space-2);
-    margin: 0 0 var(--space-6);
-  }
-  .osa-about__kdojsme > * { margin: 0 0 var(--space-4); }
-  .osa-about__metod-body > * { margin: 0 0 var(--space-4); }
-  .osa-about__metod-ctas {
+  .osa-about__historie-ctas {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-6);
+    margin-top: var(--space-2);
+  }
+
+  /* ---------- Org chart wrapper ---------- */
+  .osa-about__org-body {
     margin-top: var(--space-6);
+  }
+  .osa-about__org-body > * { margin: 0 0 var(--space-4); max-width: 64ch; }
+  .osa-about__org-body > *:last-child { margin-bottom: 0; }
+
+  /* ---------- Kreditní systém aside (boxed) ---------- */
+  .osa-about__kredit {
+    margin-top: var(--space-6);
+    padding: var(--space-5);
+    border: 1px solid var(--fg);
+    display: grid;
+    gap: var(--space-2);
+    max-width: 72ch;
+  }
+  .osa-about__kredit-eyebrow { color: var(--fg-muted); }
+  .osa-about__kredit-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-snug);
+  }
+  .osa-about__kredit-body {
+    margin: 0;
+    color: var(--fg);
+    line-height: var(--lh-normal);
+  }
+
+  /* ---------- Hospodaření ---------- */
+  .osa-about__hospodareni-list {
+    list-style: none;
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .osa-about__hospodareni-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--space-6);
+    padding: var(--space-5) 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+  .osa-about__hospodareni-num {
+    font-size: var(--text-md);
+    color: var(--fg-muted);
+    letter-spacing: var(--tracking-wide);
+    min-width: 3ch;
+  }
+  .osa-about__hospodareni-title {
+    margin: 0 0 var(--space-2);
+    font-weight: 600;
+  }
+  .osa-about__hospodareni-body {
+    margin: 0;
+    max-width: 60ch;
+    color: var(--fg-muted);
+  }
+  @media (max-width: 720px) {
+    .osa-about__hospodareni-item { grid-template-columns: 1fr; row-gap: var(--space-2); }
+  }
+  .osa-about__hospodareni-cta {
+    margin-top: var(--space-4);
   }
 </style>

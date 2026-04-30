@@ -1,91 +1,133 @@
 ---
 /*
- * Organizační struktura - minimal typographic diagram.
- * Three numbered rows, each listing the bodies within that tier.
- * Pure HTML + CSS; no SVG wrangling. Zero JS.
+ * Organizační struktura — zig-zag editorial layout.
+ * Vlevo dvouodstavcový popis, vpravo malý vertikální diagram s třemi
+ * patry. Žádné konkrétní jména projektů (na ně se dokliká přes
+ * /projekty/), žádné ostré rámečky — jen typografie a tenké hairlines.
  */
-const tiers = [
-  {
-    n: '01',
-    label: 'Kolektivní orgány',
-    note: 'Rozhodují konsensem.',
-    items: ['Členský sněm', 'Všečlenské zasedání', 'Orgán pro nábor a příspěvky', 'Projektová rada'],
-  },
-  {
-    n: '02',
-    label: 'Statutární orgán',
-    note: 'Zastupuje spolek navenek.',
-    items: ['Představenstvo', 'Předseda', 'Místopředseda'],
-  },
-  {
-    n: '03',
-    label: 'Autonomní projekty',
-    note: 'Decentralizovaná výkonná úroveň.',
-    items: ['Výletná', 'Gas Town', 'Kreativní prostory', 'Metro Farm', 'Junktown', 'a další'],
-  },
-];
 ---
-<section class="osa-org">
-  {tiers.map(t => (
-    <div class="osa-org__row">
-      <div class="osa-org__left">
-        <span class="osa-mono osa-org__n">{t.n}</span>
-        <div>
-          <h3 class="osa-h3 osa-org__label">{t.label}</h3>
-          <p class="osa-body-sm osa-org__note">{t.note}</p>
-        </div>
-      </div>
-      <ul class="osa-org__items" role="list">
-        {t.items.map(i => <li class="osa-org__item">{i}</li>)}
-      </ul>
+<section class="osa-orgchart">
+  <div class="osa-orgchart__grid">
+    <div class="osa-orgchart__copy" data-reveal>
+      <p>
+        Spolek se skládá z nejvyššího orgánu, kterým je <strong>Členský sněm</strong>, ze statutárního orgánu, kterým je <strong>Představenstvo</strong>, z <strong>Orgánu pro nábor a příspěvky</strong> a z řady decentralizovaných výkonných složek v podobě autonomních projektů a klubů.
+      </p>
+      <p>
+        Klíčový princip: projekty vznikají i zanikají volně z iniciativy členů a jejich rozhodování je nezávislé, pokud respektuje účel projektu, poslání a hodnoty spolku.
+      </p>
     </div>
-  ))}
+    <aside class="osa-orgchart__diagram" data-reveal data-reveal-delay="1" aria-label="Schéma struktury">
+      <ol class="osa-orgchart__levels" role="list">
+        <li class="osa-orgchart__level">
+          <span class="osa-mono osa-orgchart__level-num">01</span>
+          <div>
+            <strong class="osa-orgchart__level-label">Členský sněm</strong>
+            <span class="osa-orgchart__level-note">Nejvyšší orgán</span>
+          </div>
+        </li>
+        <li class="osa-orgchart__level">
+          <span class="osa-mono osa-orgchart__level-num">02</span>
+          <div>
+            <strong class="osa-orgchart__level-label">Statutární a podpůrné orgány</strong>
+            <span class="osa-orgchart__level-note">Představenstvo, Orgán pro nábor</span>
+          </div>
+        </li>
+        <li class="osa-orgchart__level">
+          <span class="osa-mono osa-orgchart__level-num">03</span>
+          <div>
+            <strong class="osa-orgchart__level-label">Autonomní projekty a kluby</strong>
+            <span class="osa-orgchart__level-note">Decentralizovaná výkonná úroveň</span>
+          </div>
+        </li>
+      </ol>
+    </aside>
+  </div>
 </section>
 
 <style>
-  .osa-org {
+  .osa-orgchart {
+    padding: var(--space-7) 0;
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
   }
-  .osa-org__row {
+
+  .osa-orgchart__grid {
     display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: var(--space-6);
-    padding: var(--space-6) 0;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .osa-orgchart__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  .osa-orgchart__copy { display: grid; gap: var(--space-4); }
+  .osa-orgchart__copy p {
+    margin: 0;
+    color: var(--fg);
+    line-height: var(--lh-normal);
+    max-width: 64ch;
+  }
+
+  .osa-orgchart__diagram {
+    margin: 0;
+  }
+  .osa-orgchart__levels {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
     border-top: 1px solid var(--rule);
   }
-  .osa-org__row:first-child { border-top: 0; }
-  @media (max-width: 720px) {
-    .osa-org__row { grid-template-columns: 1fr; gap: var(--space-4); }
-  }
-
-  .osa-org__left {
+  .osa-orgchart__level {
     display: grid;
-    grid-template-columns: 48px 1fr;
+    grid-template-columns: 36px 1fr;
     gap: var(--space-3);
-    align-items: baseline;
+    align-items: start;
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
   }
-  .osa-org__n     { color: var(--fg-muted); font-size: var(--text-xs); letter-spacing: var(--tracking-wider); }
-  .osa-org__label { margin: 0; }
-  .osa-org__note  { margin: var(--space-1) 0 0; color: var(--fg-muted); }
+  /* Tenká spojnice mezi vrstvami — doplňuje hierarchii bez ostrých rámečků. */
+  .osa-orgchart__level:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 17px;
+    bottom: -8px;
+    width: 1px;
+    height: 16px;
+    background: var(--fg-muted);
+    opacity: 0.5;
+    z-index: 1;
+  }
 
-  .osa-org__items {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 0;
-    align-content: start;
-    align-self: start;
+  .osa-orgchart__level-num {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    letter-spacing: var(--tracking-wide);
+    line-height: 1.3;
   }
-  .osa-org__item {
-    padding: var(--space-3) var(--space-4);
-    border-left: 1px solid var(--rule);
-    font: 600 var(--text-md) / var(--lh-snug) var(--font-sans);
+  .osa-orgchart__level-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-md);
     letter-spacing: var(--tracking-tight);
+    line-height: 1.25;
     color: var(--fg);
   }
-  .osa-org__item:first-child { border-left: 0; }
-  @media (max-width: 720px) {
-    .osa-org__item { border-left: 0; border-top: 1px solid var(--border-muted); padding-inline: 0; }
-    .osa-org__item:first-child { border-top: 0; }
+  .osa-orgchart__level-note {
+    display: block;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-top: 4px;
   }
 </style>

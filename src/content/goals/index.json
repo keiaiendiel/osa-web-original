@@ -1,0 +1,41 @@
+[
+  {
+    "id": "short",
+    "horizon": "short",
+    "label": "Krátkodobé",
+    "order": 1,
+    "items": [
+      "Vytipovat pro spolek minimálně 10 nových lokalit pro <a href=\"/projekty/kreativni-prostory/\">Kreativní prostory</a>, <a href=\"/projekty/volnocasova-centra/\">Volnočasová centra</a> a <a href=\"/projekty/diy-dilny/\">DIY dílny</a>.",
+      "Uvést v život experimentální divadelní projekt <a href=\"/projekty/hrapublika/\">HraPublika</a>.",
+      "Realizovat pilotní crowdfundingovou kampaň alespoň pro jeden spolkový projekt.",
+      "Vytvořit aplikaci pro <a href=\"/projekty/kreditni-system/\">Kreditní systém OSA II</a>.",
+      "Získat prostory pro coworkingové centrum ProjektovýHUB."
+    ]
+  },
+  {
+    "id": "medium",
+    "horizon": "medium",
+    "label": "Střednědobé",
+    "order": 2,
+    "items": [
+      "Nabízet Příměstské a Akční tábory na celém území Prahy a ČR.",
+      "Mít alespoň jednu pobočku spolkového projektu v každém původním okrese ČR.",
+      "Úspěšně inkubovat tři projekty v <a href=\"/projekty/projektovy-inkubator/\">Projektovém inkubátoru</a>.",
+      "Zapojit minimálně 1 000 studentů do projektu <a href=\"/projekty/univerz/\">UNIVERZ</a>.",
+      "Překročit 10 000 registrovaných členů a 100 000 podporovatelů."
+    ]
+  },
+  {
+    "id": "long",
+    "horizon": "long",
+    "label": "Dlouhodobé",
+    "order": 3,
+    "items": [
+      "Seskupit jednu z nejširších členských a dobrovolnických základen ve střední Evropě.",
+      "Napojit <a href=\"/projekty/univerz/\">UNIVERZ</a> na 50 % studijních systémů škol v ČR a 15 % v EU.",
+      "Naplánovat moderně sociálně, ekologicky a ekonomicky šetrné olympijské hry.",
+      "Pomoci, aby se Česko stalo vzorovou zemí evropského i světového společenství.",
+      "Zapojit se do příprav celospolečenské expedice PRAHA-MARS."
+    ]
+  }
+]

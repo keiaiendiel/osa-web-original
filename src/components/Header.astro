@@ -38,6 +38,15 @@ const isActive = (path: string) => {
       ))}
     </nav>
 
+    <a
+      href={withBase('/portal/')}
+      class="osa-header__login"
+      data-portal-header-link
+      aria-label="Přihlásit do členského portálu">
+      <span class="osa-header__login-label" data-portal-header-label>Přihlásit</span>
+      <span class="osa-header__login-arrow" aria-hidden="true">→</span>
+    </a>
+
     <button
       class="osa-header__burger"
       type="button"
@@ -61,6 +70,10 @@ const isActive = (path: string) => {
           class="osa-mobile-nav__link"
           aria-current={isActive(n.path) ? 'page' : undefined}>{n.label}</a>
       ))}
+      <a
+        href={withBase('/portal/')}
+        class="osa-mobile-nav__link osa-mobile-nav__link--login"
+        aria-current={isActive('/portal/') ? 'page' : undefined}>Přihlásit do portálu →</a>
     </nav>
   </div>
 </header>
@@ -186,6 +199,52 @@ const isActive = (path: string) => {
     color: var(--fg);
   }
 
+  /* ---------- Login button (desktop) ---------------------------------------
+     Vpravo od hlavní nav. V dark scope (osa-dark) má 100% bílý okraj
+     opticky vyšší váhu než v light scope, takže okraj a text v dark
+     režimu jemně tlumíme (rgba) aby tlačítko vážilo stejně v obou
+     barvných schématech. */
+  .osa-header__login {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 5px 11px;
+    border: 1px solid var(--fg);
+    color: var(--fg);
+    font: 600 var(--text-sm) / 1 var(--font-sans);
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    transition:
+      background-color var(--dur-base, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1)),
+      color var(--dur-base, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1)),
+      border-color var(--dur-base, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+  }
+  /* Dark scope: tlumený okraj a textová barva pro vyrovnání optické váhy. */
+  .osa-header.osa-dark .osa-header__login {
+    border-color: rgba(255, 255, 255, 0.42);
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .osa-header__login:hover,
+  .osa-header__login:focus-visible {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+    opacity: 1;
+  }
+  .osa-header.osa-dark .osa-header__login:hover,
+  .osa-header.osa-dark .osa-header__login:focus-visible {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .osa-header__login-arrow {
+    display: inline-block;
+    transition: transform var(--dur-base) var(--ease-standard);
+  }
+  .osa-header__login:hover .osa-header__login-arrow {
+    transform: translateX(2px);
+  }
+
   /* ---------- Burger toggle ------------------------------------------------
      Hidden on desktop; on mobile it replaces the horizontal nav. Three
      hairlines morph to an X when the panel opens. 32x32 hit target. */
@@ -280,8 +339,18 @@ const isActive = (path: string) => {
   :global(html.osa-nav-lock),
   :global(html.osa-nav-lock body) { overflow: hidden; }
 
+  /* ---------- Mobile login link (in drawer) ------------------------------ */
+  .osa-mobile-nav__link--login {
+    margin-top: var(--space-5);
+    border-top: 1px solid rgba(255, 255, 255, 0.32);
+    border-bottom: 0;
+    color: var(--k-0);
+    opacity: 1;
+  }
+
   @media (max-width: 720px) {
     .osa-header__nav { display: none; }
+    .osa-header__login { display: none; }
     .osa-header__burger { display: inline-flex; align-items: center; justify-content: center; }
     .osa-header__logo { height: 16px; width: auto; }
   }

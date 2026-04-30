@@ -1,0 +1,141 @@
+---
+import { getCollection } from 'astro:content';
+import { withBase } from '../utils/url';
+
+const horizons = (await getCollection('goals'))
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Items mohou obsahovat inline HTML odkazy (např. na detail projektu).
+// Astro `set:html` je tu vědomé — autoři dat v goals/index.json mají
+// kontrolu nad obsahem a žádný uživatelský vstup tu nehrozí.
+function rebase(html: string): string {
+  return html.replace(/href="(\/[^"]+)"/g, (_, path) => `href="${withBase(path)}"`);
+}
+---
+<section class="osa-goals section">
+  <div class="container-wide">
+    <header class="osa-goals__head" data-reveal>
+      <span class="osa-eyebrow">Cíle a záměry</span>
+      <h2 class="osa-h1 osa-goals__title">Kam směřujeme.</h2>
+      <p class="osa-goals__lede osa-body">
+        Cíle vznikají na centrální úrovni i v rámci jednotlivých autonomních projektů. Krátkodobé úspěchy postupně vedou k dlouhodobým koncepčním záměrům.
+      </p>
+    </header>
+    <ol class="osa-goals__grid">
+      {horizons.map((h, i) => (
+        <li
+          class="osa-goals__column"
+          data-reveal
+          data-reveal-delay={String(i + 1)}
+        >
+          <span class="osa-eyebrow osa-goals__eyebrow">{`0${i + 1} · ${h.data.label}`}</span>
+          <h3 class="osa-goals__heading">{h.data.label} cíle</h3>
+          <ul class="osa-goals__items" role="list">
+            {h.data.items.map((item) => (
+              <li class="osa-goals__item" set:html={rebase(item)} />
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .osa-goals {
+    border-top: 1px solid var(--rule);
+  }
+  .osa-goals__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 64ch;
+    margin: 0 0 var(--space-7);
+  }
+  .osa-goals__title { margin: 0; }
+  .osa-goals__lede {
+    margin: 0;
+    color: var(--fg-muted);
+    max-width: 60ch;
+  }
+
+  .osa-goals__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (max-width: 960px) {
+    .osa-goals__grid { grid-template-columns: 1fr; }
+  }
+
+  .osa-goals__column {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    align-content: start;
+  }
+
+  .osa-goals__eyebrow {
+    color: var(--fg-muted);
+  }
+  .osa-goals__heading {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-snug);
+    color: var(--fg);
+    text-wrap: balance;
+  }
+
+  .osa-goals__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .osa-goals__item {
+    position: relative;
+    padding-left: var(--space-4);
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    line-height: var(--lh-normal);
+    max-width: 38ch;
+  }
+  /* Vystředěný bullet dot, ne pomlčka */
+  .osa-goals__item::before {
+    content: "";
+    position: absolute;
+    top: 0.55em;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--fg);
+  }
+  /* Inline link styling uvnitř položek */
+  .osa-goals__item :global(a) {
+    color: var(--fg);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    transition: text-underline-offset var(--dur-base, 280ms) var(--ease-quart);
+  }
+  .osa-goals__item :global(a:hover) {
+    text-underline-offset: 4px;
+    opacity: 1;
+  }
+
+  @media (max-width: 720px) {
+    .osa-goals__column { padding: var(--space-4); }
+    .osa-goals__heading { font-size: var(--text-xl); }
+  }
+</style>

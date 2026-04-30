@@ -8,7 +8,7 @@ const all = await getCollection('subProjects', entry =>
 );
 const projects = all
   .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
-  .slice(0, 12);
+  .slice(0, 8);
 // First 6 projects show on mobile; the rest fold behind a CTA.
 const MOBILE_LIMIT = 6;
 ---
@@ -40,7 +40,7 @@ const MOBILE_LIMIT = 6;
       ))}
     </ul>
     <div class="osa-rozcestnik__more" data-reveal>
-      <a class="btn" href={withBase('/projekty/')} data-wipe>Ostatní projekty</a>
+      <a class="btn" href={withBase('/projekty/')} data-wipe>Další projekty</a>
     </div>
   </div>
 </section>
@@ -64,21 +64,17 @@ const MOBILE_LIMIT = 6;
   }
   .osa-rozcestnik__grid > li { display: flex; }
   .osa-rozcestnik__grid > li > * { flex: 1; }
-  /* Below-the-fold "Ostatní projekty" CTA is shown only on mobile where
-     the card grid is folded. On desktop the grid already shows everything,
-     so the CTA would be redundant. */
+  /* "Další projekty" CTA — vždy viditelný (desktop i mobile). Klient
+     chce omezit landing na 8 projektů; zbytek je dostupný přes prokliv
+     na /projekty/. */
   .osa-rozcestnik__more {
-    display: none;
+    display: flex;
     margin: var(--space-6) 0 0;
     justify-content: flex-start;
   }
   @media (max-width: 720px) {
-    /* Hide the overflow tail (items beyond the first 6) and surface the
-       "Ostatní projekty" link instead. Keeps the landing page calm on
-       a phone without hiding anything structurally from crawlers.
-       Specificity note: `.grid > li { display: flex }` above outranks a
-       bare `.overflow { display: none }`, so we anchor both classes here. */
+    /* Mobile: hide cards beyond MOBILE_LIMIT (first 6 visible). Desktop
+       shows all 8. */
     .osa-rozcestnik__grid > li.osa-rozcestnik__overflow { display: none; }
-    .osa-rozcestnik__more { display: flex; }
   }
 </style>

@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import FilterBar from '../../components/FilterBar.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { withBase } from '../../utils/url';
 
@@ -22,9 +21,7 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
      * because of the filters, but the top portion (crumbs, H1, lede) follows
      * the shared contract byte-for-byte.
      */}
-    <section
-      class="osa-projekty__hero osa-dark"
-      style={`--projekty-pattern: url('${withBase('/graphics/osa-bg-pattern.svg')}')`}>
+    <section class="osa-projekty__hero osa-dark">
       <div class="container-wide osa-projekty__hero-inner">
         <header class="osa-projekty__head" data-reveal>
           <span class="osa-eyebrow">Autonomní projekty</span>
@@ -35,9 +32,6 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
             </span>
           </h1>
         </header>
-        <div class="osa-projekty__filters" data-reveal data-reveal-delay="1">
-          <FilterBar />
-        </div>
       </div>
     </section>
 
@@ -54,7 +48,6 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
               status={p.data.status}
               topic={p.data.topic}
               external_url={p.data.external_url}
-              filterable={true}
             /></li>
           ))}
         </ul>
@@ -71,18 +64,6 @@ const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
     border-bottom: 1px solid var(--rule);
     position: relative;
     isolation: isolate;
-  }
-  .osa-projekty__hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: var(--projekty-pattern);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.15;
-    z-index: 0;
-    pointer-events: none;
   }
   .osa-projekty__hero-inner { position: relative; z-index: 1; }
   .osa-projekty__hero-inner {

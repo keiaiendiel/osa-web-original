@@ -1,0 +1,521 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import InlineCTA from '../../components/InlineCTA.astro';
+import { withBase } from '../../utils/url';
+
+const statusy = [
+  {
+    label: 'Podporovatel',
+    gloss: 'Automaticky přidělený status komukoliv, kdo spolek podpoří úhradou členského příspěvku nebo darem.',
+  },
+  {
+    label: 'Uživatel',
+    gloss: 'Komukoliv, kdo využívá členské výhody, oprávnění či služby zajišťované spolkem nebo jednotlivými projekty.',
+  },
+  {
+    label: 'Dobrovolník',
+    gloss: 'Členům, kteří ve prospěch spolku nebo konkrétního projektu odvedli dobrovolnickou práci.',
+  },
+  {
+    label: 'Bezzávazkový',
+    gloss: 'Základní status — drží jej každý člen do doby, dokud se vůči spolku vědomě nezaváže k jakémukoliv plnění.',
+  },
+];
+
+const prava = [
+  'hlasovat či využívat poradního hlasu v kolektivních orgánech spolku',
+  'žádat o zřízení vlastního autonomního projektu v rámci spolku',
+  'usilovat o všechny volené a jmenované funkce v rámci spolku',
+  'získávat členské statusy a čerpat členské výhody i služby v souladu se stanovami',
+  'využívat bezplatné právní, projektové a organizační konzultace ze strany spolku',
+  'využívat bezplatné právní, projektové, organizační a kapitálové ochrany ze strany spolku',
+  'využívat veřejné i neveřejné prostory spolku pro osobní seberealizaci, volný čas, rozvoj a vlastní projekty',
+  'dostávat od vedení spolku informace o jeho vývoji a směřování',
+  'dostávat od vedení projektů informace o vývoji projektů, do kterých jsou zapojeni',
+  'získávat od spolku i externích partnerů cenově zvýhodněné komerční služby, pronájmy či výpůjčky',
+  'získávat od spolku a interních projektů dary, granty, dotace a příspěvky na osobní rozvoj a vlastní projekty',
+];
+
+const povinnosti = [
+  'respektovat a dodržovat stanovy spolku',
+  'dodržovat všechny interní předpisy spolku od momentu, kdy s nimi byli seznámeni',
+];
+---
+<Base
+  title="Členství - Občanské sdružení Alternativa II, z.s."
+  description="Druhy členství, vznik a zánik, statusy, práva a povinnosti členů spolku. Online přihláška.">
+  <Header variant="dark" />
+  <main>
+    <section class="osa-mem__hero osa-dark">
+      <div class="container-wide osa-mem__hero-inner">
+        <nav aria-label="Drobečková navigace" class="osa-mem__crumbs osa-eyebrow">
+          <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>
+          <a href={withBase('/zapojte-se/')}>Zapojte se</a> <span aria-hidden="true">·</span>
+          <span aria-current="page">Členství</span>
+        </nav>
+        <h1 class="osa-mem__h1" data-reveal>
+          Staňte se členem spolku.
+          <span class="osa-mem__h1-sub">Členství je dobrovolné a otevřené. Využíváte je tak, jak vám vyhovuje.</span>
+        </h1>
+        <p class="osa-mem__lede" data-reveal data-reveal-delay="1">
+          Členství v Občanském sdružení Alternativa II, z.s. je dobrovolné a řídí se stanovami spolku a příslušnými ustanoveními občanského zákoníku. Záleží jen na vás, zda budete členství využívat pasivně k čerpání výhod, nebo aktivně k zakládání vlastních projektů a usilování o volené funkce.
+        </p>
+      </div>
+    </section>
+
+    {/* ===== DRUHY ČLENSTVÍ ===== */}
+    <section class="section">
+      <div class="container">
+        <header class="osa-mem__sub-head" data-reveal>
+          <span class="osa-eyebrow">Druhy členství</span>
+          <h2 class="osa-h2">Řadové členství a členství v nejvyšším orgánu.</h2>
+        </header>
+        <div class="osa-mem__longform osa-longform" data-reveal>
+          <p>
+            Členství ve spolku se dělí na <strong>členství řadové</strong> a na <strong>členství v nejvyšším orgánu</strong> spolku (Členský sněm). Oba druhy se dělí na členství registrované a neregistrované. Práva a výhody jsou téměř totožné — liší se způsobem vzniku, zániku a hlasovacím právem v rámci nejvyššího orgánu.
+          </p>
+          <p>
+            Za <strong>registrovaného člena</strong> je považován kdokoliv, kdo spolku předepsaným způsobem poskytne své platné kontaktní údaje (např. registračním formulářem). Za <strong>neregistrovaného člena</strong> je považován každý, kdo se nezaregistroval, ale doloží své členství platným potvrzením o úhradě příspěvku, držením členské karty apod.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ===== VZNIK A ZÁNIK ===== */}
+    <section class="section osa-mem__lifecycle">
+      <div class="container">
+        <header class="osa-mem__sub-head" data-reveal>
+          <span class="osa-eyebrow">Vznik a zánik členství</span>
+          <h2 class="osa-h2">Otevřené pro všechny, ukončitelné kdykoliv.</h2>
+        </header>
+        <div class="osa-mem__lifecycle-grid">
+          <div class="osa-mem__lifecycle-col" data-reveal>
+            <h3 class="osa-h3 osa-mem__lifecycle-title">Vznik členství</h3>
+            <p>
+              Členem se může stát kdokoliv, kdo má zájem zapojit se do činnosti spolku — pasivně využíváním práv či hrazením příspěvků, aktivně prací v některém z orgánů či založením vlastního projektu.
+            </p>
+            <p>
+              Řadové členství vzniká rozhodnutím Orgánu pro nábor a příspěvky — nejčastěji ústní dohodou se zástupcem orgánu, dobrovolnou úhradou členského příspěvku, podpisem členské smlouvy nebo převzetím členské karty.
+            </p>
+          </div>
+          <div class="osa-mem__lifecycle-col" data-reveal data-reveal-delay="1">
+            <h3 class="osa-h3 osa-mem__lifecycle-title">Zánik členství</h3>
+            <p>
+              Řadové členství zaniká písemným či ústním oznámením zástupci Orgánu pro nábor a příspěvky. Spolek je oprávněn ukončit členství kdykoliv při porušení stanov či interních předpisů.
+            </p>
+            <p>
+              Členství v nejvyšším orgánu zaniká ústním oznámením v průběhu zasedání nebo písemným rozhodnutím doručeným spolku. O ukončení rozhoduje výhradně nejvyšší orgán z důvodů uvedených ve stanovách.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ===== ČLENSKÉ STATUSY ===== */}
+    <section class="section osa-mem__statuses">
+      <div class="container">
+        <header class="osa-mem__sub-head" data-reveal>
+          <span class="osa-eyebrow">Členské statusy</span>
+          <h2 class="osa-h2">Statusy se přidělují automaticky podle vašeho zapojení.</h2>
+          <p class="osa-mem__sub-lede osa-body">
+            Statusy doplňují druh členství a funkci. Členové mohou držet více statusů zároveň.
+          </p>
+        </header>
+        <ul class="osa-mem__status-grid" role="list">
+          {statusy.map((s, i) => (
+            <li class="osa-mem__status-card" data-reveal data-reveal-delay={String((i % 4) + 1)}>
+              <span class="osa-mono osa-mem__status-num">{`0${i + 1}`}</span>
+              <h3 class="osa-mem__status-label">{s.label}</h3>
+              <p class="osa-mem__status-gloss">{s.gloss}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* ===== PRÁVA + POVINNOSTI ===== */}
+    <section class="section">
+      <div class="container">
+        <header class="osa-mem__sub-head" data-reveal>
+          <span class="osa-eyebrow">Práva a povinnosti</span>
+          <h2 class="osa-h2">Co členství znamená v praxi.</h2>
+        </header>
+
+        <div class="osa-mem__rights" data-reveal>
+          <details class="osa-mem__details">
+            <summary>
+              <span class="osa-mem__details-label">Práva členů spolku</span>
+              <span class="osa-mem__details-count">{prava.length}</span>
+            </summary>
+            <ul class="osa-mem__details-list">
+              {prava.map((p) => <li>{p}</li>)}
+            </ul>
+          </details>
+          <details class="osa-mem__details">
+            <summary>
+              <span class="osa-mem__details-label">Povinnosti členů spolku</span>
+              <span class="osa-mem__details-count">{povinnosti.length}</span>
+            </summary>
+            <ul class="osa-mem__details-list">
+              {povinnosti.map((p) => <li>{p}</li>)}
+            </ul>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    {/* ===== PŘIHLÁŠKA ===== */}
+    <section class="section osa-mem__form">
+      <div class="container">
+        <header class="osa-mem__sub-head" data-reveal>
+          <span class="osa-eyebrow">Přihláška</span>
+          <h2 class="osa-h2">Vyplnit přihlášku.</h2>
+          <p class="osa-mem__sub-lede osa-body">
+            Po odeslání vás bude kontaktovat zástupce Orgánu pro nábor a příspěvky. Členský příspěvek je dobrovolný; jeho výši si určujete sami.
+          </p>
+        </header>
+
+        <form class="osa-mem__form-grid" data-reveal data-mem-form>
+          <div class="osa-mem__field osa-mem__field--half">
+            <label for="mem-jmeno">Jméno</label>
+            <input id="mem-jmeno" name="jmeno" type="text" autocomplete="given-name" required />
+          </div>
+          <div class="osa-mem__field osa-mem__field--half">
+            <label for="mem-prijmeni">Příjmení</label>
+            <input id="mem-prijmeni" name="prijmeni" type="text" autocomplete="family-name" required />
+          </div>
+          <div class="osa-mem__field osa-mem__field--half">
+            <label for="mem-email">Email</label>
+            <input id="mem-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="osa-mem__field osa-mem__field--half">
+            <label for="mem-telefon">Telefon</label>
+            <input id="mem-telefon" name="telefon" type="tel" autocomplete="tel" />
+          </div>
+          <div class="osa-mem__field osa-mem__field--half">
+            <label for="mem-narozeni">Datum narození</label>
+            <input id="mem-narozeni" name="narozeni" type="date" autocomplete="bday" />
+          </div>
+          <div class="osa-mem__field osa-mem__field--half">
+            <label for="mem-ic">IČ <small>(volitelné, pro právnické osoby)</small></label>
+            <input id="mem-ic" name="ic" type="text" inputmode="numeric" pattern="[0-9 ]*" />
+          </div>
+          <div class="osa-mem__field">
+            <label for="mem-adresa">Adresa</label>
+            <input id="mem-adresa" name="adresa" type="text" autocomplete="street-address" />
+          </div>
+          <div class="osa-mem__field">
+            <label for="mem-duvod">Důvod zájmu o členství</label>
+            <textarea id="mem-duvod" name="duvod" rows="4" placeholder="Stačí pár vět: co vás zaujalo, na čem byste chtěli s námi spolupracovat, kterých projektů byste se rádi účastnili."></textarea>
+          </div>
+          <label class="osa-mem__checkbox">
+            <input type="checkbox" name="souhlas" required />
+            <span>Souhlasím se stanovami a interními předpisy spolku.</span>
+          </label>
+          <div class="osa-mem__form-foot">
+            <button type="submit" class="btn">Odeslat přihlášku &rarr;</button>
+            <p class="osa-mem__form-status" data-mem-status hidden>
+              Děkujeme. Přihláška byla zaznamenána; brzy vás kontaktujeme.
+            </p>
+          </div>
+        </form>
+
+        <aside class="osa-mem__form-note osa-body" data-reveal>
+          Tato přihláška zatím funguje v režimu prototypu — odeslání nezapisuje data nikam ven, jen prokáže, že formulář funguje. Pro reálnou žádost nás zatím kontaktujte na <a href="mailto:info@osa2.cz">info@osa2.cz</a>.
+        </aside>
+
+        <div class="osa-mem__form-ctas" data-reveal>
+          <InlineCTA href={withBase('/portal/')}>Pro stávající členy: Přihlásit do portálu</InlineCTA>
+          <InlineCTA href={withBase('/zapojte-se/')}>Zpět na možnosti spolupráce</InlineCTA>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<script is:inline>
+  (function () {
+    var form = document.querySelector('[data-mem-form]');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var status = form.querySelector('[data-mem-status]');
+      if (status) {
+        status.hidden = false;
+        status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      // Reset only after a beat so the user sees the confirmation appear.
+      setTimeout(function () { form.reset(); }, 800);
+    });
+  }());
+</script>
+
+<style>
+  .osa-mem__hero {
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    isolation: isolate;
+  }
+  .osa-mem__hero-inner { position: relative; z-index: 1; }
+  .osa-mem__hero-inner {
+    padding-top: clamp(var(--space-7), 8vw, var(--space-9));
+    padding-bottom: var(--space-9);
+    display: grid;
+    gap: var(--space-5);
+  }
+  .osa-mem__crumbs {
+    display: flex; gap: var(--space-2); flex-wrap: wrap;
+    color: var(--fg-muted);
+  }
+  .osa-mem__crumbs a { text-decoration: underline; text-underline-offset: 3px; }
+  .osa-mem__crumbs [aria-current] { color: var(--fg); }
+
+  .osa-mem__h1 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(2.25rem, 5vw + 0.5rem, 4rem);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin: 0;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .osa-mem__h1-sub {
+    display: block;
+    color: var(--fg-muted);
+    font-weight: 500;
+    font-size: clamp(1.25rem, 1.8vw + 0.5rem, 1.75rem);
+    margin-top: var(--space-3);
+    max-width: 32ch;
+  }
+  .osa-mem__lede {
+    margin: 0;
+    color: var(--fg-muted);
+    font-size: var(--text-lg);
+    max-width: 64ch;
+  }
+
+  /* ---------- Common section heading ---------- */
+  .osa-mem__sub-head {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 64ch;
+    margin: 0 0 var(--space-6);
+  }
+  .osa-mem__sub-lede {
+    margin: var(--space-2) 0 0;
+    color: var(--fg-muted);
+    max-width: 60ch;
+  }
+
+  .osa-mem__longform > * { margin: 0 0 var(--space-4); max-width: 64ch; }
+  .osa-mem__longform > *:last-child { margin-bottom: 0; }
+
+  /* ---------- Vznik / zánik ---------- */
+  .osa-mem__lifecycle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--space-6);
+  }
+  .osa-mem__lifecycle-col > * { margin: 0 0 var(--space-3); }
+  .osa-mem__lifecycle-col > *:last-child { margin-bottom: 0; }
+  .osa-mem__lifecycle-title {
+    margin: 0 0 var(--space-3);
+    font-weight: 600;
+  }
+  @media (max-width: 720px) {
+    .osa-mem__lifecycle-grid { grid-template-columns: 1fr; gap: var(--space-5); }
+  }
+
+  /* ---------- Statusy 4-card ---------- */
+  .osa-mem__status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .osa-mem__status-card {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    min-height: 200px;
+  }
+  .osa-mem__status-num {
+    color: var(--fg-muted);
+    font-size: var(--text-md);
+    letter-spacing: var(--tracking-wide);
+  }
+  .osa-mem__status-label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-tight);
+  }
+  .osa-mem__status-gloss {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    line-height: var(--lh-normal);
+    max-width: 32ch;
+  }
+  @media (max-width: 900px) {
+    .osa-mem__status-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .osa-mem__status-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Práva + Povinnosti collapsibles ---------- */
+  .osa-mem__rights {
+    display: grid;
+    border-top: 1px solid var(--rule);
+  }
+  .osa-mem__details {
+    border-bottom: 1px solid var(--rule);
+  }
+  .osa-mem__details > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-5) 0;
+  }
+  .osa-mem__details > summary::-webkit-details-marker { display: none; }
+  .osa-mem__details-label {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+  }
+  .osa-mem__details-count {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    border: 1px solid var(--rule);
+    padding: 2px 10px;
+    min-width: 2ch;
+    text-align: center;
+  }
+  .osa-mem__details[open] > summary .osa-mem__details-count {
+    border-color: var(--fg);
+    color: var(--fg);
+  }
+  .osa-mem__details-list {
+    margin: 0 0 var(--space-5);
+    padding-left: var(--space-5);
+    color: var(--fg-muted);
+    line-height: var(--lh-normal);
+  }
+  .osa-mem__details-list > li { margin-bottom: var(--space-2); max-width: 70ch; }
+
+  /* ---------- Form ---------- */
+  .osa-mem__form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    max-width: 720px;
+    margin-bottom: var(--space-5);
+  }
+  .osa-mem__field {
+    display: grid;
+    gap: var(--space-1);
+    grid-column: span 2;
+  }
+  .osa-mem__field--half { grid-column: span 1; }
+  .osa-mem__field label {
+    font: 600 var(--text-sm) / 1.2 var(--font-sans);
+    letter-spacing: var(--tracking-wide);
+    color: var(--fg);
+  }
+  .osa-mem__field label small {
+    font-weight: 500;
+    color: var(--fg-muted);
+    margin-left: var(--space-1);
+  }
+  .osa-mem__field input,
+  .osa-mem__field textarea {
+    font: 500 var(--text-md) / var(--lh-normal) var(--font-sans);
+    color: var(--fg);
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: var(--space-3);
+    border-radius: 0;
+    width: 100%;
+  }
+  .osa-mem__field input:focus,
+  .osa-mem__field textarea:focus {
+    outline: 2px solid var(--fg);
+    outline-offset: -2px;
+  }
+  .osa-mem__field textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .osa-mem__checkbox {
+    grid-column: span 2;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font: 500 var(--text-sm) / var(--lh-normal) var(--font-sans);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .osa-mem__checkbox input { margin-top: 4px; }
+
+  .osa-mem__form-foot {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+    margin-top: var(--space-3);
+  }
+  .osa-mem__form-status {
+    margin: 0;
+    color: var(--fg);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  @media (max-width: 720px) {
+    .osa-mem__form-grid { grid-template-columns: 1fr; }
+    .osa-mem__field, .osa-mem__field--half, .osa-mem__checkbox, .osa-mem__form-foot {
+      grid-column: span 1;
+    }
+  }
+
+  .osa-mem__form-note {
+    margin: var(--space-5) 0;
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    max-width: 64ch;
+  }
+
+  .osa-mem__form-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--space-5);
+  }
+</style>
