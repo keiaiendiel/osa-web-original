@@ -266,6 +266,9 @@ const metaRight = isExternal
          already sets a fixed slide width; cards without an image collapse
          naturally to a tighter height. */
       height: auto;
+      /* Full frame on mobile (slider context): without left/top borders
+         the slides look frameless and visually merge into the section. */
+      border: 1px solid var(--rule);
     }
     .project-card__body {
       gap: var(--space-4);
