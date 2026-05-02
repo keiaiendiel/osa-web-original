@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 const pillars = (await getCollection('pillars'))
   .sort((a, b) => a.data.n.localeCompare(b.data.n));
 ---
-<section class="osa-manifesto osa-dark">
+<section class="osa-manifesto">
   <div class="container-wide osa-manifesto__inner">
     <header class="osa-manifesto__head" data-reveal>
       <span class="osa-eyebrow">Poslání a ekonomický model</span>

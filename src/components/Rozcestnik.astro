@@ -136,7 +136,36 @@ const pripravovane = LANDING_PRIPRAVOVANE
   @media (max-width: 1024px) {
     .osa-rozcestnik__grid { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 560px) {
-    .osa-rozcestnik__grid { grid-template-columns: 1fr; }
+
+  /* Mobile: horizontal scroll-snap slider for each group.
+     - Each card sits at ~85vw so the next one peeks in.
+     - scroll-snap-type: x mandatory makes swipe feel "magnetic".
+     - The grid container becomes the scroller and the bordered frame
+       is removed so the natural card edges read as discrete slides. */
+  @media (max-width: 720px) {
+    .osa-rozcestnik__grid {
+      display: flex;
+      grid-template-columns: none;
+      grid-auto-rows: auto;
+      gap: var(--space-3);
+      border: 0;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter, 1rem);
+      padding: 0 var(--gutter, 1rem) var(--space-3);
+      margin: 0 calc(-1 * var(--gutter, 1rem));
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+    }
+    .osa-rozcestnik__grid::-webkit-scrollbar { display: none; }
+    .osa-rozcestnik__grid > li {
+      flex: 0 0 85%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+    .osa-rozcestnik__grid > li:last-child {
+      padding-right: var(--space-2);
+    }
   }
 </style>
