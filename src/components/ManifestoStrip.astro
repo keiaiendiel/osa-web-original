@@ -9,8 +9,14 @@ const pillars = (await getCollection('pillars'))
       <span class="osa-eyebrow">Poslání a ekonomický model</span>
       <h2 class="osa-h1 osa-manifesto__title">Naplňujeme vizi bez státních dotací.</h2>
       <p class="osa-manifesto__lede osa-body">
-        Posláním spolku je naplňování spolkové vize prostřednictvím podpory seberealizace, aktivního bytí, vědy, kultury, sportu, tělovýchovy, vzdělávání, volnočasového vyžití, humanitárních aktivit, občanské angažovanosti, sociálně a ekologicky šetrného podnikání, jakož i všech ostatních činností směřujících k všestrannému rozvoji jedince i společnosti.
+        Spolek od roku 2006 podporuje seberealizaci, kulturu, sport, vzdělávání a občanskou angažovanost. Bez veřejných peněz.
       </p>
+      <details class="osa-manifesto__more">
+        <summary>Plné znění poslání podle stanov</summary>
+        <p class="osa-manifesto__lede osa-body">
+          Posláním spolku je naplňování spolkové vize prostřednictvím podpory seberealizace, aktivního bytí, vědy, kultury, sportu, tělovýchovy, vzdělávání, volnočasového vyžití, humanitárních aktivit, občanské angažovanosti, sociálně a ekologicky šetrného podnikání, jakož i všech ostatních činností směřujících k všestrannému rozvoji jedince i společnosti.
+        </p>
+      </details>
       <p class="osa-manifesto__lede osa-body">
         Hospodaření spolku stojí na třech pilířích, které mu umožňují zajistit kompletní financování projektů bez nutnosti čerpat veřejné finanční zdroje.
       </p>
@@ -58,6 +64,36 @@ const pillars = (await getCollection('pillars'))
     color: var(--fg-muted);
     max-width: 60ch;
   }
+  .osa-manifesto__more {
+    color: var(--fg-muted);
+    max-width: 60ch;
+  }
+  .osa-manifesto__more summary {
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg);
+    padding: var(--space-2) 0;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .osa-manifesto__more summary::before {
+    content: '+';
+    display: inline-block;
+    width: 1em;
+    text-align: center;
+    transition: transform 200ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+  }
+  .osa-manifesto__more[open] summary::before {
+    content: '−';
+  }
+  .osa-manifesto__more summary::-webkit-details-marker { display: none; }
+  .osa-manifesto__more[open] summary { margin-bottom: var(--space-3); }
 
   .osa-manifesto__list {
     display: grid;

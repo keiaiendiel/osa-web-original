@@ -1,20 +1,35 @@
 ---
 import { getCollection } from 'astro:content';
+import { withBase } from '../utils/url';
 
 interface Props {
   expanded?: boolean;
   dark?: boolean;
-  /**
-   * When true, the matrix uses the narrower `container` (1200px) so its
-   * left/right edges line up with body-copy sections on pages like
-   * /o-spolku/ where text blocks define the page's baseline margin.
-   */
   narrow?: boolean;
+  /**
+   * Landing variant: shows only 6 curated values + a CTA leading to the
+   * full grid on /o-spolku/. Reduces homepage length without losing the
+   * "axiomatic 16" promise.
+   */
+  landing?: boolean;
 }
-const { expanded = false, dark = false, narrow = false } = Astro.props;
+const { expanded = false, dark = false, narrow = false, landing = false } = Astro.props;
 
-const values = (await getCollection('values'))
-  .sort((a, b) => a.data.order - b.data.order);
+const LANDING_VALUE_IDS = [
+  'autonomie',
+  'dobrovolnost',
+  'sobestacnost',
+  'konsensus',
+  'otevrenost',
+  'akceschopnost',
+];
+
+const all = (await getCollection('values')).sort((a, b) => a.data.order - b.data.order);
+const values = landing
+  ? LANDING_VALUE_IDS
+      .map(id => all.find(v => v.id === id))
+      .filter(<T,>(v: T | undefined): v is T => Boolean(v))
+  : all;
 ---
 <script is:inline>
   /*
@@ -56,7 +71,7 @@ const values = (await getCollection('values'))
       <h2 class="osa-h2 osa-values__title">Hodnoty spolku jsou axiomy, nikoli aspirace.</h2>
     </header>
     <ul
-      class:list={['osa-values__grid', { 'osa-values__grid--expanded': expanded }]}
+      class:list={['osa-values__grid', { 'osa-values__grid--expanded': expanded, 'osa-values__grid--landing': landing }]}
       role="list">
       {values.map((v, i) => (
         <li
@@ -70,6 +85,11 @@ const values = (await getCollection('values'))
         </li>
       ))}
     </ul>
+    {landing && (
+      <div class="osa-values__more" data-reveal>
+        <a class="btn" href={withBase('/o-spolku/#hodnoty')} data-wipe>Všech 16 hodnot</a>
+      </div>
+    )}
   </div>
 </section>
 
@@ -94,6 +114,14 @@ const values = (await getCollection('values'))
     gap: 0;
     border-top: 1px solid var(--rule);
     border-left: 1px solid var(--rule);
+  }
+  .osa-values__grid--landing { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 960px) { .osa-values__grid--landing { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .osa-values__grid--landing { grid-template-columns: 1fr; } }
+  .osa-values__more {
+    margin: var(--space-6) 0 0;
+    display: flex;
+    justify-content: flex-start;
   }
   @media (max-width: 960px) { .osa-values__grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .osa-values__grid { grid-template-columns: 1fr; } }

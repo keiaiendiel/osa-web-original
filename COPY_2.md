@@ -133,7 +133,7 @@ H2: „Hodnoty spolku jsou axiomy, nikoli aspirace."
 
 > **Pozn (ValuesMatrix):** Doporučená varianta B — na landingu zobrazit jen 6 vybraných hodnot, plnou mřížku 16 nechat na `/o-spolku/`. Snižuje to délku landingu a posiluje sekci About.
 
-==**Varianta B (doporučená):** Mřížka **6 vybraných hodnot** v tmavém módu — autonomie · dobrovolnost · soběstačnost · konsensus · otevřenost · akceschopnost.==
+==**Varianta B (doporučená):** Mřížka **6 vybraných hodnot** — autonomie · dobrovolnost · soběstačnost · konsensus · otevřenost · akceschopnost.==
 
 ==CTA: **Všech 16 hodnot →** (vede na `/o-spolku/#hodnoty`)==
 
@@ -163,9 +163,7 @@ H2: „Z provozu spolkových prostorů."
 
 > **Pozn (Galerie):** Duplikuje galerii na `/o-spolku/`. Doporučená varianta — zachovat na landingu, ale zmenšit. Plnou galerii nechat na About.
 
-==**Doporučená varianta:** ~~8 fotografií ze života spolku (4×2 mřížka, lightbox).~~ → **4 fotografie (2×2 mřížka, lightbox).**==
-
-==**Alternativa:** úplně odstranit a nahradit jiným vizuálním blokem (např. mapa areálů spolku) — k diskusi.==
+**Doporučená varianta:** 8 fotografií ze života spolku (4×2 mřížka, lightbox)
 
 ### InvestmentHero (Záměr VPD1)
 
@@ -190,15 +188,7 @@ CTA sekundární: **O VPD**
 
 > **Pozn (Hub strip):** Strip „doplňuje investiční výzvu vizuálně" (komentář v `index.astro`). Ale na `/zamer-vpd/` (Kapitola 03) už je věnovaný photo-strip. Na landingu redundantní.
 
-==**Doporučená varianta:** ~~Bezpopisná pásová mřížka 4 obrázků~~ → **2 obrázky** (vybrat 2 nejsilnější vizualizace).==
-
-==**Alternativa:** Celý strip přesunout na `/zamer-vpd/` a z landingu odstranit. InvestmentHero (1 chart-grid + metriky) jako jediný vizuál tématu na landingu stačí.==
-
-Alt texty (zůstávají u zachovaných 2 obrázků):
-- „Vizualizace startovacího hubu Klecany — pohled na centrální plochu mezi budovami."
-- „Vizualizace klecanského hubu — interiér společných prostor."
-- ~~„Vizualizace klecanského areálu — pohled z ulice na vstupní část objektu."~~
-- ~~„Vizualizace klecanského areálu — letní pobytová terasa a komunitní zóna."~~
+==**Doporučená varianta:** ~~Bezpopisná pásová mřížka 4 obrázků~~ → Celý strip z landingu odstranit. InvestmentHero (1 chart-grid + metriky) jako jediný vizuál tématu na landingu stačí.==
 
 ### AktualityRecap
 
@@ -235,42 +225,7 @@ H2: „Proč spolek existuje."
 
 > **Pozn (Sekce 01-03):** Sekce 03 už používá vzor „krátká citace + rozbalovací Více". Aplikujeme stejný vzor na 01 a 02 pro konzistenci.
 
-#### 01 — Vize spolku
-
-Eyebrow: **Čeho chceme dosáhnout**
-==**H3 (nový, paraphrase):** „Společnost, která podporuje seberealizaci."==
-
-~~„Chceme vytvořit moderní, prosperující a hodnotově orientovanou společnost, jejímž smyslem a účelem bude efektivní podpora všech jedinců v jejich plnohodnotné a všestranné seberealizaci."~~
-
-==**Sub-citát (nový, krátký výtah):** „Chceme moderní společnost, která podporuje všechny své členy v jejich plnohodnotné seberealizaci."==
-
-==**Rozbalovací „Plné znění vize podle stanov"**: obsahuje původní 35slovnou větu.==
-
-#### 02 — Poslání spolku
-
-Eyebrow: **Jak toho chceme dosáhnout**
-==**H3 (nový, paraphrase):** „Podpora skrz autonomní projekty."==
-
-~~„Posláním spolku je naplňování spolkové vize prostřednictvím podpory seberealizace, aktivního bytí, vědy, kultury, sportu, tělovýchovy, vzdělávání, volnočasového vyžití, humanitárních aktivit, občanské angažovanosti, sociálně a ekologicky šetrného podnikání, jakož i všech ostatních činností směřujících k všestrannému rozvoji jedince i společnosti."~~
-
-==**Sub-citát (nový):** „Spolek naplňuje vizi podporou seberealizace, kultury, sportu, vzdělávání, občanské angažovanosti a šetrného podnikání."==
-
-==**Rozbalovací „Plné znění poslání podle stanov"**: obsahuje původní 50slovnou pasáž.==
-
-#### 03 — Smysl naší činnosti
-
-Eyebrow: **Proč toho chceme dosáhnout**
-H3: „Smysl naší činnosti"
-
-„Pokud upadají zájmy, aktivity a hodnoty jednotlivých členů společnosti, upadá i celá společnost. A naopak: pokud se rozvíjí jednotlivec, rozvíjí se i celek. Osobní štěstí a obecné blaho jsou neoddělitelné."
-
-Rozbalovací **Více**:
-
-„Jsme toho názoru, že pokud upadají zájmy, aktivity a hodnoty jednotlivých členů společnosti, upadá, degeneruje a trpí tím nejen příslušný jedinec, ale i celá společnost. A naopak, že pokud se zájmy, hodnoty a aktivity jednotlivých členů společnosti rozvíjí, rozvíjí se v důsledku toho i společnost jako celek."
-
-„A protože současně máme za to, že i osobní štěstí a obecné blaho je analogickým způsobem provázané, jakož i za to, že štěstí jedince vyplývá především z míry jeho úspěšné seberealizace, jejímž nutným předpokladem je saturace základních životních potřeb, aktivní způsob života, jakož i úspěšný a všestranný rozvoj příslušného jedince v oblasti jeho zájmů, rozhodli jsme se, že smyslem existence a činnosti našeho spolku bude vytváření takového zázemí, prostředí, podmínek, projektů, principů a organizačních struktur, které nám umožní efektivním způsobem podporovat maximální množství jedinců v jejich plnohodnotné a všestranné seberealizaci."
-
-„Domníváme se, že právě tímto způsobem budeme nejefektivněji přispívat jak k maximalizaci štěstí podporovaných jedinců, tak i k maximalizaci blahobytu celé společnosti."
+ZŮSTAVÁ
 
 ### Hodnoty spolku
 
@@ -306,7 +261,7 @@ CTA: **Celá historie spolku** · **Staňte se členem**
 Eyebrow: **Galerie**
 H2: „Z činností spolku."
 
-(Stejná galerie jako na landingu — ==tady plná verze 4×2, na landingu redukovaná na 2×2==.)
+(Stejná galerie jako na landingu)
 
 ### Organizační struktura
 
@@ -343,12 +298,14 @@ Sub-lede: „Hospodaření spolku je založeno na třech základních pilíříc
 
 „Členské příspěvky a vedlejší podnikatelská činnost na živnostenské bázi. Spolek odmítá státní dotace; zachovává si tím svobodu rozhodování."
 
-#### Aside box — Kreditní systém OSA II
+#### ~~Aside box — Kreditní systém OSA II~~
 
-Eyebrow: **Připravujeme**
-H3: „Kreditní systém OSA II"
+~~Eyebrow: **Připravujeme**~~
+~~H3: „Kreditní systém OSA II"~~
 
-„Spolkový nástroj pro evidenci a nenárokové odměňování dobrovolnické práce. Zajišťuje spravedlivé přerozdělování výnosů z hospodářské činnosti mezi členy, kteří se na nich prací podíleli. Systém je v přípravě."
+~~„Spolkový nástroj pro evidenci a nenárokové odměňování dobrovolnické práce. Zajišťuje spravedlivé přerozdělování výnosů z hospodářské činnosti mezi členy, kteří se na nich prací podíleli. Systém je v přípravě."~~
+
+==přeunout do metodolige diy a kretiní systém page, a sloučit stručně texty o kreditech==
 
 CTA: **Metodologie DIY a Kreditní systém**
 
@@ -657,22 +614,5 @@ H2: „Co členství znamená v praxi."
 (Beze změny — viz `COPY.md`.)
 
 ---
-
-## Souhrn změn k odsouhlasení
-
-| # | Místo | Co se mění | Rozhodnutí |
-|---|---|---|---|
-| 1 | Landing Hero | H1 = „Pomáháme tvořit." (displejově velké), eyebrow + podnadpis nově | **Schvaluješ směr? Vyber eyebrow + podnadpis** |
-| 2 | Landing ValuesMatrix | 16 → 6 hodnot + CTA | **A (16) / B (6) — doporučeno B** |
-| 3 | Landing Galerie | 4×2 → 2×2 fotografií | **Zachovat zmenšené / odstranit** |
-| 4 | Landing Hub strip | 4 → 2 obrázky, nebo přesun na `/zamer-vpd/` | **Zmenšit / přesunout** |
-| 5 | Landing ManifestoStrip | Lede 1 paraphrase + rozbalovací plné znění | **Schvaluješ?** |
-| 6 | About sekce 01 | Krátký headline + sub-citát + rozbalovací plné znění | **Schvaluješ?** |
-| 7 | About sekce 02 | Krátký headline + sub-citát + rozbalovací plné znění | **Schvaluješ?** |
-| 8 | About Historie | 3 odstavce → 2 + CTA | **Schvaluješ?** |
-| 9 | VPD „Co VPD dělá" | Body o ~30 % kratší | **Schvaluješ?** |
-| 10 | VPD „Proč" | 2 odstavce → 1 + rozbalovací | **Schvaluješ?** |
-| 11 | Členství „Druhy" | Tabulka místo dvou odstavců | **Schvaluješ?** |
-| 12 | Členství „Práva" | 11 položek seskupeno do 3 kategorií | **Schvaluješ?** |
 
 **Co se nemění:** `/zamer-vpd/`, `/zapojte-se/`, `/aktuality/`, `/portal/`, `/kontakty/`, `/projekty/`, footer, header, 404, sub-projekty, dokumenty, axioms, pilíře, cíle.

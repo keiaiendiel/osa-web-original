@@ -24,19 +24,35 @@ const statusy = [
   },
 ];
 
-const prava = [
-  'hlasovat či využívat poradního hlasu v kolektivních orgánech spolku',
-  'žádat o zřízení vlastního autonomního projektu v rámci spolku',
-  'usilovat o všechny volené a jmenované funkce v rámci spolku',
-  'získávat členské statusy a čerpat členské výhody i služby v souladu se stanovami',
-  'využívat bezplatné právní, projektové a organizační konzultace ze strany spolku',
-  'využívat bezplatné právní, projektové, organizační a kapitálové ochrany ze strany spolku',
-  'využívat veřejné i neveřejné prostory spolku pro osobní seberealizaci, volný čas, rozvoj a vlastní projekty',
-  'dostávat od vedení spolku informace o jeho vývoji a směřování',
-  'dostávat od vedení projektů informace o vývoji projektů, do kterých jsou zapojeni',
-  'získávat od spolku i externích partnerů cenově zvýhodněné komerční služby, pronájmy či výpůjčky',
-  'získávat od spolku a interních projektů dary, granty, dotace a příspěvky na osobní rozvoj a vlastní projekty',
+const pravaGroups = [
+  {
+    label: 'Hlasování a vedení',
+    items: [
+      'hlasovat či využívat poradního hlasu v kolektivních orgánech spolku',
+      'žádat o zřízení vlastního autonomního projektu v rámci spolku',
+      'usilovat o všechny volené a jmenované funkce v rámci spolku',
+    ],
+  },
+  {
+    label: 'Využívání zázemí a služeb',
+    items: [
+      'získávat členské statusy a čerpat členské výhody i služby v souladu se stanovami',
+      'využívat bezplatné právní, projektové a organizační konzultace ze strany spolku',
+      'využívat bezplatné právní, projektové, organizační a kapitálové ochrany ze strany spolku',
+      'využívat veřejné i neveřejné prostory spolku pro osobní seberealizaci, volný čas, rozvoj a vlastní projekty',
+      'získávat od spolku i externích partnerů cenově zvýhodněné komerční služby, pronájmy či výpůjčky',
+      'získávat od spolku a interních projektů dary, granty, dotace a příspěvky na osobní rozvoj a vlastní projekty',
+    ],
+  },
+  {
+    label: 'Informace',
+    items: [
+      'dostávat od vedení spolku informace o jeho vývoji a směřování',
+      'dostávat od vedení projektů informace o vývoji projektů, do kterých jsou zapojeni',
+    ],
+  },
 ];
+const pravaCount = pravaGroups.reduce((n, g) => n + g.items.length, 0);
 
 const povinnosti = [
   'respektovat a dodržovat stanovy spolku',
@@ -74,11 +90,38 @@ const povinnosti = [
         </header>
         <div class="osa-mem__longform osa-longform" data-reveal>
           <p>
-            Členství ve spolku se dělí na <strong>členství řadové</strong> a na <strong>členství v nejvyšším orgánu</strong> spolku (Členský sněm). Oba druhy se dělí na členství registrované a neregistrované. Práva a výhody jsou téměř totožné — liší se způsobem vzniku, zániku a hlasovacím právem v rámci nejvyššího orgánu.
+            Členství se dělí na <strong>řadové</strong> a v <strong>nejvyšším orgánu</strong> (Členský sněm). Oba druhy mohou být registrované nebo neregistrované. Práva a výhody jsou téměř totožné — liší se hlasovací právo a způsob vzniku.
           </p>
-          <p>
-            Za <strong>registrovaného člena</strong> je považován kdokoliv, kdo spolku předepsaným způsobem poskytne své platné kontaktní údaje (např. registračním formulářem). Za <strong>neregistrovaného člena</strong> je považován každý, kdo se nezaregistroval, ale doloží své členství platným potvrzením o úhradě příspěvku, držením členské karty apod.
-          </p>
+          <table class="osa-mem__table">
+            <thead>
+              <tr>
+                <th scope="col">Druh</th>
+                <th scope="col">Hlasování v Členském sněmu</th>
+                <th scope="col">Vznik</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Řadové členství</th>
+                <td>Bez hlasovacího práva</td>
+                <td>Rozhodnutí Orgánu pro nábor</td>
+              </tr>
+              <tr>
+                <th scope="row">Členství v nejvyšším orgánu</th>
+                <td>S hlasovacím právem</td>
+                <td>Volba Členským sněmem</td>
+              </tr>
+            </tbody>
+          </table>
+          <details class="osa-mem__more">
+            <summary>Detailní popis druhů</summary>
+            <p>
+              Členství ve spolku se dělí na <strong>členství řadové</strong> a na <strong>členství v nejvyšším orgánu</strong> spolku (Členský sněm). Oba druhy se dělí na členství registrované a neregistrované. Práva a výhody jsou téměř totožné — liší se způsobem vzniku, zániku a hlasovacím právem v rámci nejvyššího orgánu.
+            </p>
+            <p>
+              Za <strong>registrovaného člena</strong> je považován kdokoliv, kdo spolku předepsaným způsobem poskytne své platné kontaktní údaje (např. registračním formulářem). Za <strong>neregistrovaného člena</strong> je považován každý, kdo se nezaregistroval, ale doloží své členství platným potvrzením o úhradě příspěvku, držením členské karty apod.
+            </p>
+          </details>
         </div>
       </div>
     </section>
@@ -147,11 +190,18 @@ const povinnosti = [
           <details class="osa-mem__details">
             <summary>
               <span class="osa-mem__details-label">Práva členů spolku</span>
-              <span class="osa-mem__details-count">{prava.length}</span>
+              <span class="osa-mem__details-count">{pravaCount}</span>
             </summary>
-            <ul class="osa-mem__details-list">
-              {prava.map((p) => <li>{p}</li>)}
-            </ul>
+            <div class="osa-mem__details-groups">
+              {pravaGroups.map((g) => (
+                <div class="osa-mem__details-group">
+                  <h4 class="osa-mem__details-grouplabel">{g.label}</h4>
+                  <ul class="osa-mem__details-list">
+                    {g.items.map((p) => <li>{p}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </details>
           <details class="osa-mem__details">
             <summary>
@@ -426,6 +476,87 @@ const povinnosti = [
     line-height: var(--lh-normal);
   }
   .osa-mem__details-list > li { margin-bottom: var(--space-2); max-width: 70ch; }
+  .osa-mem__details-groups {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-3) 0 var(--space-5);
+  }
+  .osa-mem__details-group .osa-mem__details-list { margin: 0; }
+  .osa-mem__details-grouplabel {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg);
+  }
+
+  /* ---------- Druhy členství: tabulka + collapsed details ---------- */
+  .osa-mem__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-5) 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+  }
+  .osa-mem__table th,
+  .osa-mem__table td {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .osa-mem__table thead th {
+    font-weight: 500;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    border-bottom: 1px solid var(--fg);
+  }
+  .osa-mem__table tbody th {
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .osa-mem__table tbody td { color: var(--fg-muted); }
+  @media (max-width: 560px) {
+    .osa-mem__table,
+    .osa-mem__table thead,
+    .osa-mem__table tbody,
+    .osa-mem__table tr,
+    .osa-mem__table th,
+    .osa-mem__table td { display: block; width: 100%; }
+    .osa-mem__table thead { display: none; }
+    .osa-mem__table tr { padding: var(--space-3) 0; border-bottom: 1px solid var(--rule); }
+    .osa-mem__table th,
+    .osa-mem__table td { padding: var(--space-1) 0; border: 0; }
+  }
+
+  .osa-mem__more { margin: var(--space-4) 0 0; }
+  .osa-mem__more summary {
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--fg);
+    padding: var(--space-2) 0;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .osa-mem__more summary::-webkit-details-marker { display: none; }
+  .osa-mem__more summary::before {
+    content: '+';
+    display: inline-block;
+    width: 1em;
+    text-align: center;
+  }
+  .osa-mem__more[open] summary::before { content: '−'; }
+  .osa-mem__more[open] summary { margin-bottom: var(--space-3); }
 
   /* ---------- Form ---------- */
   .osa-mem__form-grid {

@@ -9,7 +9,6 @@ import ManifestoStrip from '../components/ManifestoStrip.astro';
 import InvestmentHero from '../components/InvestmentHero.astro';
 import Gallery from '../components/Gallery.astro';
 import AktualityRecap from '../components/AktualityRecap.astro';
-import { withBase } from '../utils/url';
 ---
 <Base
   title="Občanské sdružení Alternativa II, z.s."
@@ -18,60 +17,11 @@ import { withBase } from '../utils/url';
   <main>
     <Hero />
     <Rozcestnik />
-    <ValuesMatrix />
+    <ValuesMatrix landing={true} />
     <ManifestoStrip />
     <Gallery />
-
     <InvestmentHero />
-
-    {/* 4-render strip pod InvestmentHero. Žádný kontext / mapa /
-        CTA — InvestmentHero už říká vše ("Hledáme strategického
-        partnera"). Vizualizace startovacího hubu jen doplňují
-        investiční výzvu vizuálně. */}
-    <section class="osa-hub-strip section--tight">
-      <div class="container-wide">
-        <div class="osa-hub-strip__grid" data-reveal>
-          <figure>
-            <img src={withBase('/images/areal/sh-1.jpg')} alt="Vizualizace startovacího hubu Klecany — pohled na centrální plochu mezi budovami." loading="lazy" />
-          </figure>
-          <figure>
-            <img src={withBase('/images/areal/sh-2.jpg')} alt="Vizualizace klecanského hubu — interiér společných prostor." loading="lazy" />
-          </figure>
-          <figure>
-            <img src={withBase('/images/areal/sh-3.jpg')} alt="Vizualizace klecanského areálu — pohled z ulice na vstupní část objektu." loading="lazy" />
-          </figure>
-          <figure>
-            <img src={withBase('/images/areal/sh-4.jpg')} alt="Vizualizace klecanského areálu — letní pobytová terasa a komunitní zóna." loading="lazy" />
-          </figure>
-        </div>
-      </div>
-    </section>
-
     <AktualityRecap />
   </main>
   <Footer />
 </Base>
-
-<style>
-  /* 4-render strip pod InvestmentHero. Žádný head, žádný kontext —
-     pouze vizualizace startovacího hubu Klecany. */
-  .osa-hub-strip__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-3);
-  }
-  .osa-hub-strip__grid figure {
-    margin: 0;
-    border: 1px solid var(--rule);
-    overflow: hidden;
-  }
-  .osa-hub-strip__grid img {
-    display: block;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-  }
-  @media (max-width: 720px) {
-    .osa-hub-strip__grid { grid-template-columns: 1fr 1fr; }
-  }
-</style>

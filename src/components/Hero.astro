@@ -52,7 +52,7 @@ const FRAME_BASE = withBase('/images/hero-sun/');
     <div class="container-wide osa-hero__inner">
       <div class="osa-hero__eyebrow osa-eyebrow" data-hero-eyebrow data-reveal>
         <OsaGlyph size="13px" />
-        <span>Pomáháme tvořit&hellip;</span>
+        <span>Občanské sdružení Alternativa II · od 2006</span>
       </div>
       <h1 class="osa-hero__h1">
         <span
@@ -60,8 +60,11 @@ const FRAME_BASE = withBase('/images/hero-sun/');
           data-hero-text
           data-reveal-words
           data-reveal-words-delay="200"
-          data-reveal-words-step="40">Chceme vytvořit moderní, prosperující a hodnotově orientovanou společnost, jejímž smyslem a účelem bude efektivní podpora všech jedinců v jejich plnohodnotné a všestranné seberealizaci.</span>
+          data-reveal-words-step="80">Pomáháme tvořit.</span>
       </h1>
+      <p class="osa-hero__sub" data-hero-sub data-reveal style="transition-delay: 950ms">
+        Spolek pro plnohodnotnou seberealizaci jedince i společnosti.
+      </p>
       <div class="osa-hero__rule" aria-hidden="true" data-hero-rule data-reveal style="transition-delay: 1100ms"></div>
       <div class="osa-hero__cta" data-hero-cta data-reveal style="transition-delay: 1250ms">
         <InlineCTA href={withBase('/o-spolku/')}>Více o spolku</InlineCTA>
@@ -163,6 +166,7 @@ const FRAME_BASE = withBase('/images/hero-sun/');
     var inner = section.querySelector('.osa-hero__inner');
     var heroText = section.querySelector('[data-hero-text]');
     var eyebrow = section.querySelector('[data-hero-eyebrow]');
+    var sub = section.querySelector('[data-hero-sub]');
     var rule = section.querySelector('[data-hero-rule]');
     var cta = section.querySelector('[data-hero-cta]');
     var heroExitTargets = []; // [{el, factor}] — eyebrow, rule, cta exit s mírně odlišným timingem
@@ -383,6 +387,7 @@ const FRAME_BASE = withBase('/images/hero-sun/');
     function collectExitTargets() {
       heroExitTargets = [];
       if (eyebrow) heroExitTargets.push({ el: eyebrow, factor: 1.4 });
+      if (sub) heroExitTargets.push({ el: sub, factor: 1.1 });
       if (rule) heroExitTargets.push({ el: rule, factor: 1.0 });
       if (cta) heroExitTargets.push({ el: cta, factor: 0.8 });
     }
@@ -508,13 +513,24 @@ const FRAME_BASE = withBase('/images/hero-sun/');
   .osa-hero__h1 {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: clamp(1.625rem, 2.6vw + 0.85rem, 3.25rem);
-    line-height: 1.12;
+    font-size: clamp(2.75rem, 7vw + 1rem, 7rem);
+    line-height: 1.02;
     letter-spacing: var(--tracking-tight);
     color: var(--fg);
     margin: 0;
-    max-width: 32ch;
+    max-width: 18ch;
     text-shadow: 0 1px 28px rgba(0, 0, 0, 0.45);
+  }
+  .osa-hero__sub {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(1.05rem, 0.8vw + 0.85rem, 1.5rem);
+    line-height: 1.35;
+    color: var(--fg-muted);
+    margin: 0;
+    max-width: 38ch;
+    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.45);
+    will-change: transform, opacity;
   }
   .osa-hero__h1-main {
     display: block;
