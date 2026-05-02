@@ -319,7 +319,7 @@ Drive složka **OSA Aktuality** sdílena se service accountem. 30min cron (`.git
 4. Validuje frontmatter proti Zod schématu (auto-draft pokud invalidní)
 5. Commituje přímo na master
 
-Detail: `docs/DRIVE_SYNC_ACTIVATION.md` (operační runbook), `docs/APPS_SCRIPT.md` (klientský how-to).
+Detail: `docs/APPS_SCRIPT.md` (klientský how-to). Original setup runbook archivován v `docs/archive/DRIVE_SYNC_ACTIVATION.md`.
 
 ---
 

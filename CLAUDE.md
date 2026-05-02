@@ -20,61 +20,11 @@ Static site for **Občanské sdružení Alternativa II, z.s.** (OSA). Destinatio
 | Client JS | Filter island (~900 B) + IntersectionObserver reveal observer (~400 B) + values accordion toggle + mobile hamburger + gallery lightbox (all inline `<script is:inline>`) |
 | Deploy    | Live: GitHub Pages at https://keiaiendiel.github.io/osa-web/. Repo: github.com/keiaiendiel/osa-web (public). DNS → osa2.cz is post-launch. |
 
-## Current state (2026-04-30, after v8.3 + v9 hero scrub)
+## Current state
 
-**Live:** https://keiaiendiel.github.io/osa-web/. Repo is public at https://github.com/keiaiendiel/osa-web. Pushes to `master` auto-deploy via `.github/workflows/deploy-pages.yml`.
+**Live:** https://keiaiendiel.github.io/osa-web/. Repo public at https://github.com/keiaiendiel/osa-web. Pushes to `master` auto-deploy via `.github/workflows/deploy-pages.yml` (~1–2 min). Site builds cleanly at 29 pages; editorial lint green; weight budget green on every page. Drive sync is live (see "Aktuality channel" below).
 
-**Local dev:**
-```bash
-pnpm install
-pnpm dev      # http://localhost:4321/osa-web/
-pnpm build    # writes to dist/
-pnpm preview  # serves dist/
-```
-The `.claude/launch.json` entry `osa-web` is wired for the Claude Preview MCP (`preview_start name="osa-web"`).
-
-**Push flow (manual):**
-```bash
-git status
-git add <specific-files>     # avoid `git add .` — keeps stray docs out
-git commit -m "feat: short summary"
-git push origin master
-```
-GitHub Pages redeploys ~1–2 min after push. Status: GitHub → Actions tab.
-
-**v9 hero highlights:**
-- **Sticky-pin scroll-scrub video hero** on landing. 84 JPG frames (1280×720, ~1 MB total) extracted from a 4.2s Earth-from-space placeholder via `ffmpeg`. Pin wrapper is 200vh tall; sticky inner is 100vh + `top: 0`. ScrollY → frame index via `requestAnimationFrame` draw loop on `<canvas>`. Overlay alpha interpolates against `--scroll-progress` CSS var (0.15→0.85 top, 0.55→0.95 bottom) for the "Earth darkens to silhouette" effect. `prefers-reduced-motion` fallback shows static frame-001.
-- **Aktuality** updated with real client copy + per-article numbered subfolders under `public/images/aktuality/{zadost-souteze,vyletna-ladem,projektovani}/` (hero.jpg + 01..06.jpg gallery).
-- **Landing** trimmed: removed the "Horní kasárna Klecany" intro+map section. Only the 4-render strip (`public/images/areal/sh-{1..4}.jpg`) remains under InvestmentHero as visual support for the VPD investment call.
-- **VPD subpage:** kept SW/HW theoretical framing (new), reverted "Struktura" diagram back to the original "Proč" (Kritika spekulativního developmentu) + "Jak" (Tři stavební kameny) sections. Areál Klecany section with site plan + 4 renders kept.
-- **Footer** now lists Aktuality + Členství; "Kontakty" → "Kontakt".
-- **Portal** (/portal/): mock data (Antonín Kindl, ID 35S, member since 1.9.2022, 4 roky členství, professions Umělec/Grafik/Artista/Autor loga), 3 active projects (VPD Designer, OSA II Designer · člen, Dynamitka Alfréda Nobela Umělec), red Ukončit členství CTA. Header label swaps to member ID after login (`data-portal-header-label`).
-
-**Production-blocking carry-overs (unchanged from v8):**
-- VPD financial figures still split between vault numbers (banner) and PDF-verified numbers (aktualita body) — needs reconciliation with Marek Semerád.
-- VPD aktualita hero photo is still a placeholder (courtyard photo); waits on a real Horní kasárna rendering.
-- DNS flip to osa2.cz: `astro.config.mjs` site/base, `tokens.css` font path, repo Pages settings.
-- `public/dokumenty/*.pdf` placeholders.
-
----
-
-## Original state log (kept for context — 2026-04-23, after v8.1 brand + editorial pass)
-
-- 29 pages build cleanly, zero build errors. Fonts 100.8 KB site-wide, weight budget green on every page.
-- Editorial lint green. Typographic bans (em/en-dash, `!` in prose) were dropped per client direction; voice-level rules (passive, hype, legalese) still stand.
-- Live at **https://keiaiendiel.github.io/osa-web/**. Repo on GitHub is public. Pages deploy runs via `.github/workflows/deploy-pages.yml` on every push to master.
-- `astro.config.mjs` currently points `site: 'https://keiaiendiel.github.io'` with `base: '/osa-web/'`. A helper `src/utils/url.ts` exposes `withBase(path)`; every internal link/asset passes through it so the base is trivially removable when DNS flips to osa2.cz (one-file diff). `tokens.css` hardcodes `/osa-web/fonts/` — same find-replace applies.
-- Drive sync is **live**. Google Cloud project `osa-aktuality-sync` holds a service account; the Drive folder `OSA Aktuality` is shared with it as Editor; `GOOGLE_SERVICE_ACCOUNT` and `DRIVE_FOLDER_ID` secrets are set in the repo. A 30-minute cron runs `sync-aktuality.yml` which now commits straight to master (no PR gate). Apps Script step skipped.
-- Aktuality channel has six articles: four v7 backfill, one v7.1 VPD investment call, and one v8 sync-from-Drive example (`fotky-ze-setkani-pred-vyletnou`). Multi-image gallery works: first inline image becomes the hero, the rest land as `<slug>-2.jpg`, `<slug>-3.jpg`... and render via `<Gallery title={null}>` at the bottom of the article.
-- Mobile polish pass: hamburger drawer with z-index-safe header, ValuesMatrix single-open accordion (desktop hover preview restored), colour-by-default Gallery, lightbox overlay with prev/next/ESC, rozcestník capped at 6 cards + "Ostatní projekty" CTA, footer two-column, scroll-reveal threshold tuned for short viewports, InvestmentHero mobile reorder (header → chart → metrics → CTAs).
-- VPD1 → VPD naming dropped across content, component strings, page IDs, and filenames. Aktualita slug is now `vpd-hledame-strategickeho-partnera`.
-- Internal project pages (`/projekty/<slug>/`): accent colour no longer paints the H1. A 56×3 px coloured bar above the heading carries the project's colour; body text stays monochrome.
-- Dev server via `pnpm dev` on port 4321 (`.claude/launch.json` entry `osa-web`).
-- Header logo is a **wordmark** (`OSA-Wordmark-{Black,White}.svg`, source: Suitcase supplied `Glylp_OSA_Logo_*.svg`), glyph + "OSA" lettering at 4:1. Sized 18 px height / auto width on desktop, 16 px on mobile. `width="72" height="18"` HTML attrs pinned on the `<img>` so the browser reserves the correct box from first paint — without them the SVG's `width="100%"` fallback resolves to 300×75 and flashes big during navigation. Old square `OSA-Logo-{Black,White}.svg` files kept in `public/logo/` as backup; current Header imports the Wordmark files.
-- `/projekty/vpd/` hero carries the **VPD logomark** instead of a text H1: 60°-bevelled bar over three stacked Atyp Special Bold words (`Veřejně / Prospěšný / Developer`). Semantic H1 preserved via `.sr-only`. 2-col hero grid (mark left, subhead + lede right); bar top aligns with the cap-line of the right-column subhead (padding-top compensates the line-box inset). Fully scoped to `vpd.astro`, trivially reversible.
-- Hero dark-pattern treatment is now consistent across Úvod / O spolku / Projekty: one `::before` layer driven by `--{page}-pattern` CSS custom property pointing at `graphics/osa-bg-pattern.svg` (landing, Projekty, both at 0.15 opacity) or `osa-bg-pattern-2.svg` (O spolku, 0.20 opacity). Old `<SVGPattern>` wrapper still used on VPD + aktuality detail; gradually replacing with the bespoke `::before` approach for per-page opacity control.
-- O spolku page rebuilt: narrative + compact VPD-style stats dl (20 let / 20+ projektů / 8 oblastí / 0 Kč dotací), three bespoke chapter blocks (01 Vize / 02 Poslání / 03 Smysl) using the VPD chapter-head vocabulary (big numeric mark left, eyebrow + heading + body right), ValuesMatrix **before** OrgChart (client ordering), Gallery "Z činností spolku." at the bottom.
-- InvestmentHero schematic grid had a horizontal-overflow bug: cells with `aspect-ratio: 1/1` inside a flex-constrained 4:3 aside forced a min-width per column that exceeded the container. Fixed via explicit `grid-template-rows: repeat(4, minmax(0, 1fr))` + `grid-template-columns: repeat(7, minmax(0, 1fr))` and `min-width: 0; min-height: 0;` on grid and cells.
+For per-version history (v1 → v9), read `git log` — `git log --oneline master` gives the editorial trail. Current shipped feature set is captured by the rest of this file (Repo layout, Design decisions, Aktuality channel, etc.). Production-blocking carry-overs are listed under **Known issues and open loops** below; don't duplicate them here.
 
 ## Repo layout
 
@@ -183,7 +133,7 @@ Defined in `src/content.config.ts`:
 
 ## Aktuality channel (live as of v8)
 
-Self-service editorial channel. Full Kindl-facing runbook: [docs/DRIVE_SYNC_ACTIVATION.md](./docs/DRIVE_SYNC_ACTIVATION.md). Client-facing how-to: [docs/APPS_SCRIPT.md](./docs/APPS_SCRIPT.md).
+Self-service editorial channel. Client-facing how-to: [docs/APPS_SCRIPT.md](./docs/APPS_SCRIPT.md). Original setup runbook archived at [docs/archive/DRIVE_SYNC_ACTIVATION.md](./docs/archive/DRIVE_SYNC_ACTIVATION.md).
 
 - **Collection:** `aktuality`, MDX glob in `src/content/aktuality/`, Zod schema with title (10-120), lead (40-240), date, hero path, optional tags/author/hero_alt/draft, and optional `gallery: string[]` for articles with more than one image.
 - **Pages:** `/aktuality/` grid (sorted date DESC) and `/aktuality/<slug>/` detail with hero, body, tags, "Zpět na aktuality", up to three related cards, and an inline `<Gallery title={null}>` when the article has extra images. Detail emits Article JSON-LD.
@@ -194,11 +144,9 @@ Self-service editorial channel. Full Kindl-facing runbook: [docs/DRIVE_SYNC_ACTI
 
 ## Drive sync activation — DONE
 
-Service account `osa-aktuality@osa-aktuality-sync.iam.gserviceaccount.com` in GCP project `osa-aktuality-sync`. Drive folder `OSA Aktuality` (in Kindl's My Drive, Workspace Individual plan has no Shared Drives) shared with the SA as Editor. Repo secrets `GOOGLE_SERVICE_ACCOUNT` + `DRIVE_FOLDER_ID` set. GitHub repo setting "Allow GitHub Actions to create and approve pull requests" enabled (set once via `gh api -X PUT .../actions/permissions/workflow -f default_workflow_permissions=write`, now less relevant since PR step was dropped but leave as-is).
+Service account `osa-aktuality@osa-aktuality-sync.iam.gserviceaccount.com` in GCP project `osa-aktuality-sync`. Drive folder `OSA Aktuality` shared with the SA as Editor. Repo secrets `GOOGLE_SERVICE_ACCOUNT` + `DRIVE_FOLDER_ID` set. End-to-end verified: client writes Doc → cron (or `gh workflow run sync-aktuality.yml`) → MDX + hero + gallery land in master → Pages rebuilds. Setup runbook archived at [docs/archive/DRIVE_SYNC_ACTIVATION.md](./docs/archive/DRIVE_SYNC_ACTIVATION.md).
 
-End-to-end verified: client writes Doc → cron (or manual `gh workflow run sync-aktuality.yml`) picks it up → MDX + hero + gallery images land in master → Pages rebuilds → article is live at `https://keiaiendiel.github.io/osa-web/aktuality/<slug>/`.
-
-## SEO infrastructure (v7)
+## SEO infrastructure
 
 - **Sitemap:** `@astrojs/sitemap` writes `dist/sitemap-index.xml` + `dist/sitemap-0.xml`. 404 excluded via filter.
 - **Per-page metadata:** `Base.astro` takes `title`, `description`, `ogImage`, `ogType` props. Derives canonical from `Astro.site` + `Astro.url.pathname`. Renders OG tags, Twitter Card, manifest link, sitemap hint.
@@ -208,9 +156,9 @@ End-to-end verified: client writes Doc → cron (or manual `gh workflow run sync
 - **Redirects:** [public/_redirects](./public/_redirects) maps the seven alternativa2.info top-level pages (kdo-jsme, nase-spolkove-projekty, spoluprace, clenstvi-ve-spolku, spolkova-galerie, kontakty, index) with 301s plus trailing-slash variants.
 - **Manifest:** [public/manifest.webmanifest](./public/manifest.webmanifest) for PWA add-to-homescreen on mobile.
 
-## Fact-check (v7 scaffold)
+## Fact-check
 
-[docs/FACTCHECK.md](./docs/FACTCHECK.md) is the 60-claim checklist organized into eight categories with F1/F2/F3 verification phases (F1 = agent can verify against ARES/katastr/HEAD-check, F2 = needs client knowledge, F3 = needs sněm or statutes). `src/content/org/identity.json` was updated with ARES-verified founding date (2006-03-14) and the missing "Bubeneč" address fragment. Zod schema on `org` now requires `founded: YYYY-MM-DD`.
+`src/content/org/identity.json` carries ARES-verified founding date (2006-03-14) and full Bubeneč address; Zod schema requires `founded: YYYY-MM-DD`. Original 60-claim verification checklist archived at [docs/archive/FACTCHECK.md](./docs/archive/FACTCHECK.md).
 
 ## Known issues and open loops
 
@@ -226,58 +174,6 @@ End-to-end verified: client writes Doc → cron (or manual `gh workflow run sync
 - **No analytics.** Post-launch decision (Plausible/GoatCounter).
 - **DNS → osa2.cz not cut over.** While the site serves from `keiaiendiel.github.io/osa-web/`, `astro.config.mjs` has `base: '/osa-web/'` + `tokens.css` hardcodes `/osa-web/fonts/`. When DNS flips: change `site` to `https://osa2.cz`, remove `base`, and find-replace `/osa-web/` → `/` in `tokens.css`. `withBase()` calls become no-ops and can be inlined later.
 - **Atyp Special `-OSA-` ligature.** Font file lacks the rule; explicit `<OsaGlyph />` SVG remains the workaround.
-
-## Client-driven revisions (v1 → v8.1)
-
-Each `v#` commit captures a round of feedback from the client. Reading them in order tells the story:
-
-- **v1** (`feat(uvod)` + subsequent feat commits + `build(phase4)` + `docs(phase5)`) — original build per plan.
-- **v2** — first feedback pass: new brand assets, Hero reworked, monochrome hover on cards, topic replaces relationship, 4x4 values with hover gloss, drop serif, reduced graphic headers, Gallery introduced.
-- **v3** — Atyp Special everywhere (dropped Space Grotesk); smoother filter with clip-path; full-wordmark footer logo; `&nbsp;` on number+unit pairs; draft underline removed; cards shifted to gray default (a mistake, reverted in v4).
-- **v4** — revert card hover to clean black-invert wipe via clip-path; add scroll-reveal observer; favicon generation; gallery bigger, frameless; footer logo 50% smaller; **full VPD project subpage** built from vault research (hero, stats, philosophy, three pillars, Výletná case study, Záměr VPD1, related projects).
-- **v5** — ProjectCard top/bottom layout contract; Gallery 4x2 uniform; graphic headers reverted to full-bleed; VPD subpage gets full Záměr VPD1 investment block; VPD MDX confirmed without `external_url` so the card routes internally.
-- **v6** (2026-04-20, uncommitted as of this writing) — unified dark-hero pattern across landing / O Spolku / VPD; Header `variant` prop; Hero motto "Pomáháme tvořit" folded from italic line into strapline body; O Spolku gets a full dark hero redesign with crumbs + h1 + sub-head + lede; ValuesMatrix `dark={true}` on /o-spolku/; ProjectCard hover rewritten to Swiss restraint (no more black wipe), description flips `--k-50 → --fg`, meta row loses the literal "OSA" word, eyebrow loses the redundant "Projekt ·" prefix, anchor gets `osa-nolink` to bypass global link fade; Gallery monochrome-at-rest, color-on-hover, frame removed; InvestmentHero DRAFT notice removed (mustard draft wrappers on figures kept), CTA now links internally to `/projekty/vpd/`; VPD page uses shared `.osa-vpd__wrap` container, "Jak / Tři stavební kameny" header moved into the pillars section for tighter relationship; ManifestoStrip restructured (head on top, 3-col grid below) to fix heading-jump perception, outer `border-top` removed; reveal choreography added to projekty/index, zapojte-se, kontakty, o-spolku/dokumenty, LongformPage, projekty/[slug]; FilterBar spacing bumped (space-5 between groups, space-4 legend→row, space-3 between buttons).
-- **v7** (2026-04-21) — launch-prep pass: aktuality channel (collection + index + detail + ArticleCard + 4 placeholder articles), SEO infrastructure (sitemap, per-page OG, Organization + Article JSON-LD, manifest, 404, real 301 redirects), Drive sync pipeline scaffold (script + Action + Apps Script docs), fact-check scaffold (FACTCHECK.md + ARES-verified identity.json with founded date + Bubeneč).
-- **v7.1** (2026-04-21, same-day follow-up on client feedback) — three asks addressed in one pass:
-  (a) Investment call converted to an aktualita. `src/components/InvestmentHero.astro` unmounted from the landing; replaced by `src/components/AktualitaSpotlight.astro` (magazine-split card pointing to the latest non-draft aktualita, "Další aktuality" CTA below). New article `src/content/aktuality/vpd1-hledame-strategickeho-partnera.mdx` carries the content from the two PDFs with PDF-verified figures.
-  (b) Shared dark-hero contract. Landing Hero's bespoke padding shorthand and 1280 px max-width override were removed; Hero now matches O spolku, VPD, Projekty and aktuality detail on the same 96/96 padding + 24 px gutter + container-wide 1440 px contract. Projekty got a full dark hero frame with the FilterBar moved inside.
-  (c) Aktuality detail hero rebuilt VPD-style. `<Header variant="dark" />` + dark `<section>` with the article's hero as a darkened full-bleed background, left-aligned crumbs + eyebrow + H1 + lead, narrow container (1200 px). The separate `.osa-article__hero-section` figure block was removed since the photo is now in the hero background.
-  PF 2026 placeholder JPG was sips-compressed 462 → 202 KB to keep the page under the eager-weight budget. Client also confirmed Drive sync should be activated for real.
-- **v7.2** (2026-04-21, same-day client follow-up) — client preferred the original `<InvestmentHero />` banner over the magazine-split spotlight, so landing was reverted. `src/components/InvestmentHero.astro` restored with reveal stagger + 11 `data-count-to` figures. Both CTAs work: "Celý článek" → aktualita, "O VPD" → /projekty/vpd/. AktualitaSpotlight.astro left orphaned.
-- **v8** (2026-04-21, long session wrap-up) — shipping pass. Four strands:
-  (a) **Published live.** Public repo `keiaiendiel/osa-web`, GitHub Pages deploy workflow (`.github/workflows/deploy-pages.yml`), `base: '/osa-web/'` + `withBase(path)` helper in `src/utils/url.ts` applied across internal links, asset srcs, JSON-LD, and CSS `@font-face` URLs. Deploy at https://keiaiendiel.github.io/osa-web/. `withastro/action@v3`-style `actions/upload-pages-artifact` + `actions/deploy-pages`. `pnpm/action-setup` pulls pnpm version from `packageManager`; no explicit `version:` on any setup step.
-  (b) **Drive sync activated.** Service account, secrets, folder sharing, end-to-end verified. Sync script hardened: strips base64 data-URL images from Doc markdown exports (both `![][ref]` + `[ref]: <data:...>` autolink forms + `![](data:...)` inline form), iteratively compresses every image to ≤700 KB (Q80 → Q45, width 1400 → 900 px fallback), walks all inline images into hero + gallery array, validates frontmatter against Zod and auto-drafts unfixable docs, reverts transient `package.json` + `pnpm-lock.yaml` edits from the `pnpm add` step. PR step dropped — commits straight to master with a bot identity. Apps Script step skipped.
-  (c) **Mobile polish pass.** Hamburger drawer with z-index-safe header (logo + X visible). ValuesMatrix rewritten as single-open accordion; desktop `hover: hover` + `pointer: fine` guard restores the original `:hover` peek. Gallery colour-by-default; lightbox overlay (ESC + arrow-key navigation; `hidden` attribute MUST win over `display: grid` or the invisible overlay eats every click). Rozcestník capped at 6 cards on phones + "Ostatní projekty" CTA. ValuesMatrix, InvestmentHero, footer, scroll-reveal threshold all tuned for short viewports. InvestmentHero uses CSS grid-template-areas so mobile order is header → chart → metrics → CTAs. "O VPD" shortened from "O Veřejně prospěšném developerovi".
-  (d) **Content polish.** VPD1 → VPD (filenames, slug, strings, eyebrows, email subjects, hero alt). Accent colour dropped from internal project page H1s; replaced with a 56×3 px coloured bar above the heading. `/projekty/vpd/` now embeds `<InvestmentHero hideVpdLink={true} />` instead of the bespoke `#zamer-vpd1` block. Gallery gained an optional `title` prop so the in-article gallery only shows the small "Galerie" eyebrow (no H2). Editorial linter relaxed per client call — em/en-dash and `!` bans lifted; voice-level rules (passive, hype, legalese) kept. Value 16 renamed to one-line "ekologický způsob". Aktualita hero placeholder (VPD Klecany courtyard photo) awaiting final render of Horní kasárna.
-- **v8.1** (2026-04-23, brand + editorial pass) — six strands, all small-to-medium:
-  (a) **Dark-hero pattern unification.** `::before` layer driven by `--{page}-pattern` CSS custom property replaces `<SVGPattern>` on landing, Projekty, and O spolku. Landing + Projekty: filled triangles `osa-bg-pattern.svg` at 0.15 opacity. O spolku: outlined `osa-bg-pattern-2.svg` at 0.20 opacity.
-  (b) **O spolku rebuild.** Added "Více o spolku" InlineCTA under the landing Hero's big H1. Replaced the tall stats block with a compact VPD-style dl (Založeno 2006 / 20+ projektů / 8 oblastí / 0 Kč dotací). Three bespoke chapter blocks (01 Vize / 02 Poslání / 03 Smysl) in the VPD chapter-head vocabulary (big numeric mark left + eyebrow above heading right) instead of SectionBlock. Reordered sections so ValuesMatrix precedes OrgChart. Appended `<Gallery title="Z činností spolku." />` at bottom. Dropped the Havel quote per client call.
-  (c) **VPD logomark in hero.** `/projekty/vpd/` hero replaces the text H1 with a brand logomark: 60°-bevelled bar (`clip-path: polygon(0.26em 0, 100% 0, 100% 100%, 0 100%)` on a 0.45em-tall bar) over three stacked Atyp Special Bold words (`Veřejně / Prospěšný / Developer`). Semantic `<h1>` preserved via `.sr-only` for a11y/SEO. 2-col hero grid: mark left, subhead ("Metodika obnovy brownfieldů bez dotací.") + lede right. Bar top aligns with the cap-line of the right-column subhead (padding-top compensates the ≈0.15em line-box inset; measured drift ≈0.4 px). Font size `clamp(1.75rem, 3.4vw + 0.5rem, 2.875rem)` — one step smaller than the original H1. Reversible in a single block.
-  (d) **Header wordmark.** Replaced the square glyph (`OSA-Logo-{Black,White}.svg`) with the Suitcase-supplied `Glylp_OSA_Logo_{Black,White}.svg` wordmark (glyph + "OSA" lettering, 2048×512 viewBox). Stored as `public/logo/OSA-Wordmark-{Black,White}.svg`. Sized 18 px height / auto width on desktop, 16 px on mobile (~80 % of the prior glyph per client). Pinned `width="72" height="18"` HTML attrs on the `<img>` so the browser reserves the box from first paint — without them the SVG's `width="100%"` fallback resolves to 300×75 and the logo flashed big during navigation.
-  (e) **InvestmentHero grid overflow fix.** Schematic grid cells with `aspect-ratio: 1/1` inside a flex-constrained 4:3 aside forced a per-column min-width that exceeded the container, pushing the landing page horizontally and introducing a scrollbar. Fixed by defining explicit `grid-template-rows: repeat(4, minmax(0, 1fr))` + `grid-template-columns: repeat(7, minmax(0, 1fr))`, dropping cell aspect-ratio, and adding `min-width: 0; min-height: 0;` on grid and cells. A brief experiment to swap the grid for a real site-plan JPG (`vpd-mapa-lp.jpg`) was reverted — client preferred the abstract schematic.
-- **v8.2** (2026-04-29, content & IA refresh) — large content + structure pass driven by client revisiting the original alternativa2.info copy as primary source.
-  - **Hero** rewritten: vize quote as H1, "Pomáháme tvořit…" as eyebrow, secondary CTA "Aktuality"; `axioms.json` glosses restored to original "X neboli …" pattern.
-  - **O spolku** restructured: side-by-side text + stats datalist on Historie; new H2 "Spolek od roku 2006."; "Číst celý originál" → "Více"; new editorial OrgChart (3-tier list); `GoalsHorizons` 3-column with bullet dots; Galerie repositioned between Historie and OrgChart; Kreditní systém aside under Hospodaření.
-  - **Zapojte se** rewritten with 6 collaboration sections (3 interní + 3 externí) using extended `SectionBlock` (new `expandableLabel` prop + named slot "details"); concrete CTAs (transparent account, mailto endpoints).
-  - **New pages**: `/clenstvi/` (membership detail + types/statuses/rights/duties + application form mock), `/portal/` (login → dashboard prototype with welcome card, profile, project activity, OSA credits sparkline, member card preview, modals).
-  - **Header**: `Přihlásit →` button (desktop + mobile drawer) softened in dark scope (rgba border) for optical balance; label swaps to member ID after portal login.
-  - **Projekty**: FilterBar hidden; topic tags remain on cards.
-  - **Goals collection** added (`src/content/goals/`) with Zod schema.
-  - Dark hero pattern overlays removed across landing, O spolku, Projekty, Zapojte se, Členství.
-- **v8.3** (2026-04-30, VPD content rewrite + areál Klecany + portal polish):
-  - **VPD page** rewritten: copy now framed as "spin-off OSA II / veřejně prospěšný rozvoj softwaru a hardwaru"; new "Co VPD dělá" SW/HW framing section; Areál Klecany section with 2D site plan + 4 visualization renders.
-  - **Landing**: "Areál Klecany" lead-in section between Gallery and InvestmentHero with site plan + intro + 4-render strip + CTA to /projekty/vpd/.
-  - **Aktuality**: real client copy on Žádost o vypsání transparentní soutěže + Výletná zas leží ladem; new article "Projektování rozvoje s místními komunitami" (architectural competitions + participation methods); per-article subfolders under `public/images/aktuality/{zadost-souteze,vyletna-ladem,projektovani}/` with hero.jpg + numbered gallery.
-  - **Portal**: name → Antonín Kindl, member since 1.9.2022, **4 roky členství** (Czech pluralization fix); statuses → professions (Umělec/Grafik/Artista/Autor loga); activity = VPD (Designer) + OSA II (Designer · člen, black dot via `var(--fg)`) + Dynamitka Alfréda Nobela (Umělec, red); Ukončit členství in red `#b8362c` (specificity bumped via chained class to override scoped InlineCTA color); member card cleaner double-border via outer `1px` + inner `::before` instead of heavy box-shadow inset.
-  - **Header / Footer / Kontakt**: "Kontakty" → "Kontakt" across nav, footer, page heading; footer adds Aktuality + Členství links.
-  - O spolku hero gains Havel quote ("Naděje není to přesvědčení…").
-  - Externí sekce on Zapojte se flipped to `osa-dark` scope to visually separate from interní sekce.
-- **v9** (2026-04-30, hero scroll-scrub + landing polish + VPD revert):
-  - **Sticky-pin scroll-scrub video hero** on landing. 84 JPG frames (1280×720, ~1 MB total) extracted from a 4.2s Earth-from-space placeholder via `ffmpeg -vf "select='not(mod(n,3))',scale=1280:720" -q:v 6`. Pin wrapper (`.osa-hero-pin`) is 200vh tall; sticky inner (`.osa-hero`) is 100vh + `top: 0` → user is "scroll-locked" through the first ~100vh while video scrubs, then content below releases. ScrollY mapped to frame index via RAF draw loop on `<canvas>`. Video reaches end at 90 % of pin scroll range (`VIDEO_END_AT = 0.9` in `Hero.astro`); last 10 % keeps the final frame while still pinned. Overlay alpha interpolates against `--scroll-progress` CSS var (top stop 0.15→0.85, bottom 0.55→0.95) for "Earth darkens to silhouette → fades" effect. `prefers-reduced-motion` fallback shows static frame-001. Defensive `ResizeObserver` keeps canvas bitmap synced (init `resize()` sometimes saw 0×0 in Astro before layout). Image-sequence approach beats `<video currentTime>` because mobile Safari scrubbing on `<video>` is unreliable.
-  - **Landing trim:** removed the v8.3 "Horní kasárna Klecany" intro section. Only the 4-render strip remains under `<InvestmentHero />` as visual support.
-  - **VPD page revert:** kept SW/HW framing (new), removed the Struktura Obsidian-graph diagram (client didn't like it), restored original "Proč" (Kritika spekulativního developmentu) + "Jak" (Tři stavební kameny) sections from pre-v8.3.
-  - **Aktuality images:** real photos from client's `vyletna-aktuality/{1,2,3}/` source folders copied + organized into `public/images/aktuality/{zadost-souteze,vyletna-ladem,projektovani}/` with hero + numbered gallery.
-  - **Portal**: Activity role for OSA II changed from "Statutární zástupce" to plain "člen" per client direction (don't claim official roles in mock data).
 
 ## Running the project
 

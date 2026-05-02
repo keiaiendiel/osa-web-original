@@ -32,3 +32,12 @@ pnpm-debug.log*
 
 # Superpowers skill cache
 .superpowers/
+
+# Local workfiles (preview collages, planning docs, source spreadsheets)
+docs/preview/
+docs/osa-web-obsah.xlsx
+docs/PLAN-rozdeleni-webu.md
+
+# One-off helper scripts (kept locally, not in CI)
+scripts/build-content-doc.py
+scripts/build-preview-collage.mjs
