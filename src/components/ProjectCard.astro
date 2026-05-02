@@ -56,6 +56,14 @@ const metaRight = isExternal
   data-status={status}
   data-topic={topic}
   data-paused={isPaused ? '' : undefined}>
+  <div class="project-card__eyebrow">
+    {eyebrowParts.map((part, i) => (
+      <>
+        {i > 0 && <span class="project-card__sep" aria-hidden="true"> · </span>}
+        <span>{part}</span>
+      </>
+    ))}
+  </div>
   <div class="project-card__image" data-empty={image ? undefined : ''}>
     {image
       ? <img src={withBase(image)} alt="" loading="lazy" />
@@ -63,14 +71,6 @@ const metaRight = isExternal
   </div>
   <div class="project-card__body">
     <div class="project-card__top">
-      <div class="project-card__eyebrow">
-        {eyebrowParts.map((part, i) => (
-          <>
-            {i > 0 && <span class="project-card__sep" aria-hidden="true"> · </span>}
-            <span>{part}</span>
-          </>
-        ))}
-      </div>
       <h3 class="project-card__title">{name}</h3>
       <p class="project-card__desc">{description}</p>
     </div>
@@ -259,8 +259,12 @@ const metaRight = isExternal
   }
 
   @media (max-width: 560px) {
+    .project-card {
+      padding: var(--space-3);
+      gap: var(--space-3);
+    }
     .project-card__body {
-      padding: var(--space-4);
+      gap: var(--space-4);
     }
     .project-card__title { font-size: var(--text-lg); }
   }
