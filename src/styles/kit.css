@@ -1,6 +1,15 @@
 /* OSA web UI kit - utility classes. Ported from ui_kits/osa-web/kit.css,
    reconciled with src/styles/tokens.css. Minimal, class-based. */
 
+/* In-page anchor links: smooth scroll + offset for the sticky header so
+   the target heading isn't hidden behind it. */
+html { scroll-behavior: smooth; }
+:target,
+[id] { scroll-margin-top: calc(var(--osa-header-h, 56px) + var(--space-4)); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 /* ---------- layout ---------- */
 .container      { max-width: var(--container);       margin: 0 auto; padding: 0 var(--gutter); }
 .container-wide { max-width: var(--container-wide);  margin: 0 auto; padding: 0 var(--gutter); }

@@ -78,6 +78,9 @@ const povinnosti = [
         <p class="osa-mem__lede" data-reveal data-reveal-delay="1">
           Členství v Občanském sdružení Alternativa II, z.s. je dobrovolné a řídí se stanovami spolku a příslušnými ustanoveními občanského zákoníku. Záleží jen na vás, zda budete členství využívat pasivně k čerpání výhod, nebo aktivně k zakládání vlastních projektů a usilování o volené funkce.
         </p>
+        <div class="osa-mem__hero-cta" data-reveal data-reveal-delay="2">
+          <a class="btn" href="#prihlaska" data-wipe>Přihlásit se</a>
+        </div>
       </div>
     </section>
 
@@ -217,7 +220,7 @@ const povinnosti = [
     </section>
 
     {/* ===== PŘIHLÁŠKA ===== */}
-    <section class="section osa-mem__form">
+    <section id="prihlaska" class="section osa-mem__form">
       <div class="container">
         <header class="osa-mem__sub-head" data-reveal>
           <span class="osa-eyebrow">Přihláška</span>
@@ -347,6 +350,11 @@ const povinnosti = [
     color: var(--fg-muted);
     font-size: var(--text-lg);
     max-width: 64ch;
+  }
+  .osa-mem__hero-cta {
+    margin-top: var(--space-4);
+    display: flex;
+    justify-content: flex-start;
   }
 
   /* ---------- Common section heading ---------- */
