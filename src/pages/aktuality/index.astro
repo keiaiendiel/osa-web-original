@@ -11,10 +11,10 @@ const sorted = all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 <Base
   title="Aktuality - Občanské sdružení Alternativa II"
   description="Články, zprávy a oznámení ze spolku OSA II. Co připravujeme, čím žijeme, co se nám daří.">
-  <Header />
+  <Header variant="dark" />
   <main class="osa-aktuality">
-    <section class="section">
-      <div class="container">
+    <section class="osa-aktuality__hero osa-dark">
+      <div class="container osa-aktuality__hero-inner">
         <header class="osa-aktuality__head" data-reveal>
           <span class="osa-eyebrow">Aktuality</span>
           <h1 class="osa-h1 osa-aktuality__title">Co se u nás děje.</h1>
@@ -22,7 +22,11 @@ const sorted = all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
             Krátké zprávy, oznámení a tematické texty od lidí, kteří spolek tvoří.
           </p>
         </header>
+      </div>
+    </section>
 
+    <section class="section">
+      <div class="container">
         {sorted.length === 0 && (
           <div class="osa-aktuality__empty" data-reveal data-reveal-delay="1">
             <p>Zatím tu nic nemáme. První texty dorazí brzy.</p>
@@ -52,11 +56,19 @@ const sorted = all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 </Base>
 
 <style>
+  .osa-aktuality__hero {
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    isolation: isolate;
+  }
+  .osa-aktuality__hero-inner {
+    padding-top: clamp(var(--space-7), 8vw, var(--space-9));
+    padding-bottom: var(--space-9);
+  }
   .osa-aktuality__head {
     display: grid;
     gap: var(--space-3);
     max-width: 72ch;
-    margin: 0 0 var(--space-7);
   }
   .osa-aktuality__title { margin: 0; }
   .osa-aktuality__lede  { margin: 0; color: var(--fg-muted); }

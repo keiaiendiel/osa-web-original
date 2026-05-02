@@ -15,10 +15,10 @@ const areas = [
 ];
 ---
 <Base title="Kontakt - Občanské sdružení Alternativa II">
-  <Header />
+  <Header variant="dark" />
   <main>
-    <section class="section">
-      <div class="container">
+    <section class="osa-contact__hero osa-dark">
+      <div class="container osa-contact__hero-inner">
         <header class="osa-contact__head" data-reveal>
           <span class="osa-eyebrow">Kontakt</span>
           <h1 class="osa-h1 osa-contact__title">Informační oddělení, představenstvo a oficiální údaje spolku.</h1>
@@ -62,7 +62,11 @@ const areas = [
             </address>
           </section>
         </div>
+      </div>
+    </section>
 
+    <section class="section">
+      <div class="container">
         <section class="osa-contact__areas" data-reveal>
           <h2 class="osa-h3 osa-contact__colh">Areály ve správě spolku</h2>
           <p class="osa-body-sm osa-contact__note">Kontaktujte přes konkrétní projekty.</p>
@@ -96,6 +100,15 @@ const areas = [
 </Base>
 
 <style>
+  .osa-contact__hero {
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    isolation: isolate;
+  }
+  .osa-contact__hero-inner {
+    padding-top: clamp(var(--space-7), 8vw, var(--space-9));
+    padding-bottom: var(--space-9);
+  }
   .osa-contact__head { display: grid; gap: var(--space-3); max-width: 72ch; margin: 0 0 var(--space-7); }
   .osa-contact__title { margin: 0; }
 
