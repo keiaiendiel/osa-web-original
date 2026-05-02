@@ -24,8 +24,8 @@ import { withBase } from '../utils/url';
  *   je .osa-hero přilepený k viewportu, video scrubuje (0..0.7 of pin)
  *   a text mizí po slovech (0..0.85 of pin), pak se sticky pustí.
  */
-const FRAME_COUNT = 138;
-const INTRO_FRAME_COUNT = 45;
+const FRAME_COUNT = 170;
+const INTRO_FRAME_COUNT = 85;
 const FRAME_BASE = withBase('/images/hero-sun/');
 ---
 <div class="osa-hero-pin">
@@ -102,12 +102,12 @@ const FRAME_BASE = withBase('/images/hero-sun/');
     var VIDEO_END_AT = 0.70;
     // Text exit: pracuje v "scrollProgress" prostoru, ne v normalizovaném p.
     // Per-word stagger startuje až po dokončení videa.
-    var WORD_EXIT_START = 0.70;     // 1. slovo začne mizet v tomto scroll progress
+    var WORD_EXIT_START = 0.55;     // 1. slovo začne mizet v tomto scroll progress
     var WORD_STAGGER_SPAN = 0.18;   // přes kolik scroll progress se rozprostře 1.→poslední slovo
     var WORD_FADE_SPAN = 0.10;      // doba (v scroll progress) přes kterou se 1 slovo schová
 
     // Intro autoplay — 0..3 s zdrojového videa za ~2.7 s s ease-outem.
-    var INTRO_DURATION_MS = 2700;
+    var INTRO_DURATION_MS = 3800;
 
     function frameSrc(i) {
       var n = String(i + 1);
@@ -256,8 +256,8 @@ const FRAME_BASE = withBase('/images/hero-sun/');
       if (mode !== 'intro') { introRunning = false; return; }
       var t = (now - introStart) / INTRO_DURATION_MS;
       if (t > 1) t = 1;
-      // ease-out (expo) — natural slowing
-      var e = 1 - Math.pow(1 - t, 3);
+      // ease-out (quadratic) — gentle deceleration
+      var e = 1 - Math.pow(1 - t, 2);
       var f = Math.round(e * (INTRO_FRAME_COUNT - 1));
       if (f !== pendingFrame) {
         pendingFrame = f;
@@ -418,13 +418,13 @@ const FRAME_BASE = withBase('/images/hero-sun/');
      "fáze 0" kdy se text posune o výšku menu baru. */
   :global(.osa-hero-pin) {
     position: relative;
-    height: 170vh;
+    height: 155vh;
     margin-top: calc(-1 * var(--osa-header-h, 56px));
     background: var(--k-100);
     color: var(--k-0);
   }
   @media (max-width: 720px) {
-    :global(.osa-hero-pin) { height: 140vh; }
+    :global(.osa-hero-pin) { height: 130vh; }
   }
 
   .osa-hero {
