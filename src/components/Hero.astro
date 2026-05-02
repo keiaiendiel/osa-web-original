@@ -96,16 +96,15 @@ const FRAME_BASE = withBase('/images/hero-sun/');
     var INTRO_FRAME_COUNT = parseInt(canvas.getAttribute('data-intro-frame-count'), 10) || 45;
     var FRAME_BASE = canvas.getAttribute('data-frame-base') || '/images/hero-sun/';
 
-    // Klient: video doběhne dřív, aby zbytek pin range nebyl jen "tmavý
-    // konec". Scrub maps scroll 0..0.7 → frames INTRO..LAST.
-    var VIDEO_END_AT = 0.7;
-    // Text exit: per-word stagger across scroll progress.
-    // WORD_STAGGER_DELAY = ke scroll progressu, ve kterém začne mizet 1. slovo.
-    // Klient: text má začít mizet trošku později, ne hned od scroll=0.
-    var TEXT_EXIT_END = 0.85;
-    var WORD_STAGGER_DELAY = 0.18;
-    var WORD_STAGGER_SPAN = 0.30; // přes kolik scroll progress se rozprostře 1.→poslední slovo
-    var WORD_FADE_SPAN = 0.22;    // doba (v scroll progress) přes kterou se 1 slovo schová
+    // Scrub mapuje scroll 0..VIDEO_END_AT → frames INTRO..LAST. Text se
+    // začne hýbat AŽ za VIDEO_END_AT, takže během scrubování textu nikdy
+    // neopustí svou pozici — to byl klíčový request klienta.
+    var VIDEO_END_AT = 0.70;
+    // Text exit: pracuje v "scrollProgress" prostoru, ne v normalizovaném p.
+    // Per-word stagger startuje až po dokončení videa.
+    var WORD_EXIT_START = 0.70;     // 1. slovo začne mizet v tomto scroll progress
+    var WORD_STAGGER_SPAN = 0.18;   // přes kolik scroll progress se rozprostře 1.→poslední slovo
+    var WORD_FADE_SPAN = 0.10;      // doba (v scroll progress) přes kterou se 1 slovo schová
 
     // Intro autoplay — 0..3 s zdrojového videa za ~2.7 s s ease-outem.
     var INTRO_DURATION_MS = 2700;
@@ -184,28 +183,28 @@ const FRAME_BASE = withBase('/images/hero-sun/');
       var words = heroText.querySelectorAll('.reveal-word');
       var n = words.length;
       if (n === 0) return;
-      // Normalizovaný progress textu uvnitř exit okna [0, TEXT_EXIT_END]
-      var p = Math.max(0, Math.min(1, scrollProgress / TEXT_EXIT_END));
-      // Při p < WORD_STAGGER_DELAY nic neděláme — words drží entry-final state.
+      // Pracujeme přímo v scrollProgress prostoru — text se nehne dokud
+      // scrollProgress < WORD_EXIT_START (= dokud video nedoběhne).
       for (var i = 0; i < n; i++) {
         var w = words[i];
-        var startAt = WORD_STAGGER_DELAY + (n <= 1 ? 0 : (i / (n - 1)) * WORD_STAGGER_SPAN);
+        var startAt = WORD_EXIT_START + (n <= 1 ? 0 : (i / (n - 1)) * WORD_STAGGER_SPAN);
         var endAt = startAt + WORD_FADE_SPAN;
         var t;
-        if (p <= startAt) t = 0;
-        else if (p >= endAt) t = 1;
-        else t = (p - startAt) / (endAt - startAt);
-        // ease-out (expo) pro hladký dojezd
+        if (scrollProgress <= startAt) t = 0;
+        else if (scrollProgress >= endAt) t = 1;
+        else t = (scrollProgress - startAt) / (endAt - startAt);
+        // ease-out (cubic) pro hladký dojezd
         var e = 1 - Math.pow(1 - t, 3);
         // translate −0.6em + opacity → 0
         w.style.transform = 'translateY(' + (-e * 0.6).toFixed(3) + 'em)';
         w.style.opacity = (1 - e).toFixed(3);
       }
-      // eyebrow / rule / cta — mizí s lehkým offsetem proti textu, taky později
+      // eyebrow / rule / cta — startují ve stejnou chvíli jako 1. slovo
+      // a mizí o trochu rychleji, aby celý blok během exit okna zmizel.
       heroExitTargets.forEach(function (item) {
-        var sp = Math.max(0, scrollProgress - WORD_STAGGER_DELAY * 0.7) * item.factor;
-        var op = Math.max(0, 1 - sp * 1.8);
-        var ty = -sp * 24; // px
+        var sp = Math.max(0, scrollProgress - WORD_EXIT_START) * item.factor;
+        var op = Math.max(0, 1 - sp * 4.0);
+        var ty = -sp * 60; // px
         item.el.style.opacity = op.toFixed(3);
         item.el.style.transform = 'translateY(' + ty.toFixed(2) + 'px)';
       });
@@ -412,10 +411,15 @@ const FRAME_BASE = withBase('/images/hero-sun/');
 
 <style>
   /* PIN wrapper — výška určuje, jak dlouho je sticky hero přilepený.
-     Klient: méně černé na konci → 170vh desktop, 140vh mobile. */
+     Klient: méně černé na konci → 170vh desktop, 140vh mobile.
+     Negativní margin-top vytlačí pin pod page-level header (sticky,
+     z-index:30) tak, aby hero hned od scroll=0 zabíralo celý viewport
+     a první scroll input okamžitě začal scrubovat video — žádná
+     "fáze 0" kdy se text posune o výšku menu baru. */
   :global(.osa-hero-pin) {
     position: relative;
     height: 170vh;
+    margin-top: calc(-1 * var(--osa-header-h, 56px));
     background: var(--k-100);
     color: var(--k-0);
   }
@@ -488,16 +492,10 @@ const FRAME_BASE = withBase('/images/hero-sun/');
     flex-direction: column;
     justify-content: flex-end;
     gap: var(--space-4);
-    padding-top: var(--space-6);
-    /* Bottom padding zahrnuje výšku page-level header (var --osa-header-h
-       nastaví JS), aby na scroll=0 byly CTA + rule viditelné nad hranicí
-       viewportu. Po scrollu sice dole zůstane víc prostoru, ale text
-       v té chvíli stejně mizí (per-word exit), takže to vizuálně vadí
-       minimálně. env() chrání iOS home indicator. */
-    padding-bottom: max(
-      calc(var(--space-6) + var(--osa-header-h, 56px)),
-      env(safe-area-inset-bottom)
-    );
+    /* Padding-top zahrnuje výšku page-level header, aby content nemohl
+       překrývat sticky header (z-index:30 nad hero). */
+    padding-top: calc(var(--osa-header-h, 56px) + var(--space-4));
+    padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
   }
   /* Mezi rule a CTA dáme trošku víc dechu než zbytek gridu. */
   .osa-hero__inner > .osa-hero__rule { margin-top: var(--space-2); }
