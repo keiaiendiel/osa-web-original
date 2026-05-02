@@ -127,6 +127,29 @@ const pripravovane = LANDING_PRIPRAVOVANE
   .osa-rozcestnik__grid > li { display: flex; }
   .osa-rozcestnik__grid > li > * { flex: 1; }
 
+  /* ---------- Dramatic per-card reveal ----------
+     The global [data-reveal] uses translateY(24px) + 600ms — on a section
+     the user has scrolled past quickly, the motion is barely perceptible.
+     For Rozcestník we want the cards to feel like they're stepping in,
+     so we override with a larger translate, a longer duration, and a
+     wider per-card stagger. Hidden state is set on the <li>; the card
+     itself never moves, which keeps the slider on mobile clean. */
+  .osa-rozcestnik__grid > li[data-reveal] {
+    opacity: 0;
+    transform: translateY(56px);
+    transition:
+      opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .osa-rozcestnik__grid > li[data-reveal].shown {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .osa-rozcestnik__grid > li[data-reveal][data-reveal-delay='1'] { transition-delay: 80ms; }
+  .osa-rozcestnik__grid > li[data-reveal][data-reveal-delay='2'] { transition-delay: 200ms; }
+  .osa-rozcestnik__grid > li[data-reveal][data-reveal-delay='3'] { transition-delay: 320ms; }
+  .osa-rozcestnik__grid > li[data-reveal][data-reveal-delay='4'] { transition-delay: 440ms; }
+
   .osa-rozcestnik__more {
     display: flex;
     margin: var(--space-7) 0 0;
