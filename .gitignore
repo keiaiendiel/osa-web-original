@@ -41,3 +41,5 @@ docs/PLAN-rozdeleni-webu.md
 # One-off helper scripts (kept locally, not in CI)
 scripts/build-content-doc.py
 scripts/build-preview-collage.mjs
+
+COPY.md

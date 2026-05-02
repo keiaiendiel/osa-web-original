@@ -3,42 +3,91 @@ import { getCollection } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
 import { withBase } from '../utils/url';
 
-const all = await getCollection('subProjects', entry =>
-  entry.data.status !== 'draft' && entry.data.status !== 've-spanku',
-);
-const projects = all
-  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
-  .slice(0, 8);
-// First 6 projects show on mobile; the rest fold behind a CTA.
-const MOBILE_LIMIT = 6;
+/*
+ * Landing rozcestník: a curated subset (4 + 4) split into REALIZOVANÉ
+ * and PŘIPRAVOVANÉ. The full list lives at /projekty/. Slugs below pin
+ * exactly which entries surface on the homepage; everyone else is
+ * routed via "Další projekty".
+ */
+const LANDING_REALIZOVANE = [
+  'kreativni-prostory',
+  'vyletna',
+  'paint-ball',
+  'volnocasova-centra',
+];
+const LANDING_PRIPRAVOVANE = [
+  'mestsky-inkubator',
+  'kreditni-system',
+  'univerz',
+  'akcni-tabory',
+];
+
+const all = await getCollection('subProjects', e => e.data.status !== 'draft');
+const bySlug = new Map(all.map(p => [p.id, p]));
+
+const realizovane = LANDING_REALIZOVANE
+  .map(slug => bySlug.get(slug))
+  .filter(<T,>(p: T | undefined): p is T => Boolean(p));
+
+const pripravovane = LANDING_PRIPRAVOVANE
+  .map(slug => bySlug.get(slug))
+  .filter(<T,>(p: T | undefined): p is T => Boolean(p));
 ---
 <section class="osa-rozcestnik section">
   <div class="container-wide">
     <header class="osa-rozcestnik__head" data-reveal>
       <span class="osa-eyebrow osa-rozcestnik__eyebrow">Rozcestník</span>
       <h2 class="osa-h2 osa-rozcestnik__title">Autonomní projekty pod hlavičkou spolku</h2>
-      <p class="osa-body osa-rozcestnik__lede">
-        Projekty si vedou vlastní prostory, weby a členskou základnu. Spolek jim poskytuje právní a organizační zázemí.
-      </p>
     </header>
-    <ul class="osa-rozcestnik__grid" role="list">
-      {projects.map((p, i) => (
-        <li
-          data-reveal
-          data-reveal-delay={String((i % 3) + 1)}
-          class:list={[{ 'osa-rozcestnik__overflow': i >= MOBILE_LIMIT }]}
-        ><ProjectCard
-          slug={p.id}
-          name={p.data.name}
-          description={p.data.description}
-          accent={p.data.accent}
-          relationship={p.data.relationship}
-          status={p.data.status}
-          topic={p.data.topic}
-          external_url={p.data.external_url}
-        /></li>
-      ))}
-    </ul>
+
+    <div class="osa-rozcestnik__group" data-reveal>
+      <header class="osa-rozcestnik__group-head">
+        <span class="osa-eyebrow osa-rozcestnik__group-eyebrow">Realizované</span>
+      </header>
+      <ul class="osa-rozcestnik__grid" role="list">
+        {realizovane.map((p, i) => (
+          <li
+            data-reveal
+            data-reveal-delay={String((i % 4) + 1)}
+          ><ProjectCard
+            slug={p.id}
+            name={p.data.name}
+            description={p.data.description}
+            accent={p.data.accent}
+            relationship={p.data.relationship}
+            status={p.data.status}
+            topic={p.data.topic}
+            external_url={p.data.external_url}
+            image={p.data.image}
+          /></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="osa-rozcestnik__group" data-reveal>
+      <header class="osa-rozcestnik__group-head">
+        <span class="osa-eyebrow osa-rozcestnik__group-eyebrow">Připravované</span>
+      </header>
+      <ul class="osa-rozcestnik__grid" role="list">
+        {pripravovane.map((p, i) => (
+          <li
+            data-reveal
+            data-reveal-delay={String((i % 4) + 1)}
+          ><ProjectCard
+            slug={p.id}
+            name={p.data.name}
+            description={p.data.description}
+            accent={p.data.accent}
+            relationship={p.data.relationship}
+            status={p.data.status}
+            topic={p.data.topic}
+            external_url={p.data.external_url}
+            image={p.data.image}
+          /></li>
+        ))}
+      </ul>
+    </div>
+
     <div class="osa-rozcestnik__more" data-reveal>
       <a class="btn" href={withBase('/projekty/')} data-wipe>Další projekty</a>
     </div>
@@ -53,10 +102,23 @@ const MOBILE_LIMIT = 6;
     margin: 0 0 var(--space-7);
   }
   .osa-rozcestnik__title { margin: 0; }
-  .osa-rozcestnik__lede  { margin: 0; color: var(--fg-muted); max-width: 56ch; }
+
+  .osa-rozcestnik__group + .osa-rozcestnik__group {
+    margin-top: var(--space-7);
+  }
+  .osa-rozcestnik__group-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-4);
+  }
+  .osa-rozcestnik__group-eyebrow {
+    color: var(--fg);
+  }
+
   .osa-rozcestnik__grid  {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: 1fr;
     gap: 0;
     border-top: 1px solid var(--rule);
@@ -64,17 +126,17 @@ const MOBILE_LIMIT = 6;
   }
   .osa-rozcestnik__grid > li { display: flex; }
   .osa-rozcestnik__grid > li > * { flex: 1; }
-  /* "Další projekty" CTA — vždy viditelný (desktop i mobile). Klient
-     chce omezit landing na 8 projektů; zbytek je dostupný přes prokliv
-     na /projekty/. */
+
   .osa-rozcestnik__more {
     display: flex;
-    margin: var(--space-6) 0 0;
+    margin: var(--space-7) 0 0;
     justify-content: flex-start;
   }
-  @media (max-width: 720px) {
-    /* Mobile: hide cards beyond MOBILE_LIMIT (first 6 visible). Desktop
-       shows all 8. */
-    .osa-rozcestnik__grid > li.osa-rozcestnik__overflow { display: none; }
+
+  @media (max-width: 1024px) {
+    .osa-rozcestnik__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .osa-rozcestnik__grid { grid-template-columns: 1fr; }
   }
 </style>

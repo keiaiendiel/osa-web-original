@@ -11,12 +11,13 @@ interface Props {
   status?: 'realizovany' | 'pripravovany' | 've-spanku' | 'draft';
   topic?: 'urbanismus' | 'kultura' | 'sport' | 'media' | 'vzdelavani' | 'tvorba' | 'komunita' | 'larp';
   external_url?: string;
+  image?: string;
   featured?: boolean;
   filterable?: boolean;
 }
 const {
   slug, name, description, accent, relationship,
-  status, topic, external_url, filterable = false,
+  status, topic, external_url, image, filterable = false,
 } = Astro.props;
 
 const topicLabel: Record<NonNullable<Props['topic']>, string> = {
@@ -35,10 +36,8 @@ const isExternal = !!external_url;
 const isPaused = status === 've-spanku' || relationship === 've-spanku';
 const isPilot = relationship === 'pilotni' && !isPaused;
 
-// Eyebrow: just the topic tag (no redundant "Projekt" prefix).
 const eyebrowParts: string[] = topic ? [topicLabel[topic]] : [];
 
-// Meta right-hand label: hostname for external projects, or a short status mark.
 const metaRight = isExternal
   ? new URL(external_url as string).hostname.replace(/^www\./, '')
   : isPaused
@@ -57,47 +56,44 @@ const metaRight = isExternal
   data-status={status}
   data-topic={topic}
   data-paused={isPaused ? '' : undefined}>
-  <div class="project-card__top">
-    <div class="project-card__eyebrow">
-      {eyebrowParts.map((part, i) => (
-        <>
-          {i > 0 && <span class="project-card__sep" aria-hidden="true"> · </span>}
-          <span>{part}</span>
-        </>
-      ))}
-    </div>
-    <div class="project-card__rule" aria-hidden="true"></div>
-    <h3 class="project-card__title">{name}</h3>
-    <p class="project-card__desc">{description}</p>
+  <div class="project-card__image" data-empty={image ? undefined : ''}>
+    {image
+      ? <img src={withBase(image)} alt="" loading="lazy" />
+      : <div class="project-card__image-fallback" aria-hidden="true"></div>}
   </div>
-  <div class="project-card__bottom">
-    <div class="project-card__rule project-card__rule--accent" aria-hidden="true"></div>
-    <div class="project-card__meta">
-      <OsaGlyph size="11px" />
-      <span class="project-card__metaname">{metaRight}</span>
-      <span class="project-card__arrow" aria-hidden="true">
-        {isExternal ? '↗' : '→'}
-      </span>
+  <div class="project-card__body">
+    <div class="project-card__top">
+      <div class="project-card__eyebrow">
+        {eyebrowParts.map((part, i) => (
+          <>
+            {i > 0 && <span class="project-card__sep" aria-hidden="true"> · </span>}
+            <span>{part}</span>
+          </>
+        ))}
+      </div>
+      <h3 class="project-card__title">{name}</h3>
+      <p class="project-card__desc">{description}</p>
+    </div>
+    <div class="project-card__bottom">
+      <div class="project-card__rule project-card__rule--accent" aria-hidden="true"></div>
+      <div class="project-card__meta">
+        <OsaGlyph size="11px" />
+        <span class="project-card__metaname">{metaRight}</span>
+        <span class="project-card__arrow" aria-hidden="true">
+          {isExternal ? '↗' : '→'}
+        </span>
+      </div>
     </div>
   </div>
 </a>
 
 <style>
-  /* Swiss editorial card: labeled row pattern.
-     Top zone: eyebrow → hairline → title → description.
-     Bottom zone (pinned): hairline (accent on hover) → meta (glyph + OSA / label → arrow).
-     Hover: lower rule grows to 2px in the project's accent color; arrow nudges right.
-     No black-panel wipe: restraint over drama. */
-
   .project-card {
     --accent: var(--card-accent, var(--fg));
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: var(--space-6);
-    padding: var(--space-5);
-    min-height: 280px;
+    gap: 0;
     border-right: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
     background: var(--bg);
@@ -107,14 +103,45 @@ const metaRight = isExternal
     transition: background var(--dur-wipe, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
   }
 
+  .project-card__image {
+    overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+    aspect-ratio: 16 / 9;
+  }
+  .project-card__image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 360ms var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+  }
+  .project-card__image-fallback {
+    width: 100%;
+    height: 100%;
+    background:
+      linear-gradient(135deg, var(--k-95) 0%, var(--k-90) 100%);
+    border-bottom: 2px solid var(--accent);
+  }
+  .project-card:hover .project-card__image img,
+  .project-card:focus-visible .project-card__image img {
+    transform: scale(1.03);
+  }
+
+  .project-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding: var(--space-5);
+    flex: 1;
+  }
+
   .project-card__top,
   .project-card__bottom {
     display: grid;
     gap: var(--space-3);
   }
-  .project-card__top { gap: var(--space-3); }
 
-  /* ---------- Eyebrow ---------- */
   .project-card__eyebrow {
     font-family: var(--font-sans);
     font-weight: 500;
@@ -132,9 +159,6 @@ const metaRight = isExternal
     margin: 0 0.25em;
   }
 
-  /* ---------- Hairline rules ----------
-     Top rule stays black at rest. Bottom rule is the kinetic one:
-     hover grows height 1→2 and swaps to accent. */
   .project-card__rule {
     height: 1px;
     background: var(--fg);
@@ -153,11 +177,10 @@ const metaRight = isExternal
     background: var(--accent);
   }
 
-  /* ---------- Title + description ---------- */
   .project-card__title {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: var(--text-2xl);
+    font-size: var(--text-xl);
     line-height: var(--lh-snug);
     letter-spacing: var(--tracking-tight);
     color: var(--fg);
@@ -179,7 +202,6 @@ const metaRight = isExternal
     color: var(--fg);
   }
 
-  /* ---------- Meta row ---------- */
   .project-card__meta {
     display: flex;
     align-items: center;
@@ -211,7 +233,6 @@ const metaRight = isExternal
     transform: translateX(3px);
   }
 
-  /* ---------- Paused state (ve-spanku) ---------- */
   .project-card[data-paused] {
     opacity: 0.78;
   }
@@ -219,24 +240,21 @@ const metaRight = isExternal
     color: var(--fg-muted);
   }
 
-  /* ---------- Focus ---------- */
   .project-card:focus-visible {
     outline: 2px solid var(--fg);
     outline-offset: -2px;
   }
 
-  /* ---------- Reduced motion ---------- */
   @media (prefers-reduced-motion: reduce) {
     .project-card__rule--accent,
+    .project-card__image img,
     .project-card__arrow { transition: none; }
   }
 
-  /* ---------- Mobile compression ---------- */
   @media (max-width: 560px) {
-    .project-card {
-      min-height: 240px;
+    .project-card__body {
       padding: var(--space-4);
     }
-    .project-card__title { font-size: var(--text-xl); }
+    .project-card__title { font-size: var(--text-lg); }
   }
 </style>

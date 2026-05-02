@@ -44,6 +44,7 @@ const subProjects = defineCollection({
     relationship: relationshipEnum,
     topic: topicEnum,
     external_url: z.string().url().optional(),
+    image: z.string().startsWith('/').optional(),
     featured: z.boolean().optional().default(false),
     order: z.number().optional(),
   }),
