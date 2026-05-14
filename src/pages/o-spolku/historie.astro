@@ -1,10 +1,9 @@
 ---
 import LongformPage from '../../layouts/LongformPage.astro';
 import InlineCTA from '../../components/InlineCTA.astro';
-import Gallery from '../../components/Gallery.astro';
 import { withBase } from '../../utils/url';
 ---
-<LongformPage title="Historie spolku" eyebrow="O spolku">
+<LongformPage title="Historie spolku" eyebrow="Kdo jsme">
   <p>
     Občanské sdružení, které se na základě nového občanského zákoníku v roce 2014 transformovalo do právnické formy zapsaného spolku a ke svému původnímu názvu připojilo zkratku „z.s.", vzniklo registrací stanov u Ministerstva vnitra ČR dne <strong>14. 3. 2006</strong> pod názvem „občanské sdružení Alternativa II" (zkráceně též „OSA II").
   </p>
@@ -15,10 +14,8 @@ import { withBase } from '../../utils/url';
     Účelem nově založeného subjektu bylo v první řadě poskytnout všem zakládajícím členům společný právní rámec, pod jehož záštitou by mohli zakládající členové společně realizovat projekt <strong>MKJ (Mobilní Kulturní Jednotky)</strong>, na jehož realizaci se chtěli všichni zakládající členi spolku podílet, jakož i touha vytvořit společný právní subjekt, pod jehož záštitou a hlavičkou by bylo možné v budoucnu maximálně svobodně realizovat rozmanité ideje, nápady a záměry členů spolku ve formě autonomních projektů.
   </p>
   <p>
-    Jak se tento původní záměr podařilo rozvinout, můžete posoudit ve fotogalerii spolku či za pomoci aktuálně realizovaných spolkových projektů.
+    Jak se tento původní záměr podařilo rozvinout, můžete posoudit za pomoci aktuálně realizovaných spolkových projektů.
   </p>
-
-  <Gallery title={null} />
 
   <p style="margin-top: 2rem;">
     <InlineCTA href={withBase('/projekty/')}>Aktuálně realizované projekty</InlineCTA>

@@ -3,6 +3,7 @@ import { getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { withBase } from '../../utils/url';
 
 const org = (await getEntry('org', 'identity')).data;
 
@@ -14,16 +15,26 @@ const areas = [
   { name: 'Volnočasové centrum Holešovice',                   addr: 'Železničářů 204/6, 170 00 Praha 7' },
 ];
 ---
-<Base title="Kontakt - Občanské sdružení Alternativa II">
+<Base title="Kontakty - Občanské sdružení Alternativa II, z.s.">
   <Header variant="dark" />
   <main>
     <section class="osa-contact__hero osa-dark">
-      <div class="container osa-contact__hero-inner">
-        <header class="osa-contact__head" data-reveal>
-          <span class="osa-eyebrow">Informační oddělení, představenstvo, údaje</span>
-          <h1 class="osa-h1 osa-contact__title">Kontakty</h1>
-        </header>
+      <div class="container-wide osa-contact__hero-inner">
+        <nav aria-label="Drobečková navigace" class="osa-contact__crumbs osa-eyebrow">
+          <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>
+          <span aria-current="page">Kontakty</span>
+        </nav>
+        <h1 class="osa-contact__h1" data-reveal>
+          Kontakty
+        </h1>
+        <p class="osa-contact__lede" data-reveal data-reveal-delay="1">
+          Informační oddělení, představenstvo spolku a oficiální spolkové údaje.
+        </p>
+      </div>
+    </section>
 
+    <section class="section">
+      <div class="container-wide">
         <div class="osa-contact__grid" data-reveal>
           <section class="osa-contact__col">
             <h2 class="osa-h3 osa-contact__colh">Informační oddělení</h2>
@@ -37,7 +48,7 @@ const areas = [
           </section>
 
           <section class="osa-contact__col">
-            <h2 class="osa-h3 osa-contact__colh">Představenstvo</h2>
+            <h2 class="osa-h3 osa-contact__colh">Představenstvo spolku</h2>
             <address class="osa-contact__address">
               <p class="osa-body-sm"><strong>{org.predseda.name}</strong>, předseda</p>
               <p class="osa-mono">
@@ -53,7 +64,7 @@ const areas = [
           </section>
 
           <section class="osa-contact__col">
-            <h2 class="osa-h3 osa-contact__colh">Adresy</h2>
+            <h2 class="osa-h3 osa-contact__colh">Kontaktní adresy</h2>
             <address class="osa-contact__address osa-mono">
               <p class="osa-eyebrow osa-contact__addrlabel">Kancelář představenstva</p>
               <p>{org.office_address}</p>
@@ -62,11 +73,7 @@ const areas = [
             </address>
           </section>
         </div>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="container">
         <section class="osa-contact__areas" data-reveal>
           <h2 class="osa-h3 osa-contact__colh">Areály ve správě spolku</h2>
           <p class="osa-body-sm osa-contact__note">Kontaktujte přes konkrétní projekty.</p>
@@ -81,7 +88,7 @@ const areas = [
         </section>
 
         <section class="osa-contact__legal" data-reveal>
-          <h2 class="osa-h3 osa-contact__colh">Oficiální údaje</h2>
+          <h2 class="osa-h3 osa-contact__colh">Oficiální spolkové údaje</h2>
           <dl class="osa-contact__legalgrid osa-mono">
             <div><dt class="osa-eyebrow">Název</dt><dd>{org.name}</dd></div>
             <div><dt class="osa-eyebrow">Zkratky</dt><dd>{org.abbreviations.join(' · ')}</dd></div>
@@ -89,7 +96,7 @@ const areas = [
             <div><dt class="osa-eyebrow">DIČ</dt><dd>{org.dic}</dd></div>
             <div><dt class="osa-eyebrow">Datová schránka</dt><dd>{org.datova_schranka}</dd></div>
             <div><dt class="osa-eyebrow">Spisová značka</dt><dd>{org.spisova_znacka}</dd></div>
-            <div><dt class="osa-eyebrow">Účet transparentní (členské příspěvky)</dt><dd>{org.bank_transparent}</dd></div>
+            <div><dt class="osa-eyebrow">Účet členské příspěvky</dt><dd>{org.bank_transparent}</dd></div>
             <div><dt class="osa-eyebrow">Účet ostatní platby</dt><dd>{org.bank_other}</dd></div>
           </dl>
         </section>
@@ -100,24 +107,50 @@ const areas = [
 </Base>
 
 <style>
+  /* Hero: same silhouette as o-spolku, clenstvi, zapojte-se. */
   .osa-contact__hero {
     border-bottom: 1px solid var(--rule);
     position: relative;
     isolation: isolate;
   }
   .osa-contact__hero-inner {
+    position: relative;
+    z-index: 1;
     padding-top: clamp(var(--space-7), 8vw, var(--space-9));
     padding-bottom: var(--space-9);
+    display: grid;
+    gap: var(--space-5);
   }
-  .osa-contact__head { display: grid; gap: var(--space-3); max-width: 72ch; margin: 0 0 var(--space-7); }
-  .osa-contact__title { margin: 0; }
+  .osa-contact__crumbs {
+    display: flex; gap: var(--space-2); flex-wrap: wrap;
+    color: var(--fg-muted);
+  }
+  .osa-contact__crumbs a { text-decoration: underline; text-underline-offset: 3px; }
+  .osa-contact__crumbs [aria-current] { color: var(--fg); }
+  .osa-contact__h1 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(2.25rem, 5vw + 0.5rem, 4rem);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+    margin: 0;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .osa-contact__lede {
+    margin: 0;
+    color: var(--fg-muted);
+    font-size: var(--text-lg);
+    max-width: 62ch;
+  }
 
+  /* Three-column info grid */
   .osa-contact__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-6);
-    padding: var(--space-5) 0;
-    border-top: 1px solid var(--rule);
+    padding-bottom: var(--space-6);
     border-bottom: 1px solid var(--rule);
   }
   @media (max-width: 720px) { .osa-contact__grid { grid-template-columns: 1fr; } }
@@ -130,13 +163,13 @@ const areas = [
   .osa-contact__addrlabel{ display: block; color: var(--fg-muted); margin-bottom: var(--space-1); }
 
   .osa-contact__areas    { margin-top: var(--space-7); display: grid; gap: var(--space-3); }
-  .osa-contact__arealist { display: grid; gap: var(--space-2); margin: 0; }
+  .osa-contact__arealist { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
   .osa-contact__arealist li {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: var(--space-4);
     padding: var(--space-3) 0;
-    border-bottom: 1px solid var(--border-muted);
+    border-bottom: 1px solid var(--rule);
   }
   .osa-contact__arealist .osa-mono { color: var(--fg-muted); }
 
