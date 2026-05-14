@@ -67,8 +67,11 @@ const values = landing
 <section class:list={['osa-values', 'section', { 'osa-dark': dark }]}>
   <div class:list={[narrow ? 'container' : 'container-wide']}>
     <header class="osa-values__head" data-reveal>
-      <span class="osa-eyebrow">§ 16 hodnot</span>
-      <h2 class="osa-h2 osa-values__title">Hodnoty spolku jsou axiomy, nikoli aspirace.</h2>
+      <span class="osa-eyebrow">16 spolkových hodnot</span>
+      <h2 class="osa-h2 osa-values__title">Hodnoty spolku</h2>
+      <p class="osa-values__lede osa-body">
+        Hodnoty spolku vymezují a předurčují způsob naplňování vize a poslání spolku. Orgány spolku jsou povinny brát spolkové hodnoty do úvahy při svém rozhodování tak, aby činnost spolku byla obhajitelná vzhledem ke stanoveným hodnotám.
+      </p>
     </header>
     <ul
       class:list={['osa-values__grid', { 'osa-values__grid--expanded': expanded, 'osa-values__grid--landing': landing }]}
@@ -107,6 +110,7 @@ const values = landing
     margin: 0 0 var(--space-7);
   }
   .osa-values__title { margin: 0; }
+  .osa-values__lede { margin: var(--space-2) 0 0; color: var(--fg-muted); max-width: 60ch; }
 
   .osa-values__grid {
     display: grid;

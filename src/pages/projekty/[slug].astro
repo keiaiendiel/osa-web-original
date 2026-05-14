@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const accentVar = `var(--c-${entry.data.accent})`;
+const { Content } = await render(entry);
 ---
 <Base title={`${entry.data.name} - projekty OSA`}>
   <Header />
@@ -28,7 +29,9 @@ const accentVar = `var(--c-${entry.data.accent})`;
           <span class="osa-project__accent" aria-hidden="true"></span>
           <h1 class="osa-h1 osa-project__title">{entry.data.name}</h1>
           <p class="osa-body osa-project__desc">{entry.data.description}</p>
-          <p class="osa-mono osa-project__note">Vlastní doména projektu je v přípravě.</p>
+          <div class="osa-project__body osa-longform">
+            <Content />
+          </div>
         </header>
         <aside class="osa-project__sidebar" data-reveal data-reveal-delay="1">
           <dl class="osa-project__meta">
@@ -84,7 +87,9 @@ const accentVar = `var(--c-${entry.data.accent})`;
   }
   .osa-project__title { margin: 0; color: var(--fg); }
   .osa-project__desc  { margin: 0; max-width: 56ch; font-size: var(--text-lg); }
-  .osa-project__note  { margin: 0; color: var(--fg-muted); font-size: var(--text-xs); }
+  .osa-project__body  { margin: var(--space-3) 0 0; max-width: 64ch; }
+  .osa-project__body :global(p) { margin: 0 0 var(--space-4); color: var(--fg); }
+  .osa-project__body :global(p:last-child) { margin-bottom: 0; }
 
   .osa-project__sidebar {
     display: grid;

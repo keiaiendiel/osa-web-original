@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import InlineCTA from '../../components/InlineCTA.astro';
 
 const all = await getCollection('subProjects', e => e.data.status !== 'draft');
 const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
@@ -19,20 +20,30 @@ const pripravovane = sorted.filter(p => p.data.status === 'pripravovany');
         <header class="osa-projekty__head" data-reveal>
           <span class="osa-eyebrow">Naše spolkové projekty</span>
           <h1 class="osa-projekty__h1">
-            Hlavním výkonným orgánem spolku jsou autonomní projekty.
+            Naše projekty
             <span class="osa-projekty__h1-sub">
-              V této sekci jsou uvedeny zejména ty projekty, které svou činností, záměry či plány nejvíce zaujaly spolkové představenstvo.
+              Hlavním výkonným orgánem spolku, který realizuje poslání spolku, jsou autonomní projekty, přičemž v této sekci webu jsou uvedeny zejména ty projekty, které svou činností, záměry či plány nejvíce zaujaly spolkové představenstvo.
             </span>
           </h1>
+          <nav class="osa-projekty__jumps" aria-label="Sekce projektů">
+            <a class="osa-projekty__jump" href="#realizovane">
+              <span class="osa-projekty__jump-eyebrow osa-eyebrow">{realizovane.length} projektů</span>
+              <span class="osa-projekty__jump-label">Realizované ↓</span>
+            </a>
+            <a class="osa-projekty__jump" href="#pripravovane">
+              <span class="osa-projekty__jump-eyebrow osa-eyebrow">{pripravovane.length} projektů</span>
+              <span class="osa-projekty__jump-label">Připravované ↓</span>
+            </a>
+          </nav>
         </header>
       </div>
     </section>
 
     <section class="section">
       <div class="container-wide">
-        <div class="osa-projekty__group" data-reveal>
+        <div id="realizovane" class="osa-projekty__group" data-reveal>
           <header class="osa-projekty__group-head">
-            <span class="osa-eyebrow">Realizované</span>
+            <span class="osa-eyebrow">Realizované projekty</span>
           </header>
           <ul class="osa-projekty__grid" role="list">
             {realizovane.map((p, i) => (
@@ -51,9 +62,9 @@ const pripravovane = sorted.filter(p => p.data.status === 'pripravovany');
           </ul>
         </div>
 
-        <div class="osa-projekty__group" data-reveal>
+        <div id="pripravovane" class="osa-projekty__group" data-reveal>
           <header class="osa-projekty__group-head">
-            <span class="osa-eyebrow">Připravované</span>
+            <span class="osa-eyebrow">Připravované projekty</span>
           </header>
           <ul class="osa-projekty__grid" role="list">
             {pripravovane.map((p, i) => (
@@ -113,10 +124,46 @@ const pripravovane = sorted.filter(p => p.data.status === 'pripravovany');
     display: block;
     color: var(--fg-muted);
     font-weight: 500;
-    font-size: clamp(1.25rem, 1.8vw + 0.5rem, 1.75rem);
-    margin-top: var(--space-3);
-    max-width: 34ch;
+    font-size: clamp(1rem, 0.7vw + 0.8rem, 1.25rem);
+    line-height: 1.5;
+    margin-top: var(--space-4);
+    max-width: 62ch;
   }
+
+  /* ---------- Jump nav (Realizované / Připravované) ---------- */
+  .osa-projekty__jumps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .osa-projekty__jump {
+    display: inline-grid;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--fg);
+    color: var(--fg);
+    text-decoration: none;
+    transition: background-color var(--dur-base, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1)),
+                color var(--dur-base, 280ms) var(--ease-quart, cubic-bezier(0.25, 1, 0.5, 1));
+  }
+  .osa-projekty__jump:hover,
+  .osa-projekty__jump:focus-visible {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .osa-projekty__jump-eyebrow { color: var(--fg-muted); }
+  .osa-projekty__jump:hover .osa-projekty__jump-eyebrow,
+  .osa-projekty__jump:focus-visible .osa-projekty__jump-eyebrow { color: var(--bg); opacity: 0.7; }
+  .osa-projekty__jump-label {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-md);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  /* Anchor scroll: leave room above section for sticky header. */
+  #realizovane, #pripravovane { scroll-margin-top: 80px; }
 
   /* ---------- Groups ---------- */
 
