@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import InlineCTA from '../../components/InlineCTA.astro';
 import HeroPattern from '../../components/HeroPattern.astro';
+import { withBase } from '../../utils/url';
 
 const all = await getCollection('subProjects', e => e.data.status !== 'draft');
 const sorted = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
@@ -19,6 +20,10 @@ const pripravovane = sorted.filter(p => p.data.status === 'pripravovany');
     <section class="osa-projekty__hero osa-dark">
       <HeroPattern variant={2} />
       <div class="container-wide osa-projekty__hero-inner">
+        <nav aria-label="Drobečková navigace" class="osa-projekty__crumbs osa-eyebrow">
+          <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>
+          <span aria-current="page">Naše projekty</span>
+        </nav>
         <header class="osa-projekty__head" data-reveal>
           <span class="osa-eyebrow">Naše spolkové projekty</span>
           <h1 class="osa-projekty__h1">
@@ -103,8 +108,15 @@ const pripravovane = sorted.filter(p => p.data.status === 'pripravovany');
     padding-top: clamp(var(--space-7), 8vw, var(--space-9));
     padding-bottom: var(--space-9);
     display: grid;
-    gap: var(--space-6);
+    gap: var(--space-5);
   }
+
+  .osa-projekty__crumbs {
+    display: flex; gap: var(--space-2); flex-wrap: wrap;
+    color: var(--fg-muted);
+  }
+  .osa-projekty__crumbs a { text-decoration: underline; text-underline-offset: 3px; }
+  .osa-projekty__crumbs [aria-current] { color: var(--fg); }
 
   .osa-projekty__head {
     display: grid;
