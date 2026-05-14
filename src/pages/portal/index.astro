@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import OsaGlyph from '../../components/OsaGlyph.astro';
 import InlineCTA from '../../components/InlineCTA.astro';
+import HeroPattern from '../../components/HeroPattern.astro';
 import { withBase } from '../../utils/url';
 
 // Mock data — refresh = reset, žádný backend ani perzistence.
@@ -64,6 +65,7 @@ const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', acce
 
     {/* ===== LOGIN VIEW ===== */}
     <section class="osa-portal__login osa-dark" data-portal-view="login">
+      <HeroPattern variant={2} />
       <div class="container osa-portal__login-inner">
         <header class="osa-portal__login-head" data-reveal>
           <span class="osa-eyebrow">Členský portál</span>
@@ -484,12 +486,16 @@ const ledProject = { name: 'Veřejně prospěšný developer', slug: 'vpd', acce
     color: var(--fg);
     border-bottom: 1px solid var(--rule);
     padding: var(--space-9) 0;
+    position: relative;
+    isolation: isolate;
   }
   .osa-portal__login-inner {
     display: grid;
     gap: var(--space-7);
     max-width: 480px;
     width: 100%;
+    position: relative;
+    z-index: 1;
   }
   .osa-portal__login-head { display: grid; gap: var(--space-3); }
   .osa-portal__login-h1 {

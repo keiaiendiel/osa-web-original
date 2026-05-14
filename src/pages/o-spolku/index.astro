@@ -8,6 +8,7 @@ import GoalsHorizons from '../../components/GoalsHorizons.astro';
 import DocumentList from '../../components/DocumentList.astro';
 import InlineCTA from '../../components/InlineCTA.astro';
 import Gallery from '../../components/Gallery.astro';
+import HeroPattern from '../../components/HeroPattern.astro';
 import { withBase } from '../../utils/url';
 
 const hospodareniPillars = [
@@ -32,6 +33,7 @@ const hospodareniPillars = [
   <Header variant="dark" />
   <main>
     <section class="osa-about__hero osa-dark">
+      <HeroPattern variant={1} />
       <div class="container-wide osa-about__hero-inner">
         <nav aria-label="Drobečková navigace" class="osa-about__crumbs osa-eyebrow">
           <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>

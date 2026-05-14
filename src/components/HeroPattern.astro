@@ -1,0 +1,38 @@
+---
+/*
+ * Decorative SVG pattern placed behind a dark hero block. The hero
+ * needs `position: relative; isolation: isolate;` so this layer can
+ * sit at z-index 0 and the inner content at z-index 1 (the existing
+ * hero CSS already does this).
+ *
+ * Pick `variant` per subpage so the two patterns alternate around
+ * the site instead of every dark hero reading identically.
+ */
+import { withBase } from '../utils/url';
+interface Props { variant?: 1 | 2; opacity?: number; }
+const { variant = 1, opacity = 0.08 } = Astro.props;
+const src = variant === 2
+  ? '/graphics/osa-bg-pattern-2.svg'
+  : '/graphics/osa-bg-pattern.svg';
+---
+<div class="osa-hero-pattern" aria-hidden="true" style={`--hero-pattern-opacity:${opacity};`}>
+  <img src={withBase(src)} alt="" loading="lazy" decoding="async" />
+</div>
+
+<style>
+  .osa-hero-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: var(--hero-pattern-opacity, 0.08);
+  }
+  .osa-hero-pattern img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+</style>

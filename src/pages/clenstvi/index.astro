@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import InlineCTA from '../../components/InlineCTA.astro';
+import HeroPattern from '../../components/HeroPattern.astro';
 import { withBase } from '../../utils/url';
 
 const statusy = [
@@ -65,6 +66,7 @@ const povinnosti = [
   <Header variant="dark" />
   <main>
     <section class="osa-mem__hero osa-dark">
+      <HeroPattern variant={2} />
       <div class="container-wide osa-mem__hero-inner">
         <nav aria-label="Drobečková navigace" class="osa-mem__crumbs osa-eyebrow">
           <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>

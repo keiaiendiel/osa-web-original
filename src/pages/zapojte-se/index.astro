@@ -5,6 +5,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import SectionBlock from '../../components/SectionBlock.astro';
 import InlineCTA from '../../components/InlineCTA.astro';
+import HeroPattern from '../../components/HeroPattern.astro';
 import { withBase } from '../../utils/url';
 
 const org = await getEntry('org', 'identity');
@@ -14,6 +15,7 @@ const transparentniUcet = org?.data.bank_transparent ?? '205152278/0300';
   <Header variant="dark" />
   <main>
     <section class="osa-join__hero osa-dark">
+      <HeroPattern variant={1} />
       <div class="container-wide osa-join__hero-inner">
         <nav aria-label="Drobečková navigace" class="osa-join__crumbs osa-eyebrow">
           <a href={withBase('/')}>Úvod</a> <span aria-hidden="true">·</span>
