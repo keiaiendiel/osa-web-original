@@ -16,26 +16,25 @@
  * Carries the -OSA- ligature glyphs; used for headings, body, and buttons.
  * All fonts self-hosted in /public/fonts/.
  *
- * NOTE: The '/osa-web/' prefix below is coupled to `base` in astro.config.mjs.
- * When DNS cuts over to osa2.cz (base removed), find-replace '/osa-web/' with '/'.
+ * NOTE: The '/osa-web-original/' prefix below is coupled to `base` in astro.config.mjs.
  */
 @font-face {
   font-family: 'Atyp Special';
-  src: url('/osa-web/fonts/AtypText-Special-Medium.woff2') format('woff2');
+  src: url('/osa-web-original/fonts/AtypText-Special-Medium.woff2') format('woff2');
   font-weight: 400 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Atyp Special';
-  src: url('/osa-web/fonts/AtypText-Special-Bold.woff2') format('woff2');
+  src: url('/osa-web-original/fonts/AtypText-Special-Bold.woff2') format('woff2');
   font-weight: 600 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Atyp Special';
-  src: url('/osa-web/fonts/AtypText-Special-Italic.woff2') format('woff2');
+  src: url('/osa-web-original/fonts/AtypText-Special-Italic.woff2') format('woff2');
   font-weight: 400 500;
   font-style: italic;
   font-display: swap;

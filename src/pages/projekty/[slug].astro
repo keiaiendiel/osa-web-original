@@ -6,11 +6,8 @@ import Footer from '../../components/Footer.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('subProjects');
-  // Placeholder pages only for projects without an external URL (no own domain yet).
-  // Exclude entries that have their own dedicated page (e.g., /projekty/vpd.astro).
-  const explicitPages = new Set(['vpd']);
   return entries
-    .filter(e => !e.data.external_url && e.data.status !== 'draft' && !explicitPages.has(e.id))
+    .filter(e => !e.data.external_url && e.data.status !== 'draft')
     .map(e => ({ params: { slug: e.id }, props: { entry: e } }));
 }
 

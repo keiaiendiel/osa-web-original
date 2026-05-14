@@ -4,11 +4,11 @@ interface Props { variant?: 'light' | 'dark'; }
 const { variant = 'light' } = Astro.props;
 const nav = [
   { path: '/',            label: 'Úvod' },
-  { path: '/o-spolku/',   label: 'O spolku' },
+  { path: '/o-spolku/',   label: 'Kdo jsme' },
   { path: '/projekty/',   label: 'Projekty' },
-  { path: '/aktuality/',  label: 'Aktuality' },
-  { path: '/zapojte-se/', label: 'Zapojte se' },
-  { path: '/kontakty/',   label: 'Kontakt' },
+  { path: '/zapojte-se/', label: 'Spolupráce' },
+  { path: '/clenstvi/',   label: 'Členství' },
+  { path: '/kontakty/',   label: 'Kontakty' },
 ];
 const current = Astro.url.pathname;
 const isActive = (path: string) => {

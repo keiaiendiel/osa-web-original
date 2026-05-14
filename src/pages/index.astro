@@ -5,9 +5,40 @@ import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
 import Rozcestnik from '../components/Rozcestnik.astro';
 import ManifestoStrip from '../components/ManifestoStrip.astro';
-import InvestmentHero from '../components/InvestmentHero.astro';
 import Gallery from '../components/Gallery.astro';
-import AktualityRecap from '../components/AktualityRecap.astro';
+import InlineCTA from '../components/InlineCTA.astro';
+import { withBase } from '../utils/url';
+
+const perex = [
+  {
+    eyebrow: 'Kdo jsme',
+    title: 'Spolek založený v roce 2006 dvanácti studenty.',
+    body: 'Nezávislá, nezisková a projektově orientovaná organizace se široce definovaným posláním, konsensuálním rozhodováním kolektivních orgánů a autonomním rozhodováním spolkových projektů.',
+    href: '/o-spolku/',
+    cta: 'O spolku',
+  },
+  {
+    eyebrow: 'Naše projekty',
+    title: 'Hlavním výkonným orgánem spolku jsou autonomní projekty.',
+    body: 'V této sekci jsou uvedeny zejména ty projekty, které svou činností, záměry či plány nejvíce zaujaly spolkové představenstvo. Patří mezi ně Kreativní prostory, Výletná, DIY dílny, Junktown, Metro Farm a další.',
+    href: '/projekty/',
+    cta: 'Spolkové projekty',
+  },
+  {
+    eyebrow: 'Spolupráce',
+    title: 'Několik způsobů, jak s námi navázat spolupráci.',
+    body: 'Členská, dobrovolnická či projektová spolupráce pro fyzické osoby; dárcovství, sponzoring a poskytnutí nemovitosti pro firmy a vlastníky. Pomáháme s realizací smysluplných nápadů.',
+    href: '/zapojte-se/',
+    cta: 'Možnosti spolupráce',
+  },
+  {
+    eyebrow: 'Členství',
+    title: 'Členství je otevřené, dobrovolné a ukončitelné kdykoliv.',
+    body: 'Členem se může stát kdokoliv, kdo má zájem zapojit se do činnosti spolku, ať už pasivně využíváním práv a hrazením příspěvků, nebo aktivně prací v orgánech a založením vlastního projektu.',
+    href: '/clenstvi/',
+    cta: 'Druhy a vznik členství',
+  },
+];
 ---
 <Base
   title="Občanské sdružení Alternativa II, z.s."
@@ -15,11 +46,90 @@ import AktualityRecap from '../components/AktualityRecap.astro';
   <Header variant="dark" />
   <main>
     <Hero />
+
+    <section class="osa-perex section">
+      <div class="container-wide">
+        <header class="osa-perex__head" data-reveal>
+          <span class="osa-eyebrow">Pomáháme tvořit</span>
+          <h2 class="osa-h2 osa-perex__title">Občanské sdružení Alternativa II, z.s.</h2>
+          <p class="osa-body osa-perex__lede">
+            Chceme vytvořit moderní, prosperující a hodnotově orientovanou společnost, jejímž smyslem a účelem bude efektivní podpora všech jedinců v jejich plnohodnotné a všestranné seberealizaci.
+          </p>
+        </header>
+        <ul class="osa-perex__grid" role="list">
+          {perex.map((p, i) => (
+            <li class="osa-perex__cell" data-reveal data-reveal-delay={String((i % 4) + 1)}>
+              <span class="osa-eyebrow osa-perex__cell-eyebrow">{p.eyebrow}</span>
+              <h3 class="osa-perex__cell-title">{p.title}</h3>
+              <p class="osa-perex__cell-body">{p.body}</p>
+              <div class="osa-perex__cell-cta">
+                <InlineCTA href={withBase(p.href)}>{p.cta}</InlineCTA>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
     <Rozcestnik />
     <ManifestoStrip />
     <Gallery />
-    <InvestmentHero />
-    <AktualityRecap />
   </main>
   <Footer />
 </Base>
+
+<style>
+  .osa-perex {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .osa-perex__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 64ch;
+    margin: 0 0 var(--space-7);
+  }
+  .osa-perex__title { margin: 0; }
+  .osa-perex__lede { margin: 0; color: var(--fg-muted); max-width: 60ch; }
+
+  .osa-perex__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .osa-perex__cell {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .osa-perex__cell-eyebrow { color: var(--fg-muted); }
+  .osa-perex__cell-title {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--lh-snug);
+    text-wrap: balance;
+  }
+  .osa-perex__cell-body {
+    margin: 0;
+    color: var(--fg-muted);
+    max-width: 52ch;
+  }
+  .osa-perex__cell-cta { margin-top: var(--space-2); }
+
+  @media (max-width: 720px) {
+    .osa-perex__grid { grid-template-columns: 1fr; }
+    .osa-perex__cell { padding: var(--space-5); }
+  }
+</style>
